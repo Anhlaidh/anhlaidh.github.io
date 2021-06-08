@@ -1,6 +1,6 @@
 ---
-title: "{{ replace .Name "-" " " | title }}"
-date: {{ .Date }}
+title: "Demo"
+date: 2021-06-08T20:28:15+08:00
 draft: false
 # weight: 1
 # aliases: ["/first"]
@@ -32,4 +32,5 @@ editPost:
     Text: "Suggest Changes" # edit text
     appendFilePath: true # to append file path to Edit link
 ---
-
+## Hugo
+### PlantUML

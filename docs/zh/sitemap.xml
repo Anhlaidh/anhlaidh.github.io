@@ -3,7 +3,7 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>http://blog.oxide.ink/tags/first/</loc>
-    <lastmod>2021-06-08T16:59:00+08:00</lastmod>
+    <lastmod>2021-06-08T20:58:36+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -14,6 +14,67 @@
                 hreflang="zh"
                 href="http://blog.oxide.ink/tags/first/"
                 />
+  </url><url>
+    <loc>http://blog.oxide.ink/posts/markdown-extend/</loc>
+    <lastmod>2021-06-08T20:58:36+08:00</lastmod>
+  </url><url>
+    <loc>http://blog.oxide.ink/</loc>
+    <lastmod>2021-06-08T20:58:36+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="http://blog.oxide.ink/en/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh"
+                href="http://blog.oxide.ink/"
+                />
+  </url><url>
+    <loc>http://blog.oxide.ink/posts/</loc>
+    <lastmod>2021-06-08T20:58:36+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="http://blog.oxide.ink/en/posts/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh"
+                href="http://blog.oxide.ink/posts/"
+                />
+  </url><url>
+    <loc>http://blog.oxide.ink/tags/</loc>
+    <lastmod>2021-06-08T20:58:36+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="http://blog.oxide.ink/en/tags/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh"
+                href="http://blog.oxide.ink/tags/"
+                />
+  </url><url>
+    <loc>http://blog.oxide.ink/posts/demo/</loc>
+    <lastmod>2021-06-08T20:28:15+08:00</lastmod>
+  </url><url>
+    <loc>http://blog.oxide.ink/categories/</loc>
+    <lastmod>2021-06-08T16:59:00+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="http://blog.oxide.ink/en/categories/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh"
+                href="http://blog.oxide.ink/categories/"
+                />
+  </url><url>
+    <loc>http://blog.oxide.ink/categories/java/</loc>
+    <lastmod>2021-06-08T16:59:00+08:00</lastmod>
   </url><url>
     <loc>http://blog.oxide.ink/posts/test007/</loc>
     <lastmod>2021-06-08T16:59:00+08:00</lastmod>
@@ -28,45 +89,6 @@
                 href="http://blog.oxide.ink/posts/test007/"
                 />
   </url><url>
-    <loc>http://blog.oxide.ink/</loc>
-    <lastmod>2021-06-08T16:59:00+08:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="http://blog.oxide.ink/en/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh"
-                href="http://blog.oxide.ink/"
-                />
-  </url><url>
-    <loc>http://blog.oxide.ink/posts/</loc>
-    <lastmod>2021-06-08T16:59:00+08:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="http://blog.oxide.ink/en/posts/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh"
-                href="http://blog.oxide.ink/posts/"
-                />
-  </url><url>
-    <loc>http://blog.oxide.ink/tags/</loc>
-    <lastmod>2021-06-08T16:59:00+08:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="http://blog.oxide.ink/en/tags/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh"
-                href="http://blog.oxide.ink/tags/"
-                />
-  </url><url>
     <loc>http://blog.oxide.ink/archives/</loc>
     <xhtml:link
                 rel="alternate"
@@ -77,18 +99,6 @@
                 rel="alternate"
                 hreflang="zh"
                 href="http://blog.oxide.ink/archives/"
-                />
-  </url><url>
-    <loc>http://blog.oxide.ink/categories/</loc>
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="http://blog.oxide.ink/en/categories/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh"
-                href="http://blog.oxide.ink/categories/"
                 />
   </url><url>
     <loc>http://blog.oxide.ink/search/</loc>

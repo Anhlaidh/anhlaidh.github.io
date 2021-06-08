@@ -5,6 +5,8 @@ draft: false
 # weight: 1
 # aliases: ["/first"]
 tags: ["first"]
+categories: 
+    - Java
 author: "Me"
 # author: ["Me", "You"] # multiple authors
 showToc: true
@@ -17,7 +19,7 @@ disableHLJS: true # to disable highlightjs
 disableShare: false
 disableHLJS: false
 hideSummary: false
-searchHidden: true
+searchHidden: false
 ShowReadingTime: true
 ShowBreadCrumbs: true
 ShowPostNavLinks: true
