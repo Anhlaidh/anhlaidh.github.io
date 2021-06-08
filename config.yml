@@ -1,4 +1,5 @@
-baseURL: http://oxside.ink/
+baseURL: http://blog.oxside.ink/
+publishdir: docs
 defaultContentLanguage: zh
 title: Oxside
 theme: "PaperMod"
