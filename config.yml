@@ -1,7 +1,7 @@
-baseURL: http://blog.oxside.ink/
+baseURL: http://blog.oxide.ink/
 publishdir: docs
 defaultContentLanguage: zh
-title: Oxside
+title: Oxide
 theme: "PaperMod"
 
 enableRobotsTXT: true
