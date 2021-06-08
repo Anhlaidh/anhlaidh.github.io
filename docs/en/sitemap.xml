@@ -2,117 +2,117 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://blog.oxside.ink/en/tags/first/</loc>
+    <loc>http://blog.oxide.ink/en/tags/first/</loc>
     <lastmod>2021-06-08T16:59:00+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh"
-                href="http://blog.oxside.ink/tags/first/"
+                href="http://blog.oxide.ink/tags/first/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="http://blog.oxside.ink/en/tags/first/"
+                href="http://blog.oxide.ink/en/tags/first/"
                 />
   </url><url>
-    <loc>http://blog.oxside.ink/en/posts/test007/</loc>
+    <loc>http://blog.oxide.ink/en/posts/test007/</loc>
     <lastmod>2021-06-08T16:59:00+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh"
-                href="http://blog.oxside.ink/posts/test007/"
+                href="http://blog.oxide.ink/posts/test007/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="http://blog.oxside.ink/en/posts/test007/"
+                href="http://blog.oxide.ink/en/posts/test007/"
                 />
   </url><url>
-    <loc>http://blog.oxside.ink/en/</loc>
+    <loc>http://blog.oxide.ink/en/</loc>
     <lastmod>2021-06-08T16:59:00+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh"
-                href="http://blog.oxside.ink/"
+                href="http://blog.oxide.ink/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="http://blog.oxside.ink/en/"
+                href="http://blog.oxide.ink/en/"
                 />
   </url><url>
-    <loc>http://blog.oxside.ink/en/posts/</loc>
+    <loc>http://blog.oxide.ink/en/posts/</loc>
     <lastmod>2021-06-08T16:59:00+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh"
-                href="http://blog.oxside.ink/posts/"
+                href="http://blog.oxide.ink/posts/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="http://blog.oxside.ink/en/posts/"
+                href="http://blog.oxide.ink/en/posts/"
                 />
   </url><url>
-    <loc>http://blog.oxside.ink/en/tags/</loc>
+    <loc>http://blog.oxide.ink/en/tags/</loc>
     <lastmod>2021-06-08T16:59:00+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh"
-                href="http://blog.oxside.ink/tags/"
+                href="http://blog.oxide.ink/tags/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="http://blog.oxside.ink/en/tags/"
+                href="http://blog.oxide.ink/en/tags/"
                 />
   </url><url>
-    <loc>http://blog.oxside.ink/en/archive/</loc>
+    <loc>http://blog.oxide.ink/en/archive/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh"
-                href="http://blog.oxside.ink/archives/"
+                href="http://blog.oxide.ink/archives/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="http://blog.oxside.ink/en/archive/"
+                href="http://blog.oxide.ink/en/archive/"
                 />
   </url><url>
-    <loc>http://blog.oxside.ink/en/categories/</loc>
+    <loc>http://blog.oxide.ink/en/categories/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh"
-                href="http://blog.oxside.ink/categories/"
+                href="http://blog.oxide.ink/categories/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="http://blog.oxside.ink/en/categories/"
+                href="http://blog.oxide.ink/en/categories/"
                 />
   </url><url>
-    <loc>http://blog.oxside.ink/en/search/</loc>
+    <loc>http://blog.oxide.ink/en/search/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh"
-                href="http://blog.oxside.ink/search/"
+                href="http://blog.oxide.ink/search/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="http://blog.oxside.ink/en/search/"
+                href="http://blog.oxide.ink/en/search/"
                 />
   </url><url>
-    <loc>http://blog.oxside.ink/en/series/</loc>
+    <loc>http://blog.oxide.ink/en/series/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh"
-                href="http://blog.oxside.ink/series/"
+                href="http://blog.oxide.ink/series/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
-                href="http://blog.oxside.ink/en/series/"
+                href="http://blog.oxide.ink/en/series/"
                 />
   </url>
 </urlset>

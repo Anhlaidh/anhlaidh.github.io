@@ -1,1 +1,3 @@
 User-agent: *
+Disallow:
+Sitemap: http://blog.oxide.ink/sitemap.xml
