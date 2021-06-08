@@ -10,7 +10,7 @@
 <meta name="description" content="ExampleSite description">
 <meta name="author" content="Anhlaidh, RadishKin">
 <link rel="canonical" href="http://blog.oxide.ink/posts/" />
-<link crossorigin="anonymous" href="/assets/css/stylesheet.min.d01355a45ea92c881efc0ebfe8248b16a061a4c2ba0613febe4008b25743541c.css" integrity="sha256-0BNVpF6pLIge/A6/6CSLFqBhpMK6BhP&#43;vkAIsldDVBw=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.3c214cb4314c71e322b8b078a5c354a668910c52644bb00e4280fa5313966874.css" integrity="sha256-PCFMtDFMceMiuLB4pcNUpmiRDFJkS7AOQoD6UxOWaHQ=" rel="preload stylesheet" as="style">
 <link rel="icon" href="http://blog.oxide.ink/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="http://blog.oxide.ink/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="http://blog.oxide.ink/favicon-32x32.png">
@@ -198,7 +198,7 @@
     <p>哔哩哔哩视频   https://yyqx.online/posts/hugo博客latex渲染/)
  Mermaid sequenceDiagramparticipant Aliceparticipant BobAlice-John: Hello John, how are you?loop HealthcheckJohn-John: Fight against hypochondriaendNote right of John: Rational thoughts prevail...John--Alice: Great!John-Bob: How about you?Bob--John: Jolly good! Latex 行内样式：$x=2$
 代码块： $$ f(x)=\int_{-\infty}^\infty\widehat f\xi,e^{2\pi i\xi x},d\xi $$
-网易云音乐 单曲：  歌单：  admonition This is a tip  一个 技巧 横幅   或者 This is a tip  一个 技巧 横幅</p>
+网易云音乐 单曲：  歌单：  </p>
   </section>
   <footer class="entry-footer">June 8, 2021&nbsp;·&nbsp;1 分钟&nbsp;·&nbsp;Me</footer>
   <a class="entry-link" aria-label="post link to Markdown Extend" href="http://blog.oxide.ink/posts/markdown-extend/"></a>
@@ -244,6 +244,10 @@
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
         <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
     </span>
+    <br>
+    <span>Anhlaidh
+        <a href="#">chinahantianzhao@foxmail.com</a>
+    </span>
 </footer>
 <a href="#top" aria-label="go to top" title="Go to Top (Alt + G)">
     <button class="top-link" id="top-link" type="button" accesskey="g">
@@ -252,6 +256,28 @@
         </svg>
     </button>
 </a><script src="https://cdn.bootcss.com/mermaid/8.0.0-rc.8/mermaid.min.js"></script>
+<script>
+    let parm1 = ''
+    if (document.cookie.indexOf("uv=false") == -1) {
+        parm1 = "&uv=true"
+        var t = new Date(new Date().getTime() + 1000 * 60 * 60 * 24);
+        document.cookie = "uv=false; expires=" + t.toGMTString() + ";path=/";
+    }
+    fetch("https://analytics.radishkin.workers.dev/api?url=" + window.btoa(location.href) + parm1).then(res => {
+        return res.json()
+    }).then(res => {
+        try {
+            document.getElementById("busuanzi_value_page_pv").innerText = res.pv
+        } catch(err) {}
+        try{
+            document.getElementById("busuanzi_container_site_uv").innerText = res.uv
+        }catch(err){}
+        try{
+            document.getElementById("busuanzi_container_site_pv").innerText = res.total
+        }catch(err){}
+    })
+
+</script>
 
 <script>
     let menu = document.getElementById('menu')

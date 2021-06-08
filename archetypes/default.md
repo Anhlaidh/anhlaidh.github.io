@@ -2,10 +2,14 @@
 title: "{{ replace .Name "-" " " | title }}"
 date: {{ .Date }}
 draft: false
+categories: 
+    - 学习
+tags: ["未分类"]
+author: "Anhlaidh"
+
+
 # weight: 1
 # aliases: ["/first"]
-tags: ["first"]
-author: "Me"
 # author: ["Me", "You"] # multiple authors
 showToc: true
 TocOpen: false

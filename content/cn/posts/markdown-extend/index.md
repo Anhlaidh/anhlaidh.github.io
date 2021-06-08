@@ -10,7 +10,7 @@ author: "Me"
 showToc: true
 TocOpen: false
 hidemeta: false
-comments: false
+comments: true
 description: "Desc Text."
 canonicalURL: "https://canonical.url/to/page"
 disableHLJS: true # to disable highlightjs
@@ -32,6 +32,7 @@ editPost:
     Text: "Suggest Changes" # edit text
     appendFilePath: true # to append file path to Edit link
 ---
+
 
 
 
@@ -81,11 +82,5 @@ $$
 
 {{<music netease playlist 6764497041>}}
 
-## admonition
-{{< admonition type=tip title="This is a tip" open=false >}}
-一个 **技巧** 横幅
-{{< /admonition >}}
-或者
-{{< admonition tip "This is a tip" false >}}
-一个 **技巧** 横幅
-{{< /admonition >}}
+
+

@@ -10,7 +10,7 @@
 <meta name="description" content="Search - Oxide">
 <meta name="author" content="Anhlaidh, RadishKin">
 <link rel="canonical" href="http://blog.oxide.ink/en/search/" />
-<link crossorigin="anonymous" href="/assets/css/stylesheet.min.d01355a45ea92c881efc0ebfe8248b16a061a4c2ba0613febe4008b25743541c.css" integrity="sha256-0BNVpF6pLIge/A6/6CSLFqBhpMK6BhP&#43;vkAIsldDVBw=" rel="preload stylesheet" as="style"><link crossorigin="anonymous" rel="preload" as="fetch" href="../index.json">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.3c214cb4314c71e322b8b078a5c354a668910c52644bb00e4280fa5313966874.css" integrity="sha256-PCFMtDFMceMiuLB4pcNUpmiRDFJkS7AOQoD6UxOWaHQ=" rel="preload stylesheet" as="style"><link crossorigin="anonymous" rel="preload" as="fetch" href="../index.json">
 <script defer crossorigin="anonymous" src="/assets/js/search.min.8d312db0a16b9863373370d4f4aeb4dab7d2c571e82533ce5ac348b9b1b254bc.js" integrity="sha256-jTEtsKFrmGM3M3DU9K602rfSxXHoJTPOWsNIubGyVLw="></script>
 <link rel="icon" href="http://blog.oxide.ink/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="http://blog.oxide.ink/favicon-16x16.png">
@@ -251,6 +251,10 @@
         <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
         <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
     </span>
+    <br>
+    <span>Anhlaidh
+        <a href="#">chinahantianzhao@foxmail.com</a>
+    </span>
 </footer>
 <a href="#top" aria-label="go to top" title="Go to Top (Alt + G)">
     <button class="top-link" id="top-link" type="button" accesskey="g">
@@ -259,6 +263,28 @@
         </svg>
     </button>
 </a><script src="https://cdn.bootcss.com/mermaid/8.0.0-rc.8/mermaid.min.js"></script>
+<script>
+    let parm1 = ''
+    if (document.cookie.indexOf("uv=false") == -1) {
+        parm1 = "&uv=true"
+        var t = new Date(new Date().getTime() + 1000 * 60 * 60 * 24);
+        document.cookie = "uv=false; expires=" + t.toGMTString() + ";path=/";
+    }
+    fetch("https://analytics.radishkin.workers.dev/api?url=" + window.btoa(location.href) + parm1).then(res => {
+        return res.json()
+    }).then(res => {
+        try {
+            document.getElementById("busuanzi_value_page_pv").innerText = res.pv
+        } catch(err) {}
+        try{
+            document.getElementById("busuanzi_container_site_uv").innerText = res.uv
+        }catch(err){}
+        try{
+            document.getElementById("busuanzi_container_site_pv").innerText = res.total
+        }catch(err){}
+    })
+
+</script>
 
 <script>
     let menu = document.getElementById('menu')
