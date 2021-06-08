@@ -38,6 +38,9 @@ languages:
                 - name: 分类
                   url: categories/
                   weight: 10
+                - name: 友情链接
+                  url: links/
+                  weight: 11
     en:
         languageName: "English"
         contentDir: "content/en"
@@ -57,8 +60,8 @@ languages:
                   url: categories/
                   weight: 10
 
-    
-        
+
+
 minify:
     disableXML: true
     minifyOutput: false
@@ -70,7 +73,7 @@ params:
     title: ExampleSite
     description: "ExampleSite description"
     keywords: [Blog, Portfolio, PaperMod]
-    author: ["Anhlaidh","RadishKin"]
+    author: ["Anhlaidh"]
     # author: ["Me", "You"] # multiple authors
     images: ["<link or path of image for opengraph, twitter-cards>"]
     DateFormat: "January 2, 2006"
@@ -134,7 +137,7 @@ params:
         - name: rss
           url: "/index.xml"
 
-   
+
     # cover:
     #     hidden: true # hide everywhere but not in structured data
     #     hiddenInList: true # hide on list pages and home

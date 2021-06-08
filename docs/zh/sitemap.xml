@@ -89,6 +89,8 @@
                 href="http://blog.oxide.ink/posts/test007/"
                 />
   </url><url>
+    <loc>http://blog.oxide.ink/links/</loc>
+  </url><url>
     <loc>http://blog.oxide.ink/archives/</loc>
     <xhtml:link
                 rel="alternate"
