@@ -11,6 +11,7 @@
     <option name="TEMPLATE_FOLDERS">
       <list>
         <option value="$MODULE_DIR$/themes/PaperMod/layouts/partials/templates" />
+        <option value="$MODULE_DIR$/archetypes" />
       </list>
     </option>
   </component>

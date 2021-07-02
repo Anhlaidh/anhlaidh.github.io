@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="zh" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Java | Oxide</title>
+<meta name="keywords" content="" />
+<meta name="description" content="ExampleSite description">
+<meta name="author" content="Anhlaidh">
+<link rel="canonical" href="http://blog.oxide.ink/tags/java/" />
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.97a8d9e5145d35197b259e1b4b69375aae58b5f148b0b90f71d1eb5cb9782e0d.css" integrity="sha256-l6jZ5RRdNRl7JZ4bS2k3Wq5YtfFIsLkPcdHrXLl4Lg0=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://blog.oxide.ink/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://blog.oxide.ink/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://blog.oxide.ink/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://blog.oxide.ink/apple-touch-icon.png">
+<link rel="mask-icon" href="http://blog.oxide.ink/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<meta name="generator" content="Hugo 0.83.1" />
+<link rel="alternate" type="application/rss+xml" href="http://blog.oxide.ink/tags/java/index.xml">
+<link rel="alternate" hreflang="zh" href="http://blog.oxide.ink/tags/java/" />
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+      renderMathInElement(document.body, {
+              delimiters: [
+                  {left: "$$", right: "$$", display: true},
+                  {left: "$", right: "$", display: false}
+              ]
+          });
+    });
+</script>
+
+
+
+<script src="https://cdn.bootcss.com/mermaid/8.0.0-rc.8/mermaid.min.js"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0-rc.1/katex.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0-rc.1/katex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0-rc.1/contrib/auto-render.min.js"></script>
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
+<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+<script>
+    window.onload = function (){
+        console.log("aaa");
+    }
+    const height = 300;
+    makeCollapsible();
+    function makeCollapsible() {
+        const divs = document.querySelectorAll('.highlight');
+        divs.forEach((e) => {
+            if (e.offsetHeight > height) {
+                e.style.maxHeight = height + 'px';
+                e.style.overflow = 'hidden';
+                const linkWrapper = document.createElement('div');
+                const link = document.createElement('a');
+                link.href = '';
+                link.textContent = 'more';
+                link.addEventListener('click', codeToggle);
+                linkWrapper.className = 'highlight-link';
+                linkWrapper.appendChild(link);
+                e.appendChild(linkWrapper);
+            }
+        });
+    }
+    function codeToggle(e) {
+        e.preventDefault();
+        const link = e.target;
+        const linkWrapper = link.parentElement.parentElement;
+        if (link.innerHTML === 'more') {
+            link.innerHTML = 'less';
+            linkWrapper.style.maxHeight = '';
+            linkWrapper.style.overflow = 'none';
+            link.parentElement.style.right = '0';
+        } else {
+            link.innerHTML = 'more';
+            linkWrapper.style.maxHeight = height + 'px';
+            linkWrapper.style.overflow = 'hidden';
+            link.parentElement.style.right = '0.5em';
+            scrollToTargetAdjusted(linkWrapper);
+        }
+    }
+    function scrollToTargetAdjusted(e) {
+        const header = document.querySelector('header');
+        const headerHeight = window.getComputedStyle(header, null).getPropertyValue('height');
+        const headerOffset = Number(headerHeight.replace('px', ''));
+        const bodyRect = document.body.getBoundingClientRect().top;
+        const elementRect = e.getBoundingClientRect().top;
+        const elementPosition = elementRect - bodyRect;
+        const offsetPosition = elementPosition - headerOffset;
+        window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+        });
+    }
+
+</script><meta property="og:title" content="Java" />
+<meta property="og:description" content="ExampleSite description" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="http://blog.oxide.ink/tags/java/" /><meta property="og:image" content="http://blog.oxide.ink/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"/><meta property="og:site_name" content="Oxide" />
+
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="http://blog.oxide.ink/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"/>
+
+<meta name="twitter:title" content="Java"/>
+<meta name="twitter:description" content="ExampleSite description"/>
+
+</head>
+
+<body class="list" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+<noscript>
+    <style type="text/css">
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: #1d1e20;
+                --entry: #2e2e33;
+                --primary: rgba(255, 255, 255, 0.84);
+                --secondary: rgba(255, 255, 255, 0.56);
+                --tertiary: rgba(255, 255, 255, 0.16);
+                --content: rgba(255, 255, 255, 0.74);
+                --hljs-bg: #2e2e33;
+                --code-bg: #37383e;
+                --border: #333;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://blog.oxide.ink/" accesskey="h" title="Oxide (Alt + H)">Oxide</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+                <ul class="lang-switch"><li>|</li>
+                    <li>
+                        <a href="http://blog.oxide.ink/en/" title="English"
+                            aria-label="English">English</a>
+                    </li>
+                </ul>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://blog.oxide.ink/archives" title="文章归档">
+                    <span>文章归档</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://blog.oxide.ink/categories/" title="分类">
+                    <span>分类</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://blog.oxide.ink/search/" title="搜索">
+                    <span>搜索</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://blog.oxide.ink/tags/" title="标签">
+                    <span>标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://blog.oxide.ink/links/" title="友情链接">
+                    <span>友情链接</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main"> 
+<header class="page-header"><div class="breadcrumbs"><a href="http://blog.oxide.ink/">Home</a>&nbsp;»&nbsp;<a href="http://blog.oxide.ink/tags/">Tags</a></div>
+  <h1>Java</h1>
+</header>
+
+<article class="post-entry tag-entry"> 
+<figure class="entry-cover"><img loading="lazy" src="http://blog.oxide.ink/%3Cimage%20path/url%3E" alt="">
+</figure>
+  <header class="entry-header">
+    <h2>Java笔记01</h2>
+  </header>
+  <section class="entry-content">
+    <p>idea  ctrl&#43;shift&#43;v:替换变量名 ctrl&#43;alt&#43;v:抽取并赋值 ctrl&#43;p:查看参数 ctrl&#43;alt&#43;o删除多余包 ctrl&#43;F12 查看当前类中的包 ctrl&#43;shift&#43;enter 自动完成当前语句 ctrl&#43;shift&#43;backspace 返回到上次修改位置 alt&#43;shift&#43;F9 Debug  类转型&amp;多态&amp;契约设计  类转型：子类可以转父类，父类不可以转子类（除非父类对象本身就是子类） 多态：子类转型为父类后，调用普通方法，依旧是子类方法 契约设计：类不会直接使用另一个类，而是采用接口的形式，外部可以“空投”这个接口下的任意子类对象  static、final 和常量设计 static  static 变量：不管有多少个对象，内存中只有一份 static 方法：可以使用类名直接引用，无需 new 对象来引用   静态方法不可以调用动态变量 非静态方法可以调用静态方法 静态方法不可调用非静态方法  static 块：static 块只执行一次，并且 static 块&gt;匿名块&gt;构造函数  单例模式  设计模式：是经过验证的、用于某些特定场合的解决方案 GOF 提出 23 中设计模式；创建型、结构性和行为型 单例模式保证一个类在内存空间中只有一个对象   内部初始化一个单例 private 不可见，getInstance(static 方法)来取出单例对象  final  final 类：没有子类继承 final 方法：不能被子类改写（不能重写，可以重载） final 字段：基本类型被能修改值，对象类型不能修改指针（可以修改内容）  常量&amp;常量池  java 中的常量：static 和 final notes....</p>
+  </section>
+  <footer class="entry-footer">June 8, 2021&nbsp;·&nbsp;4 分钟&nbsp;·&nbsp;Anhlaidh</footer>
+  <a class="entry-link" aria-label="post link to Java笔记01" href="http://blog.oxide.ink/posts/java/java%E7%AC%94%E8%AE%B001/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+<figure class="entry-cover"><img loading="lazy" src="http://blog.oxide.ink/%3Cimage%20path/url%3E" alt="">
+</figure>
+  <header class="entry-header">
+    <h2>Java笔记02</h2>
+  </header>
+  <section class="entry-content">
+    <p>Maven Junit 测试   单元测试：对软件中最小可测试单元进行检查和验证，通常是一个函数/方法（属于白盒测试）
+ 集成测试： 将多个单元相互作用，形成一个整体，对整体协调性进行测试    白盒测试： 全面了解程序内部逻辑结构，对所有的逻辑路径都进行测试，一般由程序员完成
+ 黑盒测试：又名功能测试，将程序看作不可打开的盒子，一般由独立使用者完成    自动测试：用程序批量、反复的测试程序，并可自动检查程序结果是否满足预定的要求
+ 手动测试：手动执行程序，手动输入所需要的参数，手动检查程序结果是否满足预定的要求    回归测试：修改旧代码后，重新进行测试以确认修改没有引入新的错误或导致其他代码产生错误
+  深入学习：软件测试-基于问题驱动模式 朱少民
+  Junit   import static 导入该包内的所有静态方法，使用时可不加类名
+  Triangle
+  1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26  package JavaLearning_Advanced....</p>
+  </section>
+  <footer class="entry-footer">June 8, 2021&nbsp;·&nbsp;31 分钟&nbsp;·&nbsp;Anhlaidh</footer>
+  <a class="entry-link" aria-label="post link to Java笔记02" href="http://blog.oxide.ink/posts/java/java%E7%AC%94%E8%AE%B002/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+<figure class="entry-cover"><img loading="lazy" src="http://blog.oxide.ink/%3Cimage%20path/url%3E" alt="">
+</figure>
+  <header class="entry-header">
+    <h2>Java笔记03</h2>
+  </header>
+  <section class="entry-content">
+    <p>语法糖 Syntactic sugar jdk版本  编译级别 兼容级别  编译后高版本可以运行低版本字节码 反之不行    for/for-each  for  for(int i=0;i&lt;nums.leng;i&#43;&#43;) 可以删除元素   for-each  for(String i:hs) 5.0开始存在 语法简洁 不能删除元素 只能正向遍历 不能同时遍历两个集合    enum类型  java5 推出 enum有多少个值就有几个实例对象 可以添加属性/构造函数/方法 构造函数只能是package-private(default)或者private,内部调用 enum类型  所有enum类型都是Enum的子类,也继承了相应方法 ordinal()返回枚举所在的索引位置,从0开始 compareTo()比较两个枚举值的索引位置大小 toString()返回枚举值的字符串标识 valueOf()将字符串初始化为枚举对象 values() 返回所有的枚举值    1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46  package notes....</p>
+  </section>
+  <footer class="entry-footer">June 8, 2021&nbsp;·&nbsp;13 分钟&nbsp;·&nbsp;Anhlaidh</footer>
+  <a class="entry-link" aria-label="post link to Java笔记03" href="http://blog.oxide.ink/posts/java/java%E7%AC%94%E8%AE%B003/"></a>
+</article>
+    </main>
+    <footer class="footer">
+    <span>&copy; 2021 <a href="http://blog.oxide.ink/">Oxide</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+    <br>
+    <span>Anhlaidh
+        <a href="#">chinahantianzhao@foxmail.com</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)">
+    <button class="top-link" id="top-link" type="button" accesskey="g">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+            <path d="M12 6H0l6-6z" />
+        </svg>
+    </button>
+</a><script src="https://cdn.bootcss.com/mermaid/8.0.0-rc.8/mermaid.min.js"></script>
+<script>
+    let parm1 = ''
+    if (document.cookie.indexOf("uv=false") == -1) {
+        parm1 = "&uv=true"
+        var t = new Date(new Date().getTime() + 1000 * 60 * 60 * 24);
+        document.cookie = "uv=false; expires=" + t.toGMTString() + ";path=/";
+    }
+    fetch("https://analytics.radishkin.workers.dev/api?url=" + window.btoa(location.href) + parm1).then(res => {
+        return res.json()
+    }).then(res => {
+        try {
+            document.getElementById("busuanzi_value_page_pv").innerText = res.pv
+        } catch(err) {}
+        try{
+            document.getElementById("busuanzi_container_site_uv").innerText = res.uv
+        }catch(err){}
+        try{
+            document.getElementById("busuanzi_container_site_pv").innerText = res.total
+        }catch(err){}
+    })
+
+</script>
+
+<script>
+    let menu = document.getElementById('menu')
+    menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+    menu.onscroll = function () {
+        localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

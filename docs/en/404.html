@@ -32,8 +32,8 @@
 </script>
 
 
-<script src="https://cdn.bootcss.com/mermaid/8.0.0-rc.8/mermaid.min.js"></script>
 
+<script src="https://cdn.bootcss.com/mermaid/8.0.0-rc.8/mermaid.min.js"></script>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0-rc.1/katex.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0-rc.1/katex.min.js"></script>
@@ -46,7 +46,63 @@
 
 <script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script><meta property="og:title" content="404 Page not found" />
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+<script>
+    window.onload = function (){
+        console.log("aaa");
+    }
+    const height = 300;
+    makeCollapsible();
+    function makeCollapsible() {
+        const divs = document.querySelectorAll('.highlight');
+        divs.forEach((e) => {
+            if (e.offsetHeight > height) {
+                e.style.maxHeight = height + 'px';
+                e.style.overflow = 'hidden';
+                const linkWrapper = document.createElement('div');
+                const link = document.createElement('a');
+                link.href = '';
+                link.textContent = 'more';
+                link.addEventListener('click', codeToggle);
+                linkWrapper.className = 'highlight-link';
+                linkWrapper.appendChild(link);
+                e.appendChild(linkWrapper);
+            }
+        });
+    }
+    function codeToggle(e) {
+        e.preventDefault();
+        const link = e.target;
+        const linkWrapper = link.parentElement.parentElement;
+        if (link.innerHTML === 'more') {
+            link.innerHTML = 'less';
+            linkWrapper.style.maxHeight = '';
+            linkWrapper.style.overflow = 'none';
+            link.parentElement.style.right = '0';
+        } else {
+            link.innerHTML = 'more';
+            linkWrapper.style.maxHeight = height + 'px';
+            linkWrapper.style.overflow = 'hidden';
+            link.parentElement.style.right = '0.5em';
+            scrollToTargetAdjusted(linkWrapper);
+        }
+    }
+    function scrollToTargetAdjusted(e) {
+        const header = document.querySelector('header');
+        const headerHeight = window.getComputedStyle(header, null).getPropertyValue('height');
+        const headerOffset = Number(headerHeight.replace('px', ''));
+        const bodyRect = document.body.getBoundingClientRect().top;
+        const elementRect = e.getBoundingClientRect().top;
+        const elementPosition = elementRect - bodyRect;
+        const offsetPosition = elementPosition - headerOffset;
+        window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+        });
+    }
+
+</script><meta property="og:title" content="404 Page not found" />
 <meta property="og:description" content="ExampleSite description" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="http://blog.oxide.ink/en/404.html" /><meta property="og:image" content="http://blog.oxide.ink/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E"/><meta property="og:site_name" content="ExampleSite" />

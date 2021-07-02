@@ -21,7 +21,6 @@
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
 <meta name="generator" content="Hugo 0.83.1" />
-<link rel="alternate" hreflang="zh" href="http://blog.oxide.ink/posts/test007/" />
 <link rel="alternate" hreflang="en" href="http://blog.oxide.ink/en/posts/test007/" />
 
 <script>
@@ -36,8 +35,8 @@
 </script>
 
 
-<script src="https://cdn.bootcss.com/mermaid/8.0.0-rc.8/mermaid.min.js"></script>
 
+<script src="https://cdn.bootcss.com/mermaid/8.0.0-rc.8/mermaid.min.js"></script>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0-rc.1/katex.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0-rc.1/katex.min.js"></script>
@@ -50,7 +49,63 @@
 
 <script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script><meta property="og:title" content="Java笔记02" />
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+<script>
+    window.onload = function (){
+        console.log("aaa");
+    }
+    const height = 300;
+    makeCollapsible();
+    function makeCollapsible() {
+        const divs = document.querySelectorAll('.highlight');
+        divs.forEach((e) => {
+            if (e.offsetHeight > height) {
+                e.style.maxHeight = height + 'px';
+                e.style.overflow = 'hidden';
+                const linkWrapper = document.createElement('div');
+                const link = document.createElement('a');
+                link.href = '';
+                link.textContent = 'more';
+                link.addEventListener('click', codeToggle);
+                linkWrapper.className = 'highlight-link';
+                linkWrapper.appendChild(link);
+                e.appendChild(linkWrapper);
+            }
+        });
+    }
+    function codeToggle(e) {
+        e.preventDefault();
+        const link = e.target;
+        const linkWrapper = link.parentElement.parentElement;
+        if (link.innerHTML === 'more') {
+            link.innerHTML = 'less';
+            linkWrapper.style.maxHeight = '';
+            linkWrapper.style.overflow = 'none';
+            link.parentElement.style.right = '0';
+        } else {
+            link.innerHTML = 'more';
+            linkWrapper.style.maxHeight = height + 'px';
+            linkWrapper.style.overflow = 'hidden';
+            link.parentElement.style.right = '0.5em';
+            scrollToTargetAdjusted(linkWrapper);
+        }
+    }
+    function scrollToTargetAdjusted(e) {
+        const header = document.querySelector('header');
+        const headerHeight = window.getComputedStyle(header, null).getPropertyValue('height');
+        const headerOffset = Number(headerHeight.replace('px', ''));
+        const bodyRect = document.body.getBoundingClientRect().top;
+        const elementRect = e.getBoundingClientRect().top;
+        const elementPosition = elementRect - bodyRect;
+        const offsetPosition = elementPosition - headerOffset;
+        window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+        });
+    }
+
+</script><meta property="og:title" content="Java笔记02" />
 <meta property="og:description" content="Desc Text." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="http://blog.oxide.ink/en/posts/test007/" />
@@ -236,12 +291,7 @@
     <div class="post-description">
       Desc Text.
     </div>
-    <div class="post-meta">June 8, 2021&nbsp;·&nbsp;31 min&nbsp;·&nbsp;Me&nbsp;|&nbsp;
-<ul class="i18n_list">Translations:
-    <li>
-        <a href="http://blog.oxide.ink/posts/test007/">简体中文</a>
-    </li>
-</ul>&nbsp;|&nbsp;<a href="https://github.com/%3cpath_to_repo%3e/content/posts/test007.md" rel="noopener noreferrer" target="_blank">Suggest Changes</a>
+    <div class="post-meta">June 8, 2021&nbsp;·&nbsp;31 min&nbsp;·&nbsp;Me&nbsp;|&nbsp;<a href="https://github.com/%3cpath_to_repo%3e/content/posts/test007.md" rel="noopener noreferrer" target="_blank">Suggest Changes</a>
 </div>
   </header> <div class="toc">
     <details >
