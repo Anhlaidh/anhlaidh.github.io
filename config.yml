@@ -129,7 +129,7 @@ params:
 
     socialIcons:
         - name: bilibili
-          url: "https://twitter.com/"
+          url: "https://bilibili.com/"
         - name: stackoverflow
           url: "https://stackoverflow.com"
         - name: github
