@@ -10,7 +10,7 @@
 <meta name="description" content="Java">
 <meta name="author" content="Anhlaidh">
 <link rel="canonical" href="http://blog.oxide.ink/posts/java/java%E7%AC%94%E8%AE%B002/" />
-<link crossorigin="anonymous" href="/assets/css/stylesheet.min.97a8d9e5145d35197b259e1b4b69375aae58b5f148b0b90f71d1eb5cb9782e0d.css" integrity="sha256-l6jZ5RRdNRl7JZ4bS2k3Wq5YtfFIsLkPcdHrXLl4Lg0=" rel="preload stylesheet" as="style">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.a7912db0dae3e62d0906024f5a11712a8f2023b34fe824cbb253e4731ec0117f.css" integrity="sha256-p5EtsNrj5i0JBgJPWhFxKo8gI7NP6CTLslPkcx7AEX8=" rel="preload stylesheet" as="style">
 <script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
     onload="hljs.initHighlightingOnLoad();"></script>
 <link rel="icon" href="http://blog.oxide.ink/favicon.ico">
@@ -5123,10 +5123,14 @@ Receive:</li>
 <script>
     document.querySelectorAll('pre > code').forEach((codeblock) => {
         const container = codeblock.parentNode.parentNode;
+        var isHide = true;
 
         const copybutton = document.createElement('button');
+        const showbutton = document.createElement('button');
         copybutton.classList.add('copy-code');
+        showbutton.classList.add('show-code-button');
         copybutton.innerText = 'copy';
+        showbutton.innerText = 'show';
 
         function copyingDone() {
             copybutton.innerText = 'copied!';
@@ -5134,6 +5138,20 @@ Receive:</li>
                 copybutton.innerText = 'copy';
             }, 2000);
         }
+        showbutton.addEventListener('click',()=>{
+            if (isHide === true) {
+                
+                showbutton.parentElement.classList.add("code-showing")
+                showbutton.innerText = 'hide';
+                isHide = false;
+            } else {
+                
+                showbutton.parentElement.classList.remove("code-showing")
+                showbutton.innerText = 'show';
+                isHide = true;
+            }
+
+        })
 
         copybutton.addEventListener('click', (cb) => {
             if ('clipboard' in navigator) {
@@ -5156,14 +5174,17 @@ Receive:</li>
 
         if (container.classList.contains("highlight")) {
             container.appendChild(copybutton);
+            container.appendChild(showbutton);
         } else if (container.parentNode.firstChild == container) {
             
         } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
             
             codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(showbutton);
         } else {
             
             codeblock.parentNode.appendChild(copybutton);
+            codeblock.parentNode.appendChild(showbutton);
         }
     });
 </script>
