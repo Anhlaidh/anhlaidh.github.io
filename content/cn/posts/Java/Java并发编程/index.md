@@ -55,7 +55,7 @@ cover:
 
 editPost:
 
-    URL: "https://github.com/<path_to_repo>/content" 
+    URL: "https://github.com/Anhlaidh/Oxide/blob/master/content/cn" 
 
     Text: "Suggest Changes" # edit text 
 
