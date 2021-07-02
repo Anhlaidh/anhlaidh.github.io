@@ -129,11 +129,11 @@ params:
 
     socialIcons:
         - name: bilibili
-          url: "https://bilibili.com/"
+          url: "https://space.bilibili.com/2565425/"
         - name: stackoverflow
           url: "https://stackoverflow.com"
         - name: github
-          url: "https://github.com/"
+          url: "https://github.com/Anhlaidh/"
         - name: rss
           url: "/index.xml"
 
