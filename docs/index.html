@@ -288,6 +288,110 @@
 <figure class="entry-cover"><img loading="lazy" src="http://blog.oxide.ink/%3Cimage%20path/url%3E" alt="">
 </figure>
   <header class="entry-header">
+    <h2>ElasticSearch</h2>
+  </header>
+  <section class="entry-content">
+    <p>概述  ES不等于搜索引擎 分布式的搜索,存储,数据分析引擎 优点:  面向开发者友好,屏蔽了Luncene的复杂特性,集群自动发现 自动维护数据在多个节点上的建立 帮我们做搜索请求的负载均衡 自动维护冗余副本,保证了部分节点宕机的情况下仍然不会有任何数据丢失 ES基于Lucene提供了很多高级功能:符合查询,聚合分析,基于地理位置 对于大公司,可以构建几百台服务器的大型分布式集群,处理PB级别数据 相遇传统数据库,提供了全文见检索,同义词处理,相关度排名,聚合分析以及海量数据的近实时(NTR)处理,这些传统数据库完全做不到   应用领域  搜索引擎 各大网站的用户行为日志(点击,浏览,收藏,评论) BI 数据分析 Github ELK (Elasticseach(数据存储) Logstash(日志采集) Kibana(可视化))    核心概念和原理  搜索  SQL 用了%不能用索引 -&gt;性能差  like % 搜索时间复杂度O(n)   不能分词   倒排索引  分词 生成相关度 * 排序 空间换时间   数据结构  document List 关键词在每个doc中出现的次数 TF term frequency 词频 IDF inverse doc frequency 关键词在当前doc出现的次数 每个doc的长度 越长相关度越低 包含这个关键词的所有doc的平均长度     核心概念  集群:每个集群至少包含两个节点 Node:集群中的节点 一个节点不代表是一台机器 Filed: 一个数据字段,与index和type可以定位一个doc Document:ES最小的数据单元 Json Type:逻辑上的数据分类 Index:一类相同或者相似的doc 分片shard  一个index包含多个shard,默认5p,默认每个p分配一个r,p的数量在创建索引的时候设置,如果想修改,需要重建索引 每个shard都是一个lucene实例,有完整的创建索引的处理请求能力 ES会自动在nodes尚未我们zuoshard均衡 一个doc不可能同时存在于多个PShard,但是可以同时多个Rshard p和对应的r不能同时存在于同一个节点,所以最低的可用配置是两台节点,互为主备   横向扩容 Parimary Shared Replica Shard     容错  两台机子p0,p1,p2 r0,r1,r2 p挂掉之后r顶上 容错机制  master选举  findMaster  脑裂 可能会产生多个master节点   判断自己是否为master 广播/findMaster   replica容错 重启故障机 数据恢复  只拷贝新增数据 不是全量拷贝        使用  健康值检查  CRUD  Query String search 类似于Url挂参数搜索 Query DSL Query and filter  1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52  GET /_cat/health?...</p>
+  </section>
+  <footer class="entry-footer">July 1, 2021&nbsp;·&nbsp;4 分钟&nbsp;·&nbsp;Anhlaidh</footer>
+  <a class="entry-link" aria-label="post link to ElasticSearch" href="http://blog.oxide.ink/posts/db/elasticsearch/"></a>
+</article>
+
+<article class="post-entry"> 
+<figure class="entry-cover"><img loading="lazy" src="http://blog.oxide.ink/%3Cimage%20path/url%3E" alt="">
+</figure>
+  <header class="entry-header">
+    <h2>Java并发编程</h2>
+  </header>
+  <section class="entry-content">
+    <p>基本概念 进程 线程 纤程(quasar)  Java线程,详见Java笔记  补充,可以有lambda表达式写法 三种启动线程方式  Thread Runnable Executors.newCachedThread(本质也是调用上两个)   sleep ,睡眠多少秒,其他线程可以运行 yield,加入等待队列,有可能立马还是自己 join , 调用另一个线程,保证顺序 interrupt , 抛出异常,处理catch   生命周期   新建：就是刚使用new方法，new出来的线程；
+  就绪：就是调用的线程的start()方法后，这时候线程处于等待CPU分配资源阶段，谁先抢的CPU资源，谁开始执行;
+  运行：当就绪的线程被调度并获得CPU资源时，便进入运行状态，run方法定义了线程的操作和功能;
+  阻塞：在运行状态的时候，可能因为某些原因导致运行状态的线程变成了阻塞状态，比如sleep()、wait()之后线程就处于了阻塞状态，这个时候需要其他机制将处于阻塞状态的线程唤醒，比如调用notify或者notifyAll()方法。唤醒的线程不会立刻执行run方法，它们要再次等待CPU分配资源进入运行状态;
+  销毁：如果线程正常执行完毕后或线程被提前强制性的终止或出现异常导致结束，那么线程就要被销毁，释放资源;
+    锁 常见锁 synchronized  可重入锁 synchronized(this) - &gt; synchronized void m() ,static synchronized锁的是T.class -保证原子性和可见性 底层实现  锁升级  偏向锁 标记线程 自旋锁 自旋十次 消耗cpu,用户态 重量级锁 - OS,os等待队列,不占cpu,但要跟os交互,内核态   执行时间长,线程数多用系统锁 执行时间段(加锁代码),线程数少,用自旋锁     不能阻止指令重排序 异常会释放锁  Lock volatile(可变的)   保证线程可见性...</p>
+  </section>
+  <footer class="entry-footer">July 1, 2021&nbsp;·&nbsp;3 分钟&nbsp;·&nbsp;Anhlaidh</footer>
+  <a class="entry-link" aria-label="post link to Java并发编程" href="http://blog.oxide.ink/posts/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"></a>
+</article>
+
+<article class="post-entry"> 
+<figure class="entry-cover"><img loading="lazy" src="http://blog.oxide.ink/%3Cimage%20path/url%3E" alt="">
+</figure>
+  <header class="entry-header">
+    <h2>JVM-01</h2>
+  </header>
+  <section class="entry-content">
+    <p>学术名词  TLAB (Thread Local Allocation Buffer)  垃圾回收器  分代  CMS &#43;ParNew Serial&#43;Serial Old Parallel Scavenge&#43;Parallel Old   分区  G1 ZGC Shenandoah    调优  什么是调优  根据需求进行JVM规划和调优 优化运行JVM环境(慢,卡顿) 解决JVM运行过程中出现的各种问题(OOM) out of memery   Java参数  标准参数 非标准参数 -X 调优 -XX    参数  -Xms200M 最小内存200M -Xmx200M 最大内存200M  设置成一样,防止内存抖动   -XX:&#43;PrintGC 打印出来 -XX:&#43;HeapDumpOnOutOfMemoryError  命令  java -Xms2M -Xmx2M -XX:&#43;PrintGC problem jps 查看正在运行的编号 jinfo 编号查看进程信息 jstack jmap jstatus *arthas  dashboard 仪表盘 jvm 类似jinfo thread 类似jstack  thread -b 找死锁 heapdump 导出stack jad 即时反编译 redifine 重新替换class      </p>
+  </section>
+  <footer class="entry-footer">July 1, 2021&nbsp;·&nbsp;1 分钟&nbsp;·&nbsp;Anhlaidh</footer>
+  <a class="entry-link" aria-label="post link to JVM-01" href="http://blog.oxide.ink/posts/jvm/jvm-1/"></a>
+</article>
+
+<article class="post-entry"> 
+<figure class="entry-cover"><img loading="lazy" src="http://blog.oxide.ink/%3Cimage%20path/url%3E" alt="">
+</figure>
+  <header class="entry-header">
+    <h2>JVM-02</h2>
+  </header>
+  <section class="entry-content">
+    <p>概念  jvm跟java无关  任何语言-&gt;class-&gt;JVM   jvm是一种规范 虚构出来的计算机  字节码指令集(汇编语言) 内存管理:栈 堆 方法区等   常见的JVM实现  Hotspot  Oracle官方,做实验用的jvm   Jrockit  BEA,最快jvm 被Oracle收购,合并于hotspot   TaoBaoVM  hotspot深度定制版   LiquidVM  直接针对硬件   azul zing  垃圾回收的业界标杆   J9 -IBM Microsoft VM   JDK JRE JVM  JDK = jre &#43; development kit JRE = jvm &#43; core lib JVM    Class File Format   二进制字节流...</p>
+  </section>
+  <footer class="entry-footer">July 1, 2021&nbsp;·&nbsp;4 分钟&nbsp;·&nbsp;Anhlaidh</footer>
+  <a class="entry-link" aria-label="post link to JVM-02" href="http://blog.oxide.ink/posts/jvm/jvm-2/"></a>
+</article>
+
+<article class="post-entry"> 
+<figure class="entry-cover"><img loading="lazy" src="http://blog.oxide.ink/%3Cimage%20path/url%3E" alt="">
+</figure>
+  <header class="entry-header">
+    <h2>MySQL</h2>
+  </header>
+  <section class="entry-content">
+    <p>介绍 数据是什么 如何存储 数据库引擎   innodb
+  myisam
+  memory
+  区别
+ innodb存储引擎数据跟索引文件放在一个文件中,myisam分为不同文件 innodb支持事务,myisam不支持事务 innodb支持表锁和行锁,myisam支持表锁 innodb有外键,myisam没有外键    索引的分类  主键索引  主键索引是一种唯一性索引,但它必须指定为primary key,每个表只能有一个主见   唯一索引  索引的列所有值都只能出现一次,即必须唯一,值可以为空   普通索引  基本的索引类型,值可以为空,没有唯一性限制   全文索引  全文索引类型为FULLTEXT,全文索引可以在varchar,char,text类型的列上创建   组合索引  多列值组成一个索引,专门用于组合搜索    回表 最左匹配原则 索引覆盖 索引下推 select * from t1 where age=? and gender=? 先根据age字段从存储引擎层将数据拉取回server层,然后在server层进行gender筛选,再从存储引擎层拉去数据的 时候,就会直接根据age,gender一起筛选 ##准备
+数据库   云数据库...</p>
+  </section>
+  <footer class="entry-footer">July 1, 2021&nbsp;·&nbsp;3 分钟&nbsp;·&nbsp;Anhlaidh</footer>
+  <a class="entry-link" aria-label="post link to MySQL" href="http://blog.oxide.ink/posts/db/mysql/"></a>
+</article>
+
+<article class="post-entry"> 
+<figure class="entry-cover"><img loading="lazy" src="http://blog.oxide.ink/%3Cimage%20path/url%3E" alt="">
+</figure>
+  <header class="entry-header">
+    <h2>Redis</h2>
+  </header>
+  <section class="entry-content">
+    <p>安装&amp;启动 server  redis_6379 redis-server /etc/redis/6379.conf --loadmoudle  client 入门  无数据类型 默认16个库(分为16个独立的区域) redis-cli -p xxxx -n [指定库] 方法与类型绑定  type 获取值的类型   二进制安全  字节流 字符流   redis-cli –raw 格式化 help keys * flushall flushdb  数据类型 help @String
+ String  encoding-str  set  生存时间 nx - 不存在的时候赋值 xx - 存在的时候才能更新   get mset - 多个存 mget - 多个取 append - 追加 getrange [start] [end]  正反向索引   setrange 修改 strlen -&gt; length msetnx 原子性多操作,一个失败就取消操作   encoding-int(省去之后计算的判断,本质还是字节流)  incr &#43;1 incrby [value] n decr [value] 减1 incrbyfloat [value] n 加浮点数   bitmap  bitset 设置字节中的bit offset是指bit bitpos 第一个1 offset是指字节 bitcount offset是指字节 bitop     List  Lpush Rpush Lpop Rpop lrange Lindex Rindex Lrem Rrem llen blpop  阻塞队列,单播队列 先进先出   Ltrim   Hash map(k-v)  hset hget hgetall hincrby hincrybyfloat keys sean*   set  sadd scard 交集并集差集  sinter(store) sunion sdiff   sismember smembers srandmember spop   sorted_set  zadd zrange # zrevrange # zrangebyscore zscore zrank zincrby 实时维护 交集并集差集  zunionstore weights 聚合指令   zremovebyscore zremovebyrank  滑动窗口      进阶 管道  echo -n &#34;set k1 99\n incr k1 \n get k1&#34; | nc xxxx 6379  建立tcp通信就能跟redis对话    发布/订阅 事务  transaction  multi 开启事务 exec 执行事务 discard 取消事务 watch  乐观锁 cas  A  watch k1 multi get k1 keys *   B  muti keys * set k1 xxxxx exec Aexec  数据被b修改过 不执行事务           缓存穿透  module redisbloom  bloom过滤器 布谷鸟过滤器 counting bloom   查找没有的东西   缓存和数据库的区别 config  内存  回收策略  noeviction 不丢,做数据库用 lfu 碰了多少次 lru 多久没碰 random ttl       有效期  ttl 按存活时间来  ttl &#43; key 存活时间 key的有效期,访问延长?...</p>
+  </section>
+  <footer class="entry-footer">July 1, 2021&nbsp;·&nbsp;2 分钟&nbsp;·&nbsp;Anhlaidh</footer>
+  <a class="entry-link" aria-label="post link to Redis" href="http://blog.oxide.ink/posts/db/redis/"></a>
+</article>
+
+<article class="post-entry"> 
+<figure class="entry-cover"><img loading="lazy" src="http://blog.oxide.ink/%3Cimage%20path/url%3E" alt="">
+</figure>
+  <header class="entry-header">
+    <h2>算法</h2>
+  </header>
+  <section class="entry-content">
+    <p>基础 工具   对数器
+ 一个想要测的方法a 实现复杂度不好但是容易实现的方法b 实现一个随机样本产生器 方法a和方法b相同的随机样本,看看得到的结果是否一样 如果一个随机样本使得比对结果不一致,打印样本进行人工干预,改对方法a和方法b 当样本数量很多时对比测试依然正确,可以确定方法a已经正确    比较器
+ 比较器的实质是重载比较运算符 比较器可以很好的应用在特殊标准的排序上 比较器可以很好的应用在根据特殊标准排序的结构上  PriorityQueue 小根堆转大根堆   写代码变得异常容易,还用于泛型编程    运算  异或运算,二进制无进位相加  性质:0^N=N,N^N=0 满足交换律和结合律(同一批数异或答案一样,无论顺序) ab互换  a = a^b b = a^b a = a^b   ab必须指向不同内存   提取最右侧1  N&amp;((~N)&#43;1) N与((N取反)&#43;1)      排序  桶排序  数据状况强相关 -计数排序  设数组,累加   基数排序  非负十进制 添0,入桶出桶 权重逆着     排序算法的稳定性  稳定性是指同样大小的样本再排序之后不会改变相对次序 对基础类型来说,稳定性毫无意义 对非基础类型来说,稳定性有重要意义 有些算法可以实现成稳定的,而有些排序算法无论如何都实现不成稳定的 有稳定性: -处理相等情况时的策略  冒泡排序 插入排序 归并排序 桶排序 十分稳定  基数排序 计数排序     无稳定性:  选择排序 快排  partition过程必破坏稳定性   堆排     序算法总结   不基于比较的排序,对样本数据有严格的要求,不易改写 基于比较的排序,只要规定好两个样本怎么比大小就可以直接复用 基于比较的排序,时间复杂度的极限是O(NlogN) 时间复杂度O(NlogN),额外空间复杂度低于O(N),且稳定的基于比较的排序是不存在的 为了绝对的速度选快排,为了省空间选堆排,为了稳定选归并 小规模用常数项小的排序,例如插入排序,大规模用调度优秀的排序,如快排   常见的坑  归并排序的额外空间复杂度可以变成O(1),“归并排序 内部缓存法”,但是将变得不再稳定 -&gt;直接堆排 “原地归并排序&#34;是垃圾帖,会让时间复杂度变成O(N^2) -&gt;插入排序 快排稳定性改进,“01 stable sort”,但是会对样本数据要求更多 -&gt;桶排序 在整数数组中,请把奇数放在数组左边,偶数放在数组右边,要求所有奇数之间,偶数之间的原始相对次序不变 时间复杂度做到O(N)....</p>
+  </section>
+  <footer class="entry-footer">July 1, 2021&nbsp;·&nbsp;4 分钟&nbsp;·&nbsp;Anhlaidh</footer>
+  <a class="entry-link" aria-label="post link to 算法" href="http://blog.oxide.ink/posts/%E7%AE%97%E6%B3%95/%E7%AE%97%E6%B3%95/"></a>
+</article>
+
+<article class="post-entry"> 
+<figure class="entry-cover"><img loading="lazy" src="http://blog.oxide.ink/%3Cimage%20path/url%3E" alt="">
+</figure>
+  <header class="entry-header">
     <h2>Hugo Extend</h2>
   </header>
   <section class="entry-content">
@@ -331,108 +435,6 @@
   </section>
   <footer class="entry-footer">June 8, 2021&nbsp;·&nbsp;31 分钟&nbsp;·&nbsp;Anhlaidh</footer>
   <a class="entry-link" aria-label="post link to Java笔记02" href="http://blog.oxide.ink/posts/java/java%E7%AC%94%E8%AE%B002/"></a>
-</article>
-
-<article class="post-entry"> 
-<figure class="entry-cover"><img loading="lazy" src="http://blog.oxide.ink/%3Cimage%20path/url%3E" alt="">
-</figure>
-  <header class="entry-header">
-    <h2>Java笔记03</h2>
-  </header>
-  <section class="entry-content">
-    <p>语法糖 Syntactic sugar jdk版本  编译级别 兼容级别  编译后高版本可以运行低版本字节码 反之不行    for/for-each  for  for(int i=0;i&lt;nums.leng;i&#43;&#43;) 可以删除元素   for-each  for(String i:hs) 5.0开始存在 语法简洁 不能删除元素 只能正向遍历 不能同时遍历两个集合    enum类型  java5 推出 enum有多少个值就有几个实例对象 可以添加属性/构造函数/方法 构造函数只能是package-private(default)或者private,内部调用 enum类型  所有enum类型都是Enum的子类,也继承了相应方法 ordinal()返回枚举所在的索引位置,从0开始 compareTo()比较两个枚举值的索引位置大小 toString()返回枚举值的字符串标识 valueOf()将字符串初始化为枚举对象 values() 返回所有的枚举值    1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46  package notes....</p>
-  </section>
-  <footer class="entry-footer">June 8, 2021&nbsp;·&nbsp;13 分钟&nbsp;·&nbsp;Anhlaidh</footer>
-  <a class="entry-link" aria-label="post link to Java笔记03" href="http://blog.oxide.ink/posts/java/java%E7%AC%94%E8%AE%B003/"></a>
-</article>
-
-<article class="post-entry"> 
-<figure class="entry-cover"><img loading="lazy" src="http://blog.oxide.ink/%3Cimage%20path/url%3E" alt="">
-</figure>
-  <header class="entry-header">
-    <h2>ElasticSearch</h2>
-  </header>
-  <section class="entry-content">
-    <p>概述  ES不等于搜索引擎 分布式的搜索,存储,数据分析引擎 优点:  面向开发者友好,屏蔽了Luncene的复杂特性,集群自动发现 自动维护数据在多个节点上的建立 帮我们做搜索请求的负载均衡 自动维护冗余副本,保证了部分节点宕机的情况下仍然不会有任何数据丢失 ES基于Lucene提供了很多高级功能:符合查询,聚合分析,基于地理位置 对于大公司,可以构建几百台服务器的大型分布式集群,处理PB级别数据 相遇传统数据库,提供了全文见检索,同义词处理,相关度排名,聚合分析以及海量数据的近实时(NTR)处理,这些传统数据库完全做不到   应用领域  搜索引擎 各大网站的用户行为日志(点击,浏览,收藏,评论) BI 数据分析 Github ELK (Elasticseach(数据存储) Logstash(日志采集) Kibana(可视化))    核心概念和原理  搜索  SQL 用了%不能用索引 -&gt;性能差  like % 搜索时间复杂度O(n)   不能分词   倒排索引  分词 生成相关度 * 排序 空间换时间   数据结构  document List 关键词在每个doc中出现的次数 TF term frequency 词频 IDF inverse doc frequency 关键词在当前doc出现的次数 每个doc的长度 越长相关度越低 包含这个关键词的所有doc的平均长度     核心概念  集群:每个集群至少包含两个节点 Node:集群中的节点 一个节点不代表是一台机器 Filed: 一个数据字段,与index和type可以定位一个doc Document:ES最小的数据单元 Json Type:逻辑上的数据分类 Index:一类相同或者相似的doc 分片shard  一个index包含多个shard,默认5p,默认每个p分配一个r,p的数量在创建索引的时候设置,如果想修改,需要重建索引 每个shard都是一个lucene实例,有完整的创建索引的处理请求能力 ES会自动在nodes尚未我们zuoshard均衡 一个doc不可能同时存在于多个PShard,但是可以同时多个Rshard p和对应的r不能同时存在于同一个节点,所以最低的可用配置是两台节点,互为主备   横向扩容 Parimary Shared Replica Shard     容错  两台机子p0,p1,p2 r0,r1,r2 p挂掉之后r顶上 容错机制  master选举  findMaster  脑裂 可能会产生多个master节点   判断自己是否为master 广播/findMaster   replica容错 重启故障机 数据恢复  只拷贝新增数据 不是全量拷贝        使用  健康值检查  CRUD  Query String search 类似于Url挂参数搜索 Query DSL Query and filter  1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52  GET /_cat/health?...</p>
-  </section>
-  <footer class="entry-footer">4 分钟&nbsp;·&nbsp;Anhlaidh</footer>
-  <a class="entry-link" aria-label="post link to ElasticSearch" href="http://blog.oxide.ink/posts/db/elasticsearch/"></a>
-</article>
-
-<article class="post-entry"> 
-<figure class="entry-cover"><img loading="lazy" src="http://blog.oxide.ink/%3Cimage%20path/url%3E" alt="">
-</figure>
-  <header class="entry-header">
-    <h2>Java并发编程</h2>
-  </header>
-  <section class="entry-content">
-    <p>基本概念 进程 线程 纤程(quasar)  Java线程,详见Java笔记  补充,可以有lambda表达式写法 三种启动线程方式  Thread Runnable Executors.newCachedThread(本质也是调用上两个)   sleep ,睡眠多少秒,其他线程可以运行 yield,加入等待队列,有可能立马还是自己 join , 调用另一个线程,保证顺序 interrupt , 抛出异常,处理catch   生命周期   新建：就是刚使用new方法，new出来的线程；
-  就绪：就是调用的线程的start()方法后，这时候线程处于等待CPU分配资源阶段，谁先抢的CPU资源，谁开始执行;
-  运行：当就绪的线程被调度并获得CPU资源时，便进入运行状态，run方法定义了线程的操作和功能;
-  阻塞：在运行状态的时候，可能因为某些原因导致运行状态的线程变成了阻塞状态，比如sleep()、wait()之后线程就处于了阻塞状态，这个时候需要其他机制将处于阻塞状态的线程唤醒，比如调用notify或者notifyAll()方法。唤醒的线程不会立刻执行run方法，它们要再次等待CPU分配资源进入运行状态;
-  销毁：如果线程正常执行完毕后或线程被提前强制性的终止或出现异常导致结束，那么线程就要被销毁，释放资源;
-    锁 常见锁 synchronized  可重入锁 synchronized(this) - &gt; synchronized void m() ,static synchronized锁的是T.class -保证原子性和可见性 底层实现  锁升级  偏向锁 标记线程 自旋锁 自旋十次 消耗cpu,用户态 重量级锁 - OS,os等待队列,不占cpu,但要跟os交互,内核态   执行时间长,线程数多用系统锁 执行时间段(加锁代码),线程数少,用自旋锁     不能阻止指令重排序 异常会释放锁  Lock volatile(可变的)   保证线程可见性...</p>
-  </section>
-  <footer class="entry-footer">3 分钟&nbsp;·&nbsp;Anhlaidh</footer>
-  <a class="entry-link" aria-label="post link to Java并发编程" href="http://blog.oxide.ink/posts/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"></a>
-</article>
-
-<article class="post-entry"> 
-<figure class="entry-cover"><img loading="lazy" src="http://blog.oxide.ink/%3Cimage%20path/url%3E" alt="">
-</figure>
-  <header class="entry-header">
-    <h2>JVM-01</h2>
-  </header>
-  <section class="entry-content">
-    <p>学术名词  TLAB (Thread Local Allocation Buffer)  垃圾回收器  分代  CMS &#43;ParNew Serial&#43;Serial Old Parallel Scavenge&#43;Parallel Old   分区  G1 ZGC Shenandoah    调优  什么是调优  根据需求进行JVM规划和调优 优化运行JVM环境(慢,卡顿) 解决JVM运行过程中出现的各种问题(OOM) out of memery   Java参数  标准参数 非标准参数 -X 调优 -XX    参数  -Xms200M 最小内存200M -Xmx200M 最大内存200M  设置成一样,防止内存抖动   -XX:&#43;PrintGC 打印出来 -XX:&#43;HeapDumpOnOutOfMemoryError  命令  java -Xms2M -Xmx2M -XX:&#43;PrintGC problem jps 查看正在运行的编号 jinfo 编号查看进程信息 jstack jmap jstatus *arthas  dashboard 仪表盘 jvm 类似jinfo thread 类似jstack  thread -b 找死锁 heapdump 导出stack jad 即时反编译 redifine 重新替换class      </p>
-  </section>
-  <footer class="entry-footer">1 分钟&nbsp;·&nbsp;Anhlaidh</footer>
-  <a class="entry-link" aria-label="post link to JVM-01" href="http://blog.oxide.ink/posts/jvm/jvm-1/"></a>
-</article>
-
-<article class="post-entry"> 
-<figure class="entry-cover"><img loading="lazy" src="http://blog.oxide.ink/%3Cimage%20path/url%3E" alt="">
-</figure>
-  <header class="entry-header">
-    <h2>JVM-2</h2>
-  </header>
-  <section class="entry-content">
-    <p>概念  jvm跟java无关  任何语言-&gt;class-&gt;JVM   jvm是一种规范 虚构出来的计算机  字节码指令集(汇编语言) 内存管理:栈 堆 方法区等   常见的JVM实现  Hotspot  Oracle官方,做实验用的jvm   Jrockit  BEA,最快jvm 被Oracle收购,合并于hotspot   TaoBaoVM  hotspot深度定制版   LiquidVM  直接针对硬件   azul zing  垃圾回收的业界标杆   J9 -IBM Microsoft VM   JDK JRE JVM  JDK = jre &#43; development kit JRE = jvm &#43; core lib JVM    Class File Format   二进制字节流...</p>
-  </section>
-  <footer class="entry-footer">4 分钟&nbsp;·&nbsp;Anhlaidh</footer>
-  <a class="entry-link" aria-label="post link to JVM-2" href="http://blog.oxide.ink/posts/jvm/jvm-2/"></a>
-</article>
-
-<article class="post-entry"> 
-<figure class="entry-cover"><img loading="lazy" src="http://blog.oxide.ink/%3Cimage%20path/url%3E" alt="">
-</figure>
-  <header class="entry-header">
-    <h2>MySQL</h2>
-  </header>
-  <section class="entry-content">
-    <p>介绍 数据是什么 如何存储 数据库引擎   innodb
-  myisam
-  memory
-  区别
- innodb存储引擎数据跟索引文件放在一个文件中,myisam分为不同文件 innodb支持事务,myisam不支持事务 innodb支持表锁和行锁,myisam支持表锁 innodb有外键,myisam没有外键    索引的分类  主键索引  主键索引是一种唯一性索引,但它必须指定为primary key,每个表只能有一个主见   唯一索引  索引的列所有值都只能出现一次,即必须唯一,值可以为空   普通索引  基本的索引类型,值可以为空,没有唯一性限制   全文索引  全文索引类型为FULLTEXT,全文索引可以在varchar,char,text类型的列上创建   组合索引  多列值组成一个索引,专门用于组合搜索    回表 最左匹配原则 索引覆盖 索引下推 select * from t1 where age=? and gender=? 先根据age字段从存储引擎层将数据拉取回server层,然后在server层进行gender筛选,再从存储引擎层拉去数据的 时候,就会直接根据age,gender一起筛选 ##准备
-数据库   云数据库...</p>
-  </section>
-  <footer class="entry-footer">3 分钟&nbsp;·&nbsp;Anhlaidh</footer>
-  <a class="entry-link" aria-label="post link to MySQL" href="http://blog.oxide.ink/posts/db/mysql/"></a>
-</article>
-
-<article class="post-entry"> 
-<figure class="entry-cover"><img loading="lazy" src="http://blog.oxide.ink/%3Cimage%20path/url%3E" alt="">
-</figure>
-  <header class="entry-header">
-    <h2>Redis</h2>
-  </header>
-  <section class="entry-content">
-    <p>安装&amp;启动 server  redis_6379 redis-server /etc/redis/6379.conf --loadmoudle  client 入门  无数据类型 默认16个库(分为16个独立的区域) redis-cli -p xxxx -n [指定库] 方法与类型绑定  type 获取值的类型   二进制安全  字节流 字符流   redis-cli –raw 格式化 help keys * flushall flushdb  数据类型 help @String
- String  encoding-str  set  生存时间 nx - 不存在的时候赋值 xx - 存在的时候才能更新   get mset - 多个存 mget - 多个取 append - 追加 getrange [start] [end]  正反向索引   setrange 修改 strlen -&gt; length msetnx 原子性多操作,一个失败就取消操作   encoding-int(省去之后计算的判断,本质还是字节流)  incr &#43;1 incrby [value] n decr [value] 减1 incrbyfloat [value] n 加浮点数   bitmap  bitset 设置字节中的bit offset是指bit bitpos 第一个1 offset是指字节 bitcount offset是指字节 bitop     List  Lpush Rpush Lpop Rpop lrange Lindex Rindex Lrem Rrem llen blpop  阻塞队列,单播队列 先进先出   Ltrim   Hash map(k-v)  hset hget hgetall hincrby hincrybyfloat keys sean*   set  sadd scard 交集并集差集  sinter(store) sunion sdiff   sismember smembers srandmember spop   sorted_set  zadd zrange # zrevrange # zrangebyscore zscore zrank zincrby 实时维护 交集并集差集  zunionstore weights 聚合指令   zremovebyscore zremovebyrank  滑动窗口      进阶 管道  echo -n &#34;set k1 99\n incr k1 \n get k1&#34; | nc xxxx 6379  建立tcp通信就能跟redis对话    发布/订阅 事务  transaction  multi 开启事务 exec 执行事务 discard 取消事务 watch  乐观锁 cas  A  watch k1 multi get k1 keys *   B  muti keys * set k1 xxxxx exec Aexec  数据被b修改过 不执行事务           缓存穿透  module redisbloom  bloom过滤器 布谷鸟过滤器 counting bloom   查找没有的东西   缓存和数据库的区别 config  内存  回收策略  noeviction 不丢,做数据库用 lfu 碰了多少次 lru 多久没碰 random ttl       有效期  ttl 按存活时间来  ttl &#43; key 存活时间 key的有效期,访问延长?...</p>
-  </section>
-  <footer class="entry-footer">2 分钟&nbsp;·&nbsp;Anhlaidh</footer>
-  <a class="entry-link" aria-label="post link to Redis" href="http://blog.oxide.ink/posts/db/redis/"></a>
 </article>
 <footer class="page-footer">
   <nav class="pagination">
