@@ -1,0 +1,1524 @@
+<!DOCTYPE html>
+<html lang="zh" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>算法 | Oxide</title>
+<meta name="keywords" content="算法" />
+<meta name="description" content="算法">
+<meta name="author" content="Anhlaidh">
+<link rel="canonical" href="http://blog.oxide.ink/posts/%E7%AE%97%E6%B3%95/%E7%AE%97%E6%B3%95/" />
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.a7912db0dae3e62d0906024f5a11712a8f2023b34fe824cbb253e4731ec0117f.css" integrity="sha256-p5EtsNrj5i0JBgJPWhFxKo8gI7NP6CTLslPkcx7AEX8=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="http://blog.oxide.ink/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://blog.oxide.ink/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://blog.oxide.ink/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://blog.oxide.ink/apple-touch-icon.png">
+<link rel="mask-icon" href="http://blog.oxide.ink/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<meta name="generator" content="Hugo 0.83.1" />
+<link rel="alternate" hreflang="zh" href="http://blog.oxide.ink/posts/%E7%AE%97%E6%B3%95/%E7%AE%97%E6%B3%95/" />
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+      renderMathInElement(document.body, {
+              delimiters: [
+                  {left: "$$", right: "$$", display: true},
+                  {left: "$", right: "$", display: false}
+              ]
+          });
+    });
+</script>
+
+
+
+<script src="https://cdn.bootcss.com/mermaid/8.0.0-rc.8/mermaid.min.js"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0-rc.1/katex.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0-rc.1/katex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0-rc.1/contrib/auto-render.min.js"></script>
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
+<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+<script>
+    window.onload = function (){
+        console.log("aaa");
+    }
+    const height = 300;
+    makeCollapsible();
+    function makeCollapsible() {
+        const divs = document.querySelectorAll('.highlight');
+        divs.forEach((e) => {
+            if (e.offsetHeight > height) {
+                e.style.maxHeight = height + 'px';
+                e.style.overflow = 'hidden';
+                const linkWrapper = document.createElement('div');
+                const link = document.createElement('a');
+                link.href = '';
+                link.textContent = 'more';
+                link.addEventListener('click', codeToggle);
+                linkWrapper.className = 'highlight-link';
+                linkWrapper.appendChild(link);
+                e.appendChild(linkWrapper);
+            }
+        });
+    }
+    function codeToggle(e) {
+        e.preventDefault();
+        const link = e.target;
+        const linkWrapper = link.parentElement.parentElement;
+        if (link.innerHTML === 'more') {
+            link.innerHTML = 'less';
+            linkWrapper.style.maxHeight = '';
+            linkWrapper.style.overflow = 'none';
+            link.parentElement.style.right = '0';
+        } else {
+            link.innerHTML = 'more';
+            linkWrapper.style.maxHeight = height + 'px';
+            linkWrapper.style.overflow = 'hidden';
+            link.parentElement.style.right = '0.5em';
+            scrollToTargetAdjusted(linkWrapper);
+        }
+    }
+    function scrollToTargetAdjusted(e) {
+        const header = document.querySelector('header');
+        const headerHeight = window.getComputedStyle(header, null).getPropertyValue('height');
+        const headerOffset = Number(headerHeight.replace('px', ''));
+        const bodyRect = document.body.getBoundingClientRect().top;
+        const elementRect = e.getBoundingClientRect().top;
+        const elementPosition = elementRect - bodyRect;
+        const offsetPosition = elementPosition - headerOffset;
+        window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+        });
+    }
+
+</script><meta property="og:title" content="算法" />
+<meta property="og:description" content="算法" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://blog.oxide.ink/posts/%E7%AE%97%E6%B3%95/%E7%AE%97%E6%B3%95/" />
+<meta property="og:image" content="http://blog.oxide.ink/%3Cimage%20path/url%3E" /><meta property="article:section" content="posts" />
+
+<meta property="og:site_name" content="Oxide" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="http://blog.oxide.ink/%3Cimage%20path/url%3E" />
+<meta name="twitter:title" content="算法"/>
+<meta name="twitter:description" content="算法"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "http://blog.oxide.ink/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "算法",
+      "item": "http://blog.oxide.ink/posts/%E7%AE%97%E6%B3%95/%E7%AE%97%E6%B3%95/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "算法",
+  "name": "算法",
+  "description": "算法",
+  "keywords": [
+    "算法"
+  ],
+  "articleBody": "基础 工具   对数器\n 一个想要测的方法a 实现复杂度不好但是容易实现的方法b 实现一个随机样本产生器 方法a和方法b相同的随机样本,看看得到的结果是否一样 如果一个随机样本使得比对结果不一致,打印样本进行人工干预,改对方法a和方法b 当样本数量很多时对比测试依然正确,可以确定方法a已经正确    比较器\n 比较器的实质是重载比较运算符 比较器可以很好的应用在特殊标准的排序上 比较器可以很好的应用在根据特殊标准排序的结构上  PriorityQueue 小根堆转大根堆   写代码变得异常容易,还用于泛型编程    运算  异或运算,二进制无进位相加  性质:0^N=N,N^N=0 满足交换律和结合律(同一批数异或答案一样,无论顺序) ab互换  a = a^b b = a^b a = a^b   ab必须指向不同内存   提取最右侧1  N\u0026((~N)+1) N与((N取反)+1)      排序  桶排序  数据状况强相关 -计数排序  设数组,累加   基数排序  非负十进制 添0,入桶出桶 权重逆着     排序算法的稳定性  稳定性是指同样大小的样本再排序之后不会改变相对次序 对基础类型来说,稳定性毫无意义 对非基础类型来说,稳定性有重要意义 有些算法可以实现成稳定的,而有些排序算法无论如何都实现不成稳定的 有稳定性: -处理相等情况时的策略  冒泡排序 插入排序 归并排序 桶排序 十分稳定  基数排序 计数排序     无稳定性:  选择排序 快排  partition过程必破坏稳定性   堆排     序算法总结   不基于比较的排序,对样本数据有严格的要求,不易改写 基于比较的排序,只要规定好两个样本怎么比大小就可以直接复用 基于比较的排序,时间复杂度的极限是O(NlogN) 时间复杂度O(NlogN),额外空间复杂度低于O(N),且稳定的基于比较的排序是不存在的 为了绝对的速度选快排,为了省空间选堆排,为了稳定选归并 小规模用常数项小的排序,例如插入排序,大规模用调度优秀的排序,如快排   常见的坑  归并排序的额外空间复杂度可以变成O(1),“归并排序 内部缓存法”,但是将变得不再稳定 -直接堆排 “原地归并排序\"是垃圾帖,会让时间复杂度变成O(N^2) -插入排序 快排稳定性改进,“01 stable sort”,但是会对样本数据要求更多 -桶排序 在整数数组中,请把奇数放在数组左边,偶数放在数组右边,要求所有奇数之间,偶数之间的原始相对次序不变 时间复杂度做到O(N).空间复杂度做到O(1)       排序方法 时间复杂度(平均) 时间复杂度(最坏) 时间复杂度(最好) 空间复杂度 稳定性 复杂性     直接插入排序 O(n2) O(n2) O(n) O(1) 稳定 简单   希尔排序 O(nlog2n) O(n2) O(n1.3) O(1) 不稳定 较复杂   直接选择排序 O(n2) O(n2) O(n2) O(1) 不稳定 简单   堆排序 O(nlog2n) O(nlog2n) O(nlog2n) O(1) 不稳定 较复杂   冒泡排序 O(n2) O(n2) O(n) O(1) 稳定 简单   快速排序 O(nlog2n) O(n2) O(nlog2n) O(nlog2n) 不稳定 较复杂   归并排序 O(nlog2n) O(nlog2n) O(nlog2n) O(n) 稳定 较复杂   基数排序 O(d(n+r)) O(d(n+r)) O(d(n+r)) O(n+r) 稳定 较复杂    数据结构 链表  反转链表,定义pre,next避免循环链表 笔试 ,不用太在乎空间复杂度,一切为了时间复杂度 面试,时间复杂度依然第一位,但一定要找到空间最省的方法  快慢指针 1.输入链表头节点,奇数长度返回中点,偶数长度返回上中点 2.输入链表头节点,奇数长度返回中点,偶数长度返回下中点 3.输入链表头节点,奇数长度返回中点前一个,偶数长度返回上中点前一个 4.输入链表头节点,奇数长度返回中点前一个,偶数长度返回下中点前一个\n 边界问题 笔试直接arraylist  判断回文链表  笔试 -压栈 快慢指针  找中点,后半部分压栈,直到栈空,与前面节点顺序比较   不用容器  中点指向空,后半链表反着指,从两端往中间遍历,直到null 最后要调回来     将单向链表按某值划分成左边小中间相等右边大的形式  把链表放入数组里,在数组上做partition(笔试用) 分成小中大三个部分,再把各个部分之间串起来(面试用) -6个变量,O(N)  代码     一种特殊的单链表类描述如下 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15  class Node { int value; Node next; Node rand; Node(int val){value = val;} } ``` - rand指针是单链表结构中新增的指针,rand可能指向链表中任意一个节点,也可能指向null 给定一个由Node节点类型组成的无环单链表的头节点head,请实现一个函数完成这个链表的复制,并返回新的链表的头节点 - 要求时间复杂度O(N) - 要求额外空间复杂度O(1) 1. Hash表Node,Node 顺着比对装一遍,再遍历,用cur和get(cur)来进行复制 2. 构造一个对应关系,例如1'在1后面2'在2后面,3'在3后面,找random找到老节点的random再next 最后再在next方向分离出来    给定两个可能有环也可能无环的单链表,头节点head1和head2,请实现一个函数,如果两个链表相交,请返回相交的第一个节点,如果不相交,返回null  要求:如果两个长度之和为N,时间复杂度请达到O(N),额外空间复杂度达到O(1)     判定有无环,快慢指针,第一次相遇后,慢指针不动,快指针回原点,然后一起一次移动1个,下次相遇则是入环点 a. 给一个链表,返回入环的节点 b. 两个无环链表相交,返回第一个相交的节点 c. 两个有环链表,找到第一个相交的节点  能不能不给单链表头节点,只给删除的节点,就能做到在链表里删掉  借尸还魂,复制下一个节点的值,子节点指向下下个 a. 只替代了内容 b. 很大局限 c. 抖机灵 d. 无法删除最后一个节点 不行,很大问题,以上问题,必须要给头节点    栈  要求可以立即返回最小值,且pop,push,getMin为O(1)  单调栈(同步弹出省时间费空间)  两个栈,一个栈为普通栈 另一个为单调栈,普通栈压入的时候单调栈压数,小则放,大则放之前最小的 可以同步大小   单调栈不同步压入(费时间省空间)  判断当前两个栈顶是否一样     用栈拼队列  两个栈  一个push,一个pop pop的时候倒过来再输出  pop栈为空的时候才可输出 push一次性倒完        队列  用队列拼栈  分两个队列,data,help  取的时候把data元素扔到help中,剩一个,输出 然后help为data,data为help      HashSet\u0026HashMap - 增删改查均为O(1)\r- Integer等大类型在HashMap,HashSet中是按值传递\r 有序表  TreeMap  firstKey() 最小的 lastKey() 最大的 离xx最近且小于的 floorKey(xx) 离xx最近且大于的 ceilingKey(xx) O(logN)   AVl 红黑树 跳表  堆  结构上:完全二叉树  0开始  i的左子节点 2*i+1 i的右子节点 2*i+2 父节点(i-1)/2   1开始  i的左孩子 2*i   小根堆  父节点是最小的   均不是则不是堆   堆排序  有关题目  几乎有序的数组排序,每个数去往的位置不超过k  生成小根堆 前k+1放入小根堆 当前最小的可能性       PriorityQueue  小根堆 poll方法,由小到大弹出    二叉树  先序 中序 后序  递归序  递归转迭代  压栈  头右左  弹 如果有左,压入左 如果有右,压入右   左右节点反着压 输出压栈      序列化反序列化  留null  题目  打印二叉树 后继节点  一棵二叉树,在中序遍历的序列中一个节点的下一个节点是谁,就是后继节点  找结构规律   凹凸折痕    二叉树的递归套路***  可以解决面试中绝大多数的二叉树问题,尤其树形dp 本质是利用递归遍历二叉树的便利性  规则  假设以X节点位头,可以向X左树和X右树要任何信息 在上一步的假设下,讨论以X为头节点的树,得到答案的可能性(最重要) 列出所有可能性后,确定到底需要向左树和右树要什么样的信息 把左树信息和右树信息求全集,就是任何一棵子树都需要返回的信息S 递归函数都返回S,每一棵子树都这么要求 写代码,在写代码中考虑如何把左树的信息和右树的信息整合出整棵树的信息  题目  给定一棵二叉树的头节点位head,返回这颗二叉树是不是平衡二叉树 给定一棵二叉树的头节点head,任何两个节点之家你都存在距离,返回整棵二叉树的最大距离 给定一棵二叉树的头节点head,返回这颗树中最大的二叉搜索子树的头节点数 派对的最大快乐值,多叉树  这个公司要开party,决定哪些员工来,哪些员工不来  如果某个员工来了,那么这个员工的所有直接下级都不能来 派对的整体快乐值是所有到场员工的快乐值的累加 你的目标是让派对的快乐值尽量大 给定一棵多叉树的头节点boss,返回派对的最大快乐值     给定一个二叉树头,判断是否是完全二叉树 给定一棵二叉树的头节点head,和另外两个节点a和b,返回a和b的最低公共祖先  hashset做 巨简单 //TODO 递归 巨难    前缀树  单个字符串中,字符从前到后的加到一棵多叉树上 字符放在路上,节点上又专属的数据项(常见的是pass和end值) 所有样本都这样添加,如果没有就新建,如果有路就复用 沿途节点的pass值增加1,每个字符串结束时的节点end增加1  可以完成前缀相关的查询\n图  BFS 宽度优先遍历 DFS 深度优先遍历 题目先变换成自己掌握的结构 拓扑排序 - 依赖问题 最小生成树  kruskal(用最小边找所有点)  由小到大union操作,直到包含所有元素 并查集   prime(用出发点找最小边循环解锁所有点)  点边点边解锁,点集,边集(由小到大,堆)   Dijkstra(给定出发点找到出发点通往其他所有点的最短路径)  给定出发点  创建一个对出发点负责的表 贪心 表中依次解锁新可达边/更新最短距离,锁死已检索的边   找到图中这个点到所有节点的最小值 TSP问题(商旅问题) 不同于Dijkstra  出发回自己城市,经过所有城市且只有一次,求最小代价   优化  建表使用小根堆(自己写,系统不能改写时重排序)  add, update,ignore          递归   Master公式\n T(N) = aT(N/b)+O(N^d)  子问题的规模是一致的(N/b) 子问题调用了a次 除了子问题调用之外,生下的复杂度为O(N^d) log(b)ad,O(N^log(b)a) log(b)a log(b)a==d,O(N^d(*logN))      归并排序 思想\n 左边数量多少个大,左边数量多少个小,右边数量多少个大,右边数量多少个小(用mergeSort改)  在一个数组中,一个数左边比他小的数的总和,叫数的小和,所有数的小和累加起来,叫数组小和,求数组小和  加返回值,修改merge()   降序对 - 右边有多少个数比它小      快排 思想\n 指定num,将数组分为小于等于num的和大于num的两个区  设定小于等于区从-1开始,然后指针遍历数组直到越界  如果当前数字大于num则不动,cur指针+1 如果当前数字小于等于num,cur指针的数于小于等于区指针的数互换,小于等于区指针++,cur指针++     给定num分成三块,小于区,等于区,大于区  分三个区,小于区,等于区,大于区,i跟大于区边界撞上的时候停止  arr[i]==num,i++ arr[i]arr[i]num,arr[i]与大于区做一个交换,大于区左扩,i不变     荷兰国旗问题  以arr[R]划分   快排1.0 O(n)  mid放中间,左右两侧递归 有序的时候效率最低   快排2.0 O(n)  荷兰国旗问题,分为小于区,等于区,大于区,一次可以搞定一批等于的mid 有序的时候效率最低   快排3.0随机快排 O(N logN)-概率累加期望 额外空间复杂度O(logN)  随机找一个值跟arr[R]交换,然后执行2.0      贪心算法  最自然智慧的算法 用一种局部最功利的标准,总是做出在当前来看最好的选择 难点在于证明局部最功利的标准可以得到全局最优解 对于贪心算法的学习主要以增加阅历为主  并查集  有若干个样本a,b,c,d类型设为V 在并查集中一开始认为每个样本都在单独的集合里 用户可以在任何时候调用如下两个方法:  boolean isSameSet(V x,V y)查询到样本x和样本y是否属于同一个集合\nvoid union(V x, V y)把x和y各自所在的样本合并成一个集合 isSameSet和union方法代价越低越好    过程  实现一个不依靠贪心策略的解法X,可以用最暴力的尝试 脑补出贪心策略A,策略B,策略C 解法X和对数器,用实验方式得知哪个最正确 不要去纠结证明  题目  给定一个由字符串组成的数组strs必须把所有的字符串拼接起来 返回所有可能的拼接结果中,字典序最小的结果  暴力,全排列,深度优先   长度一样看成一个26进制的数 ‘*‘表示居民点,可以 放灯,需要点亮,如果灯放在i位置,可 以让i-1,i和i+1三个位置被点亮,返回如果点亮str中所有需要点亮的位置,至少需要几盏灯   哈夫曼树  去平均 小根堆,取两个最小的,相加,放回去,且加入节点,从下向上形成哈夫曼树 代价为非叶子节点的和 最小花费  5.      暴力递归 暴力递归就是尝试\n 把问题转化为规模缩小了的同类问题的子问题 有明确的不需要继续进行递归的条件(base case) 有当得到了子问题的结果之后的决策过程 不记录每一个子问题的解   大量重复计算  题目  汉诺塔  移动步数 (2^N)-1   给一个栈,逆序这个栈,不能申请额外数据结构,只能使用递归函数 打印字符串字串/子序列  字串  全排列  去重–容器set  分支定界 -用set来登记,限制不必要的支路在源头杀死       子序列  去重–容器用set 子序列数量–动态规划      往左往右尝试模型  规定1和A对应,2和B对应…那么一个数字字符串\"111\"会转换成 “AAA” “AK” “KA”  问总共多少转化结果   博弈论 [从小往大分析]  ab从最左或最右拿牌,目标面值最高,求胜利者的面值  双方玩家都不会在对方单独改变策略的情况下让对方得到收益   人过河 鱼吃人 人该什么时候过河 鱼吃掉人之后鱼会变成食物 鱼绝顶聪明 会决策  从小到大分析  一只鱼 -必吃 两只鱼 - 不吃 归纳-奇数不过河,偶数过河     海盗分硬币  100个硬币,分给五个人,每个人提出方案,其他人投票是否赞成,赞成票超过一半方案则会被采纳,否则会被杀死 人性本恶  第一个人在自己不会死的情况下,提出对自己最优的方案,从小到大思考问题  E一个人 必然得到100个金币 [100] DE两个人 ,D必死 无论D如何决策,E投反对票,情况返回到1 [N,100] CDE三个人,因为C如果死掉,情况会变回2 所以无论C如何决策D都会同意 [100,0,0] BCDE四个人,如果B死了,情况会变回3,[100,0,0],所以给d,e分别1个 [98,0,1,1] ABCDE五个人,不会去拉拢B,[97,0,1,0,2]或者[97,0,1,2,0]   人性本善的模型 超过半数的模型 具体问题具体分析 都是从小往大分析     欧拉信封  一个村里,每个人必须寄出一封信,不能寄给自己,每个人只能收到一封信,有多少种寄信的方式  1个人 0种 2个人 1种 3个人 ABC ACB 两种 5个人 f(i) 输入多少人 返回可能性数量  假设B寄给E  E回寄给B 情况会变成三个人的欧拉信封问题 f(3) E不寄给B  E跟B会看成一个节点,从B入从E出 看成一个人 f(4)     这种假设下 f(5) = f(3)+f(4)   有四种可能性 所以f(5) = 4(f(3)+f(4))       N皇后  尝试方法 已经无法优化 但是常数项可以优化 N*N的棋盘上摆N个皇后 要求不同行不同列 不在一条斜线  1皇后 不成问题 2皇后 0种 3皇后 0种 4皇后 4*4 2种   一行一行试 一行放一个皇后 ,挨个试,不行就回溯   常数项优化 - 位运算 非常有效      动态规划  暴力递归中范围上的尝试模型  模型 拆子问题的组织方法   用缓存来减少重复计算 只要可变参数是有限几个,只要能试出由可变参数代表的暴力递归,就能改成动态规划 不是所有的暴力递归都能改成动态规划,所有的动态规划都来自于某一个暴力递归 撞不上重复可能 没必要改成暴力递归  四种尝试模型  从左往右的尝试模型 v  背包问题 数字转字符串 钱数问题 二维表  将一个数组分成均匀的两部分     范围上的尝试模型 v  卡片 凑string 最长重复子串  f(左右都变) f(左) f(右) 左右一致,2+f(左右) 动态规划 - dp  动态规划优化: dp[左]必大于dp[左下] 右同理,所以只需要比较左右,然后比较2+dp[左右]     马走日   多样本位置全对应的尝试模型 寻找业务限制的尝试模型  如何找到某个问题的动态规划方式  设计暴力递归:重要原则+4种常见尝试模型 重点! 分析有没有重复解:套路解决 用记忆化搜索 - 严格表结构实现动态规划 套路解决 看看能否继续优化 套路解决  面试中设计暴力递归过程的过程  每一个可变参数的类型,一定不要比int类型更复杂 原则1可以违反,让类型突破到一维线性结构,那必须是唯一可变参数 如果发现原则1违反,但不违反原则2,只需要做到记忆化搜索即可 可变参数个数,能少则少  题目  题目一  假设有拍成一行的N个位置,记录为1-N ,N一定大于或者等于2,开始时机器人在其中的M位置上(M一定是1~N中的一个)  如果机器人来到1位置,那么下一步只能往右来到2位置 如果机器人来到N位置,那么下一步只能往左来到N-1位置 如果机器人来到中间位置,那么下一步可以往左或者往右走 规定机器人必须走K步,最终能来到P位置(P也是1~N中的一个)的方法有很多种 给定四个参数 N(规模),M(初始位置),K(需要的步数),P(目标),返回方法数      预处理 前缀和求数组滚动窗口和 问题范围和问题答案是否有线性规律  双端队列  最xx优先级队列 滑动窗口问题   单调栈  ",
+  "wordCount" : "647",
+  "inLanguage": "zh",
+  "image":"http://blog.oxide.ink/%3Cimage%20path/url%3E","datePublished": "0001-01-01T00:00:00Z",
+  "dateModified": "0001-01-01T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "Anhlaidh"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://blog.oxide.ink/posts/%E7%AE%97%E6%B3%95/%E7%AE%97%E6%B3%95/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Oxide",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://blog.oxide.ink/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+<noscript>
+    <style type="text/css">
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: #1d1e20;
+                --entry: #2e2e33;
+                --primary: rgba(255, 255, 255, 0.84);
+                --secondary: rgba(255, 255, 255, 0.56);
+                --tertiary: rgba(255, 255, 255, 0.16);
+                --content: rgba(255, 255, 255, 0.74);
+                --hljs-bg: #2e2e33;
+                --code-bg: #37383e;
+                --border: #333;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://blog.oxide.ink/" accesskey="h" title="Oxide (Alt + H)">Oxide</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+                <ul class="lang-switch"><li>|</li>
+                    <li>
+                        <a href="http://blog.oxide.ink/en/" title="English"
+                            aria-label="English">English</a>
+                    </li>
+                </ul>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://blog.oxide.ink/archives" title="文章归档">
+                    <span>文章归档</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://blog.oxide.ink/categories/" title="分类">
+                    <span>分类</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://blog.oxide.ink/search/" title="搜索">
+                    <span>搜索</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://blog.oxide.ink/tags/" title="标签">
+                    <span>标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://blog.oxide.ink/links/" title="友情链接">
+                    <span>友情链接</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="http://blog.oxide.ink/">Home</a>&nbsp;»&nbsp;<a href="http://blog.oxide.ink/posts/">Posts</a></div>
+    <h1 class="post-title">
+      算法
+    </h1>
+    <div class="post-description">
+      算法
+    </div>
+    <div class="post-meta">4 分钟&nbsp;·&nbsp;Anhlaidh&nbsp;|&nbsp;<a href="https://github.com/%3cpath_to_repo%3e/content/posts/%e7%ae%97%e6%b3%95/%e7%ae%97%e6%b3%95/index.md" rel="noopener noreferrer" target="_blank">Suggest Changes</a>
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <div class="details">目录</div>
+        </summary>
+        <div class="inner"><ul>
+                <li>
+                    <a href="#%e5%9f%ba%e7%a1%80" aria-label="基础">基础</a><ul>
+                        
+                <li>
+                    <a href="#%e5%b7%a5%e5%85%b7" aria-label="工具">工具</a></li>
+                <li>
+                    <a href="#%e8%bf%90%e7%ae%97" aria-label="运算">运算</a></li>
+                <li>
+                    <a href="#%e6%8e%92%e5%ba%8f" aria-label="排序">排序</a></li></ul>
+                </li>
+                <li>
+                    <a href="#%e6%95%b0%e6%8d%ae%e7%bb%93%e6%9e%84" aria-label="数据结构">数据结构</a><ul>
+                        
+                <li>
+                    <a href="#%e9%93%be%e8%a1%a8" aria-label="链表">链表</a><ul>
+                        
+                <li>
+                    <a href="#%e5%bf%ab%e6%85%a2%e6%8c%87%e9%92%88" aria-label="快慢指针">快慢指针</a></li></ul>
+                </li>
+                <li>
+                    <a href="#%e6%a0%88" aria-label="栈">栈</a></li>
+                <li>
+                    <a href="#%e9%98%9f%e5%88%97" aria-label="队列">队列</a></li>
+                <li>
+                    <a href="#hashsethashmap" aria-label="HashSet&amp;amp;HashMap">HashSet&amp;HashMap</a></li>
+                <li>
+                    <a href="#%e6%9c%89%e5%ba%8f%e8%a1%a8" aria-label="有序表">有序表</a></li>
+                <li>
+                    <a href="#%e5%a0%86" aria-label="堆">堆</a></li>
+                <li>
+                    <a href="#%e4%ba%8c%e5%8f%89%e6%a0%91" aria-label="二叉树">二叉树</a><ul>
+                        
+                <li>
+                    <a href="#%e9%80%92%e5%bd%92%e5%ba%8f" aria-label="递归序">递归序</a></li>
+                <li>
+                    <a href="#%e5%ba%8f%e5%88%97%e5%8c%96%e5%8f%8d%e5%ba%8f%e5%88%97%e5%8c%96" aria-label="序列化反序列化">序列化反序列化</a></li>
+                <li>
+                    <a href="#%e9%a2%98%e7%9b%ae" aria-label="题目">题目</a></li>
+                <li>
+                    <a href="#%e4%ba%8c%e5%8f%89%e6%a0%91%e7%9a%84%e9%80%92%e5%bd%92%e5%a5%97%e8%b7%af" aria-label="二叉树的递归套路***">二叉树的递归套路***</a><ul>
+                        
+                <li>
+                    <a href="#%e8%a7%84%e5%88%99" aria-label="规则">规则</a></li>
+                <li>
+                    <a href="#%e9%a2%98%e7%9b%ae-1" aria-label="题目">题目</a></li></ul>
+                </li></ul>
+                </li>
+                <li>
+                    <a href="#%e5%89%8d%e7%bc%80%e6%a0%91" aria-label="前缀树">前缀树</a></li>
+                <li>
+                    <a href="#%e5%9b%be" aria-label="图">图</a></li></ul>
+                </li>
+                <li>
+                    <a href="#%e9%80%92%e5%bd%92" aria-label="递归">递归</a></li>
+                <li>
+                    <a href="#%e8%b4%aa%e5%bf%83%e7%ae%97%e6%b3%95" aria-label="贪心算法">贪心算法</a><ul>
+                        
+                <li>
+                    <a href="#%e5%b9%b6%e6%9f%a5%e9%9b%86" aria-label="并查集">并查集</a></li>
+                <li>
+                    <a href="#%e8%bf%87%e7%a8%8b" aria-label="过程">过程</a></li>
+                <li>
+                    <a href="#%e9%a2%98%e7%9b%ae-2" aria-label="题目">题目</a></li></ul>
+                </li>
+                <li>
+                    <a href="#%e6%9a%b4%e5%8a%9b%e9%80%92%e5%bd%92" aria-label="暴力递归">暴力递归</a><ul>
+                        
+                <li>
+                    <a href="#%e9%a2%98%e7%9b%ae-3" aria-label="题目">题目</a><ul>
+                        
+                <li>
+                    <a href="#%e5%be%80%e5%b7%a6%e5%be%80%e5%8f%b3%e5%b0%9d%e8%af%95%e6%a8%a1%e5%9e%8b" aria-label="往左往右尝试模型">往左往右尝试模型</a></li></ul>
+                </li></ul>
+                </li>
+                <li>
+                    <a href="#%e5%8a%a8%e6%80%81%e8%a7%84%e5%88%92" aria-label="动态规划">动态规划</a><ul>
+                        
+                <li>
+                    <a href="#%e5%9b%9b%e7%a7%8d%e5%b0%9d%e8%af%95%e6%a8%a1%e5%9e%8b" aria-label="四种尝试模型">四种尝试模型</a></li>
+                <li>
+                    <a href="#%e5%a6%82%e4%bd%95%e6%89%be%e5%88%b0%e6%9f%90%e4%b8%aa%e9%97%ae%e9%a2%98%e7%9a%84%e5%8a%a8%e6%80%81%e8%a7%84%e5%88%92%e6%96%b9%e5%bc%8f" aria-label="如何找到某个问题的动态规划方式">如何找到某个问题的动态规划方式</a></li>
+                <li>
+                    <a href="#%e9%9d%a2%e8%af%95%e4%b8%ad%e8%ae%be%e8%ae%a1%e6%9a%b4%e5%8a%9b%e9%80%92%e5%bd%92%e8%bf%87%e7%a8%8b%e7%9a%84%e8%bf%87%e7%a8%8b" aria-label="面试中设计暴力递归过程的过程">面试中设计暴力递归过程的过程</a></li>
+                <li>
+                    <a href="#%e9%a2%98%e7%9b%ae-4" aria-label="题目">题目</a></li></ul>
+                </li>
+                <li>
+                    <a href="#%e9%a2%84%e5%a4%84%e7%90%86" aria-label="预处理">预处理</a><ul>
+                        
+                <li>
+                    <a href="#%e5%89%8d%e7%bc%80%e5%92%8c%e6%b1%82%e6%95%b0%e7%bb%84%e6%bb%9a%e5%8a%a8%e7%aa%97%e5%8f%a3%e5%92%8c" aria-label="前缀和求数组滚动窗口和">前缀和求数组滚动窗口和</a></li></ul>
+                </li>
+                <li>
+                    <a href="#%e9%97%ae%e9%a2%98%e8%8c%83%e5%9b%b4%e5%92%8c%e9%97%ae%e9%a2%98%e7%ad%94%e6%a1%88%e6%98%af%e5%90%a6%e6%9c%89%e7%ba%bf%e6%80%a7%e8%a7%84%e5%be%8b" aria-label="问题范围和问题答案是否有线性规律">问题范围和问题答案是否有线性规律</a>
+                </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><h2 id="基础">基础<a hidden class="anchor" aria-hidden="true" href="#基础">#</a></h2>
+<h3 id="工具">工具<a hidden class="anchor" aria-hidden="true" href="#工具">#</a></h3>
+<ul>
+<li>
+<p>对数器</p>
+<ul>
+<li>一个想要测的方法a</li>
+<li>实现复杂度不好但是容易实现的方法b</li>
+<li>实现一个随机样本产生器</li>
+<li>方法a和方法b相同的随机样本,看看得到的结果是否一样</li>
+<li>如果一个随机样本使得比对结果不一致,打印样本进行人工干预,改对方法a和方法b</li>
+<li>当样本数量很多时对比测试依然正确,可以确定方法a已经正确</li>
+</ul>
+</li>
+<li>
+<p>比较器</p>
+<ol>
+<li>比较器的实质是重载比较运算符</li>
+<li>比较器可以很好的应用在特殊标准的排序上</li>
+<li>比较器可以很好的应用在根据特殊标准排序的结构上
+<ul>
+<li>PriorityQueue 小根堆转大根堆</li>
+</ul>
+</li>
+<li>写代码变得异常容易,还用于泛型编程</li>
+</ol>
+</li>
+</ul>
+<h3 id="运算">运算<a hidden class="anchor" aria-hidden="true" href="#运算">#</a></h3>
+<ul>
+<li>异或运算,二进制无进位相加
+<ul>
+<li>性质:0^N=N,N^N=0</li>
+<li>满足交换律和结合律(同一批数异或答案一样,无论顺序)</li>
+<li>ab互换
+<ol>
+<li>a = a^b</li>
+<li>b = a^b</li>
+<li>a = a^b</li>
+</ol>
+<ul>
+<li>ab必须指向不同内存</li>
+</ul>
+</li>
+<li>提取最右侧1
+<ul>
+<li>N&amp;((~N)+1)  N与((N取反)+1)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="排序">排序<a hidden class="anchor" aria-hidden="true" href="#排序">#</a></h3>
+<ul>
+<li>桶排序
+<ul>
+<li>数据状况强相关
+-计数排序
+<ul>
+<li>设数组,累加</li>
+</ul>
+</li>
+<li>基数排序
+<ul>
+<li>非负十进制</li>
+<li>添0,入桶出桶</li>
+<li>权重逆着</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>排序算法的稳定性
+<ul>
+<li>稳定性是指同样大小的样本再排序之后不会改变相对次序</li>
+<li>对基础类型来说,稳定性毫无意义</li>
+<li>对非基础类型来说,稳定性有重要意义</li>
+<li>有些算法可以实现成稳定的,而有些排序算法无论如何都实现不成稳定的</li>
+<li>有稳定性: -处理相等情况时的策略
+<ul>
+<li>冒泡排序</li>
+<li>插入排序</li>
+<li>归并排序</li>
+<li>桶排序 十分稳定
+<ul>
+<li>基数排序</li>
+<li>计数排序</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>无稳定性:
+<ul>
+<li>选择排序</li>
+<li>快排
+<ul>
+<li>partition过程必破坏稳定性</li>
+</ul>
+</li>
+<li>堆排</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>序算法总结</li>
+</ul>
+<ol>
+<li>不基于比较的排序,对样本数据有严格的要求,不易改写</li>
+<li>基于比较的排序,只要规定好两个样本怎么比大小就可以直接复用</li>
+<li>基于比较的排序,时间复杂度的极限是O(NlogN)</li>
+<li>时间复杂度O(NlogN),额外空间复杂度低于O(N),且稳定的基于比较的排序是不存在的</li>
+<li>为了绝对的速度选快排,为了省空间选堆排,为了稳定选归并</li>
+<li>小规模用常数项小的排序,例如插入排序,大规模用调度优秀的排序,如快排</li>
+</ol>
+<ul>
+<li>常见的坑
+<ol>
+<li>归并排序的额外空间复杂度可以变成O(1),&ldquo;归并排序 内部缓存法&rdquo;,但是将变得不再稳定 -&gt;直接堆排</li>
+<li>&ldquo;原地归并排序&quot;是垃圾帖,会让时间复杂度变成O(N^2) -&gt;插入排序</li>
+<li>快排稳定性改进,&ldquo;01 stable sort&rdquo;,但是会对样本数据要求更多 -&gt;桶排序</li>
+<li>在整数数组中,请把奇数放在数组左边,偶数放在数组右边,要求所有奇数之间,偶数之间的原始相对次序不变
+时间复杂度做到O(N).空间复杂度做到O(1)</li>
+</ol>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>排序方法</th>
+<th>时间复杂度(平均)</th>
+<th>时间复杂度(最坏)</th>
+<th>时间复杂度(最好)</th>
+<th>空间复杂度</th>
+<th>稳定性</th>
+<th>复杂性</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>直接插入排序</td>
+<td>O(n2)</td>
+<td>O(n2)</td>
+<td>O(n)</td>
+<td>O(1)</td>
+<td>稳定</td>
+<td>简单</td>
+</tr>
+<tr>
+<td>希尔排序</td>
+<td>O(nlog2n)</td>
+<td>O(n2)</td>
+<td>O(n1.3)</td>
+<td>O(1)</td>
+<td>不稳定</td>
+<td>较复杂</td>
+</tr>
+<tr>
+<td>直接选择排序</td>
+<td>O(n2)</td>
+<td>O(n2)</td>
+<td>O(n2)</td>
+<td>O(1)</td>
+<td>不稳定</td>
+<td>简单</td>
+</tr>
+<tr>
+<td>堆排序</td>
+<td>O(nlog2n)</td>
+<td>O(nlog2n)</td>
+<td>O(nlog2n)</td>
+<td>O(1)</td>
+<td>不稳定</td>
+<td>较复杂</td>
+</tr>
+<tr>
+<td>冒泡排序</td>
+<td>O(n2)</td>
+<td>O(n2)</td>
+<td>O(n)</td>
+<td>O(1)</td>
+<td>稳定</td>
+<td>简单</td>
+</tr>
+<tr>
+<td>快速排序</td>
+<td>O(nlog2n)</td>
+<td>O(n2)</td>
+<td>O(nlog2n)</td>
+<td>O(nlog2n)</td>
+<td>不稳定</td>
+<td>较复杂</td>
+</tr>
+<tr>
+<td>归并排序</td>
+<td>O(nlog2n)</td>
+<td>O(nlog2n)</td>
+<td>O(nlog2n)</td>
+<td>O(n)</td>
+<td>稳定</td>
+<td>较复杂</td>
+</tr>
+<tr>
+<td>基数排序</td>
+<td>O(d(n+r))</td>
+<td>O(d(n+r))</td>
+<td>O(d(n+r))</td>
+<td>O(n+r)</td>
+<td>稳定</td>
+<td>较复杂</td>
+</tr>
+</tbody>
+</table>
+<h2 id="数据结构">数据结构<a hidden class="anchor" aria-hidden="true" href="#数据结构">#</a></h2>
+<h3 id="链表">链表<a hidden class="anchor" aria-hidden="true" href="#链表">#</a></h3>
+<ul>
+<li>反转链表,定义pre,next避免循环链表</li>
+<li>笔试 ,不用太在乎空间复杂度,一切为了时间复杂度</li>
+<li>面试,时间复杂度依然第一位,但一定要找到空间最省的方法</li>
+</ul>
+<h4 id="快慢指针">快慢指针<a hidden class="anchor" aria-hidden="true" href="#快慢指针">#</a></h4>
+<p>1.输入链表头节点,奇数长度返回中点,偶数长度返回上中点
+2.输入链表头节点,奇数长度返回中点,偶数长度返回下中点
+3.输入链表头节点,奇数长度返回中点前一个,偶数长度返回上中点前一个
+4.输入链表头节点,奇数长度返回中点前一个,偶数长度返回下中点前一个</p>
+<ul>
+<li>边界问题</li>
+<li>笔试直接arraylist</li>
+</ul>
+<ol start="5">
+<li>判断回文链表
+<ul>
+<li>笔试 -&gt;压栈</li>
+<li>快慢指针
+<ul>
+<li>找中点,后半部分压栈,直到栈空,与前面节点顺序比较</li>
+</ul>
+</li>
+<li>不用容器
+<ul>
+<li>中点指向空,后半链表反着指,从两端往中间遍历,直到null</li>
+<li>最后要调回来</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>将单向链表按某值划分成左边小中间相等右边大的形式
+<ol>
+<li>把链表放入数组里,在数组上做partition(笔试用)</li>
+<li>分成小中大三个部分,再把各个部分之间串起来(面试用) -&gt;6个变量,O(N)
+<ul>
+<li><a href="https://github.com/Anhlaidh/Coding/blob/master/src/main/java/Interview/Left/Test/LinkedList/ListPartition.java">代码</a></li>
+</ul>
+</li>
+</ol>
+</li>
+<li>一种特殊的单链表类描述如下
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java">
+     <span class="kd">class</span> <span class="nc">Node</span> <span class="o">{</span>
+     <span class="kt">int</span> <span class="n">value</span><span class="o">;</span>
+     <span class="n">Node</span> <span class="n">next</span><span class="o">;</span>
+     <span class="n">Node</span> <span class="n">rand</span><span class="o">;</span>
+     <span class="n">Node</span><span class="o">(</span><span class="kt">int</span> <span class="n">val</span><span class="o">){</span><span class="n">value</span> <span class="o">=</span> <span class="n">val</span><span class="o">;}</span>
+     <span class="o">}</span>
+     <span class="err">```</span>
+ <span class="o">-</span> <span class="n">rand指针是单链表结构中新增的指针</span><span class="o">,</span><span class="n">rand可能指向链表中任意一个节点</span><span class="o">,</span><span class="n">也可能指向null</span>
+   <span class="n">给定一个由Node节点类型组成的无环单链表的头节点head</span><span class="o">,</span><span class="n">请实现一个函数完成这个链表的复制</span><span class="o">,</span><span class="n">并返回新的链表的头节点</span>
+     <span class="o">-</span> <span class="n">要求时间复杂度O</span><span class="o">(</span><span class="n">N</span><span class="o">)</span>
+     <span class="o">-</span> <span class="n">要求额外空间复杂度O</span><span class="o">(</span><span class="n">1</span><span class="o">)</span>
+ <span class="n">1</span><span class="o">.</span> <span class="n">Hash表</span><span class="o">&lt;</span><span class="n">Node</span><span class="o">,</span><span class="n">Node</span><span class="o">&gt;</span> <span class="n">顺着比对装一遍</span><span class="o">,</span><span class="n">再遍历</span><span class="o">,</span><span class="n">用cur和get</span><span class="o">(</span><span class="n">cur</span><span class="o">)</span><span class="n">来进行复制</span>
+ <span class="n">2</span><span class="o">.</span> <span class="n">构造一个对应关系</span><span class="o">,</span><span class="n">例如1</span><span class="err">&#39;</span><span class="n">在1后面2</span><span class="err">&#39;</span><span class="n">在2后面</span><span class="o">,</span><span class="n">3</span><span class="err">&#39;</span><span class="n">在3后面</span><span class="o">,</span><span class="n">找random找到老节点的random再next</span>
+    <span class="n">最后再在next方向分离出来</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>给定两个可能有环也可能无环的单链表,头节点head1和head2,请实现一个函数,如果两个链表相交,请返回相交的第一个节点,如果不相交,返回null
+<ul>
+<li>要求:如果两个长度之和为N,时间复杂度请达到O(N),额外空间复杂度达到O(1)</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>判定有无环,快慢指针,第一次相遇后,慢指针不动,快指针回原点,然后一起一次移动1个,下次相遇则是入环点
+a. 给一个链表,返回入环的节点
+b. 两个无环链表相交,返回第一个相交的节点
+c. 两个有环链表,找到第一个相交的节点</li>
+</ul>
+<ol start="9">
+<li>能不能不给单链表头节点,只给删除的节点,就能做到在链表里删掉
+<ul>
+<li>借尸还魂,复制下一个节点的值,子节点指向下下个
+a. 只替代了内容
+b. 很大局限
+c. 抖机灵
+d. 无法删除最后一个节点</li>
+<li>不行,很大问题,以上问题,必须要给头节点</li>
+</ul>
+</li>
+</ol>
+<h3 id="栈">栈<a hidden class="anchor" aria-hidden="true" href="#栈">#</a></h3>
+<ul>
+<li>要求可以立即返回最小值,且pop,push,getMin为O(1)
+<ul>
+<li>单调栈(同步弹出省时间费空间)
+<ul>
+<li>两个栈,一个栈为普通栈</li>
+<li>另一个为单调栈,普通栈压入的时候单调栈压数,小则放,大则放之前最小的</li>
+<li>可以同步大小</li>
+</ul>
+</li>
+<li>单调栈不同步压入(费时间省空间)
+<ul>
+<li>判断当前两个栈顶是否一样</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>用栈拼队列
+<ul>
+<li>两个栈
+<ul>
+<li>一个push,一个pop</li>
+<li>pop的时候倒过来再输出
+<ul>
+<li>pop栈为空的时候才可输出</li>
+<li>push一次性倒完</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="队列">队列<a hidden class="anchor" aria-hidden="true" href="#队列">#</a></h3>
+<ul>
+<li>用队列拼栈
+<ul>
+<li>分两个队列,data,help
+<ul>
+<li>取的时候把data元素扔到help中,剩一个,输出</li>
+<li>然后help为data,data为help</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="hashsethashmap">HashSet&amp;HashMap<a hidden class="anchor" aria-hidden="true" href="#hashsethashmap">#</a></h3>
+<pre><code>- 增删改查均为O(1)
+- Integer等大类型在HashMap,HashSet中是按值传递
+</code></pre>
+<h3 id="有序表">有序表<a hidden class="anchor" aria-hidden="true" href="#有序表">#</a></h3>
+<ul>
+<li>TreeMap
+<ul>
+<li>firstKey() 最小的</li>
+<li>lastKey() 最大的</li>
+<li>离xx最近且小于的 floorKey(xx)</li>
+<li>离xx最近且大于的 ceilingKey(xx)</li>
+<li>O(logN)</li>
+</ul>
+</li>
+<li>AVl</li>
+<li>红黑树</li>
+<li>跳表</li>
+</ul>
+<h3 id="堆">堆<a hidden class="anchor" aria-hidden="true" href="#堆">#</a></h3>
+<ul>
+<li>结构上:完全二叉树
+<ul>
+<li>0开始
+<ul>
+<li>i的左子节点 2*i+1</li>
+<li>i的右子节点 2*i+2</li>
+<li>父节点(i-1)/2</li>
+</ul>
+</li>
+<li>1开始
+<ul>
+<li>i的左孩子 2*i</li>
+</ul>
+</li>
+<li>小根堆
+<ul>
+<li>父节点是最小的</li>
+</ul>
+</li>
+<li>均不是则不是堆</li>
+</ul>
+</li>
+<li><a href="https://github.com/Anhlaidh/Coding/blob/master/src/main/java/Interview/Left/Heap/HeapSort.java">堆排序</a>
+<ul>
+<li>有关题目
+<ul>
+<li>几乎有序的数组排序,每个数去往的位置不超过k
+<ul>
+<li>生成小根堆</li>
+<li>前k+1放入小根堆</li>
+<li>当前最小的可能性</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>PriorityQueue
+<ul>
+<li>小根堆</li>
+<li>poll方法,由小到大弹出</li>
+</ul>
+</li>
+</ul>
+<h3 id="二叉树">二叉树<a hidden class="anchor" aria-hidden="true" href="#二叉树">#</a></h3>
+<ul>
+<li>先序</li>
+<li>中序</li>
+<li>后序</li>
+</ul>
+<h4 id="递归序">递归序<a hidden class="anchor" aria-hidden="true" href="#递归序">#</a></h4>
+<ul>
+<li>递归转迭代
+<ul>
+<li>压栈
+<ul>
+<li>头右左
+<ol>
+<li>弹</li>
+<li>如果有左,压入左</li>
+<li>如果有右,压入右</li>
+</ol>
+</li>
+<li>左右节点反着压</li>
+<li>输出压栈</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="序列化反序列化">序列化反序列化<a hidden class="anchor" aria-hidden="true" href="#序列化反序列化">#</a></h4>
+<ul>
+<li>留null</li>
+</ul>
+<h4 id="题目">题目<a hidden class="anchor" aria-hidden="true" href="#题目">#</a></h4>
+<ul>
+<li>打印二叉树</li>
+<li>后继节点
+<ul>
+<li>一棵二叉树,在中序遍历的序列中一个节点的下一个节点是谁,就是后继节点
+<ul>
+<li>找结构规律</li>
+</ul>
+</li>
+<li>凹凸折痕</li>
+</ul>
+</li>
+</ul>
+<h4 id="二叉树的递归套路">二叉树的递归套路***<a hidden class="anchor" aria-hidden="true" href="#二叉树的递归套路">#</a></h4>
+<ul>
+<li>可以解决面试中绝大多数的二叉树问题,尤其树形dp</li>
+<li>本质是利用递归遍历二叉树的便利性</li>
+</ul>
+<h5 id="规则">规则<a hidden class="anchor" aria-hidden="true" href="#规则">#</a></h5>
+<ol>
+<li>假设以X节点位头,可以向X左树和X右树要任何信息</li>
+<li>在上一步的假设下,讨论以X为头节点的树,得到答案的可能性(最重要)</li>
+<li>列出所有可能性后,确定到底需要向左树和右树要什么样的信息</li>
+<li>把左树信息和右树信息求全集,就是任何一棵子树都需要返回的信息S</li>
+<li>递归函数都返回S,每一棵子树都这么要求</li>
+<li>写代码,在写代码中考虑如何把左树的信息和右树的信息整合出整棵树的信息</li>
+</ol>
+<h5 id="题目-1">题目<a hidden class="anchor" aria-hidden="true" href="#题目-1">#</a></h5>
+<ol>
+<li><a href="https://github.com/Anhlaidh/Coding/blob/master/src/main/java/Interview/Left/Tree/isBalance.java">给定一棵二叉树的头节点位head,返回这颗二叉树是不是平衡二叉树</a></li>
+<li>给定一棵二叉树的头节点head,任何两个节点之家你都存在距离,返回整棵二叉树的最大距离</li>
+<li>给定一棵二叉树的头节点head,返回这颗树中最大的二叉搜索子树的头节点数</li>
+<li>派对的最大快乐值,多叉树
+<ul>
+<li>这个公司要开party,决定哪些员工来,哪些员工不来
+<ol>
+<li>如果某个员工来了,那么这个员工的所有直接下级都不能来</li>
+<li>派对的整体快乐值是所有到场员工的快乐值的累加</li>
+<li>你的目标是让派对的快乐值尽量大</li>
+<li>给定一棵多叉树的头节点boss,返回派对的最大快乐值</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><a href="https://github.com/Anhlaidh/Coding/blob/master/src/main/java/Interview/Left/Tree/isCBT.java">给定一个二叉树头,判断是否是完全二叉树</a></li>
+<li>给定一棵二叉树的头节点head,和另外两个节点a和b,返回a和b的最低公共祖先
+<ul>
+<li>hashset做 巨简单 <code>//TODO</code></li>
+<li><a href="https://github.com/Anhlaidh/Coding/blob/master/src/main/java/Interview/Left/Tree/Code07_lowestAncestor.java">递归</a> 巨难</li>
+</ul>
+</li>
+</ol>
+<h3 id="前缀树">前缀树<a hidden class="anchor" aria-hidden="true" href="#前缀树">#</a></h3>
+<ul>
+<li>单个字符串中,字符从前到后的加到一棵多叉树上</li>
+<li>字符放在路上,节点上又专属的数据项(常见的是pass和end值)</li>
+<li>所有样本都这样添加,如果没有就新建,如果有路就复用</li>
+<li>沿途节点的pass值增加1,每个字符串结束时的节点end增加1</li>
+</ul>
+<p>可以完成前缀相关的查询</p>
+<h3 id="图">图<a hidden class="anchor" aria-hidden="true" href="#图">#</a></h3>
+<ul>
+<li>BFS <a href="https://github.com/Anhlaidh/Coding/blob/master/src/main/java/Interview/Left/graph/BFS.java">宽度优先遍历</a></li>
+<li>DFS <a href="https://github.com/Anhlaidh/Coding/blob/master/src/main/java/Interview/Left/graph/DFS.java">深度优先遍历</a></li>
+<li><a href="(https://github.com/Anhlaidh/Coding/blob/master/src/main/java/Interview/Left/graph/Graph.java)">题目先变换成自己掌握的结构</a></li>
+<li>拓扑排序 -&gt; 依赖问题</li>
+<li>最小生成树
+<ul>
+<li>kruskal(用最小边找所有点)
+<ul>
+<li>由小到大union操作,直到包含所有元素</li>
+<li>并查集</li>
+</ul>
+</li>
+<li>prime(用出发点找最小边循环解锁所有点)
+<ul>
+<li>点边点边解锁,点集,边集(由小到大,堆)</li>
+</ul>
+</li>
+<li>Dijkstra(给定出发点找到出发点通往其他所有点的最短路径)
+<ul>
+<li>给定出发点
+<ul>
+<li>创建一个对出发点负责的表</li>
+<li>贪心</li>
+<li>表中依次解锁新可达边/更新最短距离,锁死已检索的边</li>
+</ul>
+</li>
+<li>找到图中这个点到所有节点的最小值</li>
+<li>TSP问题(商旅问题) 不同于Dijkstra
+<ul>
+<li>出发回自己城市,经过所有城市且只有一次,求最小代价</li>
+</ul>
+</li>
+<li>优化
+<ul>
+<li>建表使用小根堆(自己写,系统不能改写时重排序)
+<ul>
+<li>add, update,ignore</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="递归">递归<a hidden class="anchor" aria-hidden="true" href="#递归">#</a></h2>
+<ul>
+<li>
+<p>Master公式</p>
+<ul>
+<li>T(N) = aT(N/b)+O(N^d)
+<ul>
+<li>子问题的规模是一致的(N/b)</li>
+<li>子问题调用了a次</li>
+<li>除了子问题调用之外,生下的复杂度为O(N^d)</li>
+<li>log(b)a&gt;d,O(N^log(b)a)</li>
+<li>log(b)a&lt;d,O(N^d)</li>
+<li>log(b)a==d,O(N^d(*logN))</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>归并排序 思想</p>
+<ul>
+<li>左边数量多少个大,左边数量多少个小,右边数量多少个大,右边数量多少个小(用mergeSort改)
+<ul>
+<li>在一个数组中,一个数左边比他小的数的总和,叫数的小和,所有数的小和累加起来,叫数组小和,求数组小和
+<ul>
+<li>加返回值,修改merge()</li>
+</ul>
+</li>
+<li>降序对 - 右边有多少个数比它小</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>快排 思想</p>
+<ul>
+<li>指定num,将数组分为小于等于num的和大于num的两个区
+<ul>
+<li>设定小于等于区从-1开始,然后指针遍历数组直到越界
+<ul>
+<li>如果当前数字大于num则不动,cur指针+1</li>
+<li>如果当前数字小于等于num,cur指针的数于小于等于区指针的数互换,小于等于区指针++,cur指针++</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>给定num分成三块,小于区,等于区,大于区
+<ul>
+<li>分三个区,小于区,等于区,大于区,i跟大于区边界撞上的时候停止
+<ul>
+<li>arr[i]==num,i++</li>
+<li>arr[i]&lt;num,arr[i]与小于区的右一个交换(有等于的情况,与之前思路不同 ),小于区右扩,i++</li>
+<li>arr[i]&gt;num,arr[i]与大于区做一个交换,大于区左扩,i不变</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>荷兰国旗问题
+<ul>
+<li>以arr[R]划分</li>
+</ul>
+</li>
+<li>快排1.0 O(n)
+<ul>
+<li>mid放中间,左右两侧递归</li>
+<li>有序的时候效率最低</li>
+</ul>
+</li>
+<li>快排2.0 O(n)
+<ul>
+<li>荷兰国旗问题,分为小于区,等于区,大于区,一次可以搞定一批等于的mid</li>
+<li>有序的时候效率最低</li>
+</ul>
+</li>
+<li>快排3.0随机快排 O(N logN)-&gt;概率累加期望 额外空间复杂度O(logN)
+<ul>
+<li>随机找一个值跟arr[R]交换,然后执行2.0</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="贪心算法">贪心算法<a hidden class="anchor" aria-hidden="true" href="#贪心算法">#</a></h2>
+<ol>
+<li>最自然智慧的算法</li>
+<li>用一种局部最功利的标准,总是做出在当前来看最好的选择</li>
+<li>难点在于证明局部最功利的标准可以得到全局最优解</li>
+<li>对于贪心算法的学习主要以增加阅历为主</li>
+</ol>
+<h3 id="并查集">并查集<a hidden class="anchor" aria-hidden="true" href="#并查集">#</a></h3>
+<ol>
+<li>有若干个样本a,b,c,d类型设为V</li>
+<li>在并查集中一开始认为每个样本都在单独的集合里</li>
+<li>用户可以在任何时候调用如下两个方法:
+<ul>
+<li>boolean isSameSet(V x,V y)查询到样本x和样本y是否属于同一个集合<br>
+void union(V x, V y)把x和y各自所在的样本合并成一个集合</li>
+<li>isSameSet和union方法代价越低越好</li>
+</ul>
+</li>
+</ol>
+<h3 id="过程">过程<a hidden class="anchor" aria-hidden="true" href="#过程">#</a></h3>
+<ol>
+<li>实现一个不依靠贪心策略的解法X,可以用最暴力的尝试</li>
+<li>脑补出贪心策略A,策略B,策略C</li>
+<li>解法X和对数器,用实验方式得知哪个最正确</li>
+<li>不要去纠结证明</li>
+</ol>
+<h3 id="题目-2">题目<a hidden class="anchor" aria-hidden="true" href="#题目-2">#</a></h3>
+<ol>
+<li>给定一个由字符串组成的数组strs必须把所有的字符串拼接起来
+返回所有可能的拼接结果中,字典序最小的结果
+<ul>
+<li>暴力,全排列,深度优先</li>
+</ul>
+<ol>
+<li>长度一样看成一个26进制的数                                                                               &lsquo;*&lsquo;表示居民点,可以                                                                                                                         放灯,需要点亮,如果灯放在i位置,可       以让i-1,i和i+1三个位置被点亮,返回如果点亮str中所有需要点亮的位置,至少需要几盏灯</li>
+</ol>
+</li>
+<li>哈夫曼树
+<ul>
+<li>去平均</li>
+<li>小根堆,取两个最小的,相加,放回去,且加入节点,从下向上形成哈夫曼树</li>
+<li>代价为非叶子节点的和</li>
+<li><a href="https://github.com/Anhlaidh/Coding/blob/master/src/main/java/Interview/Left/greedy/lessMoney.java">最小花费</a>
+<ul>
+<li><img loading="lazy" src=".%e7%ae%97%e6%b3%95_images/lessGold.png" alt=""  />
+
+5.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="暴力递归">暴力递归<a hidden class="anchor" aria-hidden="true" href="#暴力递归">#</a></h2>
+<p>暴力递归就是尝试</p>
+<ol>
+<li>把问题转化为规模缩小了的同类问题的子问题</li>
+<li>有明确的不需要继续进行递归的条件(base case)</li>
+<li>有当得到了子问题的结果之后的决策过程</li>
+<li>不记录每一个子问题的解</li>
+</ol>
+<ul>
+<li>大量重复计算</li>
+</ul>
+<h3 id="题目-3">题目<a hidden class="anchor" aria-hidden="true" href="#题目-3">#</a></h3>
+<ol>
+<li><a href="https://github.com/Anhlaidh/Coding/blob/master/src/main/java/Interview/Left/ViolentRecursion/hanoi.java">汉诺塔</a>
+<ul>
+<li>移动步数 (2^N)-1</li>
+</ul>
+</li>
+<li><a href="https://github.com/Anhlaidh/Coding/blob/master/src/main/java/Interview/Left/ViolentRecursion/hreverseStack.java">给一个栈,逆序这个栈,不能申请额外数据结构,只能使用递归函数</a></li>
+<li>打印字符串字串/子序列
+<ul>
+<li>字串
+<ul>
+<li><a href="https://github.com/Anhlaidh/Coding/blob/master/src/main/java/Interview/Left/ViolentRecursion/AllPermutations.java">全排列</a>
+<ul>
+<li>去重&ndash;&gt;容器set
+<ul>
+<li>分支定界 -&gt;用set来登记,限制不必要的支路在源头杀死</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="https://github.com/Anhlaidh/Coding/blob/master/src/main/java/Interview/Left/ViolentRecursion/subSequence.java">子序列</a>
+<ul>
+<li>去重&ndash;&gt;容器用set</li>
+<li>子序列数量&ndash;&gt;动态规划</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h4 id="往左往右尝试模型">往左往右尝试模型<a hidden class="anchor" aria-hidden="true" href="#往左往右尝试模型">#</a></h4>
+<ul>
+<li>规定1和A对应,2和B对应&hellip;那么一个数字字符串&quot;111&quot;会转换成 &ldquo;AAA&rdquo; &ldquo;AK&rdquo; &ldquo;KA&rdquo;
+<ul>
+<li>问总共多少转化结果</li>
+</ul>
+</li>
+<li>博弈论 [从小往大分析]
+<ul>
+<li>ab从最左或最右拿牌,目标面值最高,求胜利者的面值
+<ul>
+<li>双方玩家都不会在对方单独改变策略的情况下让对方得到收益</li>
+</ul>
+</li>
+<li>人过河 鱼吃人 人该什么时候过河  鱼吃掉人之后鱼会变成食物  鱼绝顶聪明 会决策
+<ul>
+<li>从小到大分析
+<ul>
+<li>一只鱼  -&gt;必吃</li>
+<li>两只鱼  -&gt; 不吃</li>
+<li>归纳-&gt;奇数不过河,偶数过河</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>海盗分硬币
+<ul>
+<li>100个硬币,分给五个人,每个人提出方案,其他人投票是否赞成,赞成票超过一半方案则会被采纳,否则会被杀死 人性本恶
+<ul>
+<li>第一个人在自己不会死的情况下,提出对自己最优的方案,从小到大思考问题
+<ol>
+<li>E一个人 必然得到100个金币  [100]</li>
+<li>DE两个人 ,D必死 无论D如何决策,E投反对票,情况返回到1 [N,100]</li>
+<li>CDE三个人,因为C如果死掉,情况会变回2 所以无论C如何决策D都会同意 [100,0,0]</li>
+<li>BCDE四个人,如果B死了,情况会变回3,[100,0,0],所以给d,e分别1个  [98,0,1,1]</li>
+<li>ABCDE五个人,不会去拉拢B,[97,0,1,0,2]或者[97,0,1,2,0]</li>
+</ol>
+</li>
+<li>人性本善的模型  超过半数的模型  具体问题具体分析  都是从小往大分析</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>欧拉信封
+<ul>
+<li>一个村里,每个人必须寄出一封信,不能寄给自己,每个人只能收到一封信,有多少种寄信的方式
+<ol>
+<li>1个人 0种</li>
+<li>2个人 1种</li>
+<li>3个人 ABC ACB 两种</li>
+<li>5个人 f(i) 输入多少人 返回可能性数量
+<ul>
+<li>假设B寄给E
+<ol>
+<li>E回寄给B   情况会变成三个人的欧拉信封问题 f(3)</li>
+<li>E不寄给B
+<ul>
+<li>E跟B会看成一个节点,从B入从E出   看成一个人 f(4)</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>这种假设下 f(5) = f(3)+f(4)</li>
+</ul>
+</li>
+<li>有四种可能性  所以f(5) = 4(f(3)+f(4))</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><a href="https://github.com/algorithmzuo/algorithmbasic2020/blob/master/src/class11/Code09_NQueens.java">N皇后</a>
+<ul>
+<li>尝试方法 已经无法优化 但是常数项可以优化</li>
+<li>N*N的棋盘上摆N个皇后 要求不同行不同列 不在一条斜线
+<ol>
+<li>1皇后 不成问题</li>
+<li>2皇后 0种</li>
+<li>3皇后 0种</li>
+<li>4皇后 4*4 2种</li>
+</ol>
+<ul>
+<li>一行一行试 一行放一个皇后 ,挨个试,不行就回溯</li>
+</ul>
+</li>
+<li>常数项优化 -&gt; 位运算  非常有效</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="动态规划">动态规划<a hidden class="anchor" aria-hidden="true" href="#动态规划">#</a></h2>
+<ul>
+<li>暴力递归中范围上的尝试模型
+<ul>
+<li>模型  拆子问题的组织方法</li>
+</ul>
+</li>
+<li>用缓存来减少重复计算</li>
+<li>只要可变参数是有限几个,只要能试出由可变参数代表的暴力递归,就能改成动态规划</li>
+<li>不是所有的暴力递归都能改成动态规划,所有的动态规划都来自于某一个暴力递归</li>
+<li>撞不上重复可能  没必要改成暴力递归</li>
+</ul>
+<h3 id="四种尝试模型">四种尝试模型<a hidden class="anchor" aria-hidden="true" href="#四种尝试模型">#</a></h3>
+<ol>
+<li>从左往右的尝试模型 v
+<ul>
+<li>背包问题</li>
+<li>数字转字符串</li>
+<li><a href="https://github.com/Anhlaidh/Coding/blob/master/src/main/java/Interview/Left/Dynamic/CostMoney.java">钱数问题</a></li>
+<li>二维表
+<ul>
+<li><a href="https://github.com/Anhlaidh/Coding/blob/master/src/main/java/Interview/Left/Dynamic/SplitSumClosed.java">将一个数组分成均匀的两部分</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>范围上的尝试模型 v
+<ul>
+<li>卡片 凑string</li>
+<li>最长重复子串
+<ul>
+<li>f(左右都变) f(左) f(右) 左右一致,2+f(左右)</li>
+<li>动态规划 -&gt; dp
+<ul>
+<li>动态规划优化: dp[左]必大于dp[左下] 右同理,所以只需要比较左右,然后比较2+dp[左右]</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>马走日</li>
+</ul>
+</li>
+<li>多样本位置全对应的尝试模型</li>
+<li>寻找业务限制的尝试模型</li>
+</ol>
+<h3 id="如何找到某个问题的动态规划方式">如何找到某个问题的动态规划方式<a hidden class="anchor" aria-hidden="true" href="#如何找到某个问题的动态规划方式">#</a></h3>
+<ol>
+<li>设计暴力递归:重要原则+4种常见尝试模型 重点!</li>
+<li>分析有没有重复解:套路解决</li>
+<li>用记忆化搜索 -&gt; 严格表结构实现动态规划 套路解决</li>
+<li>看看能否继续优化 套路解决</li>
+</ol>
+<h3 id="面试中设计暴力递归过程的过程">面试中设计暴力递归过程的过程<a hidden class="anchor" aria-hidden="true" href="#面试中设计暴力递归过程的过程">#</a></h3>
+<ol>
+<li>每一个可变参数的类型,一定不要比int类型更复杂</li>
+<li>原则1可以违反,让类型突破到一维线性结构,那必须是唯一可变参数</li>
+<li>如果发现原则1违反,但不违反原则2,只需要做到记忆化搜索即可</li>
+<li>可变参数个数,能少则少</li>
+</ol>
+<h3 id="题目-4">题目<a hidden class="anchor" aria-hidden="true" href="#题目-4">#</a></h3>
+<ol>
+<li>题目一
+<ul>
+<li>假设有拍成一行的N个位置,记录为1-N ,N一定大于或者等于2,开始时机器人在其中的M位置上(M一定是1~N中的一个)
+<ul>
+<li>如果机器人来到1位置,那么下一步只能往右来到2位置</li>
+<li>如果机器人来到N位置,那么下一步只能往左来到N-1位置</li>
+<li>如果机器人来到中间位置,那么下一步可以往左或者往右走</li>
+<li>规定机器人必须走K步,最终能来到P位置(P也是1~N中的一个)的方法有很多种</li>
+<li>给定四个参数 N(规模),M(初始位置),K(需要的步数),P(目标),返回方法数</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="预处理">预处理<a hidden class="anchor" aria-hidden="true" href="#预处理">#</a></h2>
+<h3 id="前缀和求数组滚动窗口和">前缀和求数组滚动窗口和<a hidden class="anchor" aria-hidden="true" href="#前缀和求数组滚动窗口和">#</a></h3>
+<h2 id="问题范围和问题答案是否有线性规律">问题范围和问题答案是否有线性规律<a hidden class="anchor" aria-hidden="true" href="#问题范围和问题答案是否有线性规律">#</a></h2>
+<ul>
+<li>双端队列
+<ul>
+<li>最xx优先级队列</li>
+<li>滑动窗口问题</li>
+</ul>
+</li>
+<li>单调栈</li>
+</ul>
+
+</div>
+
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://blog.oxide.ink/tags/%E7%AE%97%E6%B3%95/">算法</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="http://blog.oxide.ink/posts/db/redis/">
+    <span class="title">« 上一页</span>
+    <br>
+    <span>Redis</span>
+  </a>
+</nav>
+
+
+  </footer><section class="comments">
+
+    <script src="https://utteranc.es/client.js"
+            repo="Anhlaidh/Oxside"
+            issue-term="pathname"
+            theme="preferred-color-scheme"
+            crossorigin="anonymous"
+            async>
+    </script>
+
+</section>
+
+</article>
+    </main>
+    <footer class="footer">
+    <span>&copy; 2021 <a href="http://blog.oxide.ink/">Oxide</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+    <br>
+    <span>Anhlaidh
+        <a href="#">chinahantianzhao@foxmail.com</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)">
+    <button class="top-link" id="top-link" type="button" accesskey="g">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+            <path d="M12 6H0l6-6z" />
+        </svg>
+    </button>
+</a><script src="https://cdn.bootcss.com/mermaid/8.0.0-rc.8/mermaid.min.js"></script>
+<script>
+    let parm1 = ''
+    if (document.cookie.indexOf("uv=false") == -1) {
+        parm1 = "&uv=true"
+        var t = new Date(new Date().getTime() + 1000 * 60 * 60 * 24);
+        document.cookie = "uv=false; expires=" + t.toGMTString() + ";path=/";
+    }
+    fetch("https://analytics.radishkin.workers.dev/api?url=" + window.btoa(location.href) + parm1).then(res => {
+        return res.json()
+    }).then(res => {
+        try {
+            document.getElementById("busuanzi_value_page_pv").innerText = res.pv
+        } catch(err) {}
+        try{
+            document.getElementById("busuanzi_container_site_uv").innerText = res.uv
+        }catch(err){}
+        try{
+            document.getElementById("busuanzi_container_site_pv").innerText = res.total
+        }catch(err){}
+    })
+
+</script>
+
+<script>
+    let menu = document.getElementById('menu')
+    menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+    menu.onscroll = function () {
+        localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+        var isHide = true;
+
+        const copybutton = document.createElement('button');
+        const showbutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        showbutton.classList.add('show-code-button');
+        copybutton.innerText = 'copy';
+        showbutton.innerText = 'show';
+
+        function copyingDone() {
+            copybutton.innerText = 'copied!';
+            setTimeout(() => {
+                copybutton.innerText = 'copy';
+            }, 2000);
+        }
+        showbutton.addEventListener('click',()=>{
+            if (isHide === true) {
+                
+                showbutton.parentElement.classList.add("code-showing")
+                showbutton.innerText = 'hide';
+                isHide = false;
+            } else {
+                
+                showbutton.parentElement.classList.remove("code-showing")
+                showbutton.innerText = 'show';
+                isHide = true;
+            }
+
+        })
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+            container.appendChild(showbutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(showbutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+            codeblock.parentNode.appendChild(showbutton);
+        }
+    });
+</script>
+</body>
+
+</html>

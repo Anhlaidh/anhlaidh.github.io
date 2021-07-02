@@ -315,32 +315,6 @@
 <figure class="entry-cover"><img loading="lazy" src="http://blog.oxide.ink/%3Cimage%20path/url%3E" alt="">
 </figure>
   <header class="entry-header">
-    <h2>Demo</h2>
-  </header>
-  <section class="entry-content">
-    <p>Hugo PlantUML </p>
-  </section>
-  <footer class="entry-footer">June 8, 2021&nbsp;·&nbsp;1 分钟&nbsp;·&nbsp;Me</footer>
-  <a class="entry-link" aria-label="post link to Demo" href="http://blog.oxide.ink/posts/demo/"></a>
-</article>
-
-<article class="post-entry"> 
-<figure class="entry-cover"><img loading="lazy" src="http://blog.oxide.ink/%3Cimage%20path/url%3E" alt="">
-</figure>
-  <header class="entry-header">
-    <h2>DBTemplate</h2>
-  </header>
-  <section class="entry-content">
-    <p></p>
-  </section>
-  <footer class="entry-footer">0 分钟&nbsp;·&nbsp;Anhlaidh</footer>
-  <a class="entry-link" aria-label="post link to DBTemplate" href="http://blog.oxide.ink/posts/db/dbtemplate/"></a>
-</article>
-
-<article class="post-entry"> 
-<figure class="entry-cover"><img loading="lazy" src="http://blog.oxide.ink/%3Cimage%20path/url%3E" alt="">
-</figure>
-  <header class="entry-header">
     <h2>ElasticSearch</h2>
   </header>
   <section class="entry-content">
@@ -348,6 +322,50 @@
   </section>
   <footer class="entry-footer">4 分钟&nbsp;·&nbsp;Anhlaidh</footer>
   <a class="entry-link" aria-label="post link to ElasticSearch" href="http://blog.oxide.ink/posts/db/elasticsearch/"></a>
+</article>
+
+<article class="post-entry"> 
+<figure class="entry-cover"><img loading="lazy" src="http://blog.oxide.ink/%3Cimage%20path/url%3E" alt="">
+</figure>
+  <header class="entry-header">
+    <h2>Java并发编程</h2>
+  </header>
+  <section class="entry-content">
+    <p>基本概念 进程 线程 纤程(quasar)  Java线程,详见Java笔记  补充,可以有lambda表达式写法 三种启动线程方式  Thread Runnable Executors.newCachedThread(本质也是调用上两个)   sleep ,睡眠多少秒,其他线程可以运行 yield,加入等待队列,有可能立马还是自己 join , 调用另一个线程,保证顺序 interrupt , 抛出异常,处理catch   生命周期   新建：就是刚使用new方法，new出来的线程；
+  就绪：就是调用的线程的start()方法后，这时候线程处于等待CPU分配资源阶段，谁先抢的CPU资源，谁开始执行;
+  运行：当就绪的线程被调度并获得CPU资源时，便进入运行状态，run方法定义了线程的操作和功能;
+  阻塞：在运行状态的时候，可能因为某些原因导致运行状态的线程变成了阻塞状态，比如sleep()、wait()之后线程就处于了阻塞状态，这个时候需要其他机制将处于阻塞状态的线程唤醒，比如调用notify或者notifyAll()方法。唤醒的线程不会立刻执行run方法，它们要再次等待CPU分配资源进入运行状态;
+  销毁：如果线程正常执行完毕后或线程被提前强制性的终止或出现异常导致结束，那么线程就要被销毁，释放资源;
+    锁 常见锁 synchronized  可重入锁 synchronized(this) - &gt; synchronized void m() ,static synchronized锁的是T.class -保证原子性和可见性 底层实现  锁升级  偏向锁 标记线程 自旋锁 自旋十次 消耗cpu,用户态 重量级锁 - OS,os等待队列,不占cpu,但要跟os交互,内核态   执行时间长,线程数多用系统锁 执行时间段(加锁代码),线程数少,用自旋锁     不能阻止指令重排序 异常会释放锁  Lock volatile(可变的)   保证线程可见性...</p>
+  </section>
+  <footer class="entry-footer">3 分钟&nbsp;·&nbsp;Anhlaidh</footer>
+  <a class="entry-link" aria-label="post link to Java并发编程" href="http://blog.oxide.ink/posts/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"></a>
+</article>
+
+<article class="post-entry"> 
+<figure class="entry-cover"><img loading="lazy" src="http://blog.oxide.ink/%3Cimage%20path/url%3E" alt="">
+</figure>
+  <header class="entry-header">
+    <h2>JVM-01</h2>
+  </header>
+  <section class="entry-content">
+    <p>学术名词  TLAB (Thread Local Allocation Buffer)  垃圾回收器  分代  CMS &#43;ParNew Serial&#43;Serial Old Parallel Scavenge&#43;Parallel Old   分区  G1 ZGC Shenandoah    调优  什么是调优  根据需求进行JVM规划和调优 优化运行JVM环境(慢,卡顿) 解决JVM运行过程中出现的各种问题(OOM) out of memery   Java参数  标准参数 非标准参数 -X 调优 -XX    参数  -Xms200M 最小内存200M -Xmx200M 最大内存200M  设置成一样,防止内存抖动   -XX:&#43;PrintGC 打印出来 -XX:&#43;HeapDumpOnOutOfMemoryError  命令  java -Xms2M -Xmx2M -XX:&#43;PrintGC problem jps 查看正在运行的编号 jinfo 编号查看进程信息 jstack jmap jstatus *arthas  dashboard 仪表盘 jvm 类似jinfo thread 类似jstack  thread -b 找死锁 heapdump 导出stack jad 即时反编译 redifine 重新替换class      </p>
+  </section>
+  <footer class="entry-footer">1 分钟&nbsp;·&nbsp;Anhlaidh</footer>
+  <a class="entry-link" aria-label="post link to JVM-01" href="http://blog.oxide.ink/posts/jvm/jvm-1/"></a>
+</article>
+
+<article class="post-entry"> 
+<figure class="entry-cover"><img loading="lazy" src="http://blog.oxide.ink/%3Cimage%20path/url%3E" alt="">
+</figure>
+  <header class="entry-header">
+    <h2>JVM-2</h2>
+  </header>
+  <section class="entry-content">
+    <p>概念  jvm跟java无关  任何语言-&gt;class-&gt;JVM   jvm是一种规范 虚构出来的计算机  字节码指令集(汇编语言) 内存管理:栈 堆 方法区等   常见的JVM实现  Hotspot  Oracle官方,做实验用的jvm   Jrockit  BEA,最快jvm 被Oracle收购,合并于hotspot   TaoBaoVM  hotspot深度定制版   LiquidVM  直接针对硬件   azul zing  垃圾回收的业界标杆   J9 -IBM Microsoft VM   JDK JRE JVM  JDK = jre &#43; development kit JRE = jvm &#43; core lib JVM    Class File Format   二进制字节流...</p>
+  </section>
+  <footer class="entry-footer">4 分钟&nbsp;·&nbsp;Anhlaidh</footer>
+  <a class="entry-link" aria-label="post link to JVM-2" href="http://blog.oxide.ink/posts/jvm/jvm-2/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -381,6 +399,11 @@
   <footer class="entry-footer">2 分钟&nbsp;·&nbsp;Anhlaidh</footer>
   <a class="entry-link" aria-label="post link to Redis" href="http://blog.oxide.ink/posts/db/redis/"></a>
 </article>
+<footer class="page-footer">
+  <nav class="pagination">
+    <a class="next" href="http://blog.oxide.ink/posts/page/2/">下一页 »</a>
+  </nav>
+</footer>
     </main>
     <footer class="footer">
     <span>&copy; 2021 <a href="http://blog.oxide.ink/">Oxide</a></span>

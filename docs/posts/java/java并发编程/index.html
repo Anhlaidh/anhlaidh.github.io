@@ -1,0 +1,1483 @@
+<!DOCTYPE html>
+<html lang="zh" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Java并发编程 | Oxide</title>
+<meta name="keywords" content="Java" />
+<meta name="description" content="Java并发编程">
+<meta name="author" content="Anhlaidh">
+<link rel="canonical" href="http://blog.oxide.ink/posts/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" />
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.a7912db0dae3e62d0906024f5a11712a8f2023b34fe824cbb253e4731ec0117f.css" integrity="sha256-p5EtsNrj5i0JBgJPWhFxKo8gI7NP6CTLslPkcx7AEX8=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="http://blog.oxide.ink/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://blog.oxide.ink/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://blog.oxide.ink/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://blog.oxide.ink/apple-touch-icon.png">
+<link rel="mask-icon" href="http://blog.oxide.ink/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<meta name="generator" content="Hugo 0.83.1" />
+<link rel="alternate" hreflang="zh" href="http://blog.oxide.ink/posts/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" />
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+      renderMathInElement(document.body, {
+              delimiters: [
+                  {left: "$$", right: "$$", display: true},
+                  {left: "$", right: "$", display: false}
+              ]
+          });
+    });
+</script>
+
+
+
+<script src="https://cdn.bootcss.com/mermaid/8.0.0-rc.8/mermaid.min.js"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0-rc.1/katex.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0-rc.1/katex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0-rc.1/contrib/auto-render.min.js"></script>
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
+<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+<script>
+    window.onload = function (){
+        console.log("aaa");
+    }
+    const height = 300;
+    makeCollapsible();
+    function makeCollapsible() {
+        const divs = document.querySelectorAll('.highlight');
+        divs.forEach((e) => {
+            if (e.offsetHeight > height) {
+                e.style.maxHeight = height + 'px';
+                e.style.overflow = 'hidden';
+                const linkWrapper = document.createElement('div');
+                const link = document.createElement('a');
+                link.href = '';
+                link.textContent = 'more';
+                link.addEventListener('click', codeToggle);
+                linkWrapper.className = 'highlight-link';
+                linkWrapper.appendChild(link);
+                e.appendChild(linkWrapper);
+            }
+        });
+    }
+    function codeToggle(e) {
+        e.preventDefault();
+        const link = e.target;
+        const linkWrapper = link.parentElement.parentElement;
+        if (link.innerHTML === 'more') {
+            link.innerHTML = 'less';
+            linkWrapper.style.maxHeight = '';
+            linkWrapper.style.overflow = 'none';
+            link.parentElement.style.right = '0';
+        } else {
+            link.innerHTML = 'more';
+            linkWrapper.style.maxHeight = height + 'px';
+            linkWrapper.style.overflow = 'hidden';
+            link.parentElement.style.right = '0.5em';
+            scrollToTargetAdjusted(linkWrapper);
+        }
+    }
+    function scrollToTargetAdjusted(e) {
+        const header = document.querySelector('header');
+        const headerHeight = window.getComputedStyle(header, null).getPropertyValue('height');
+        const headerOffset = Number(headerHeight.replace('px', ''));
+        const bodyRect = document.body.getBoundingClientRect().top;
+        const elementRect = e.getBoundingClientRect().top;
+        const elementPosition = elementRect - bodyRect;
+        const offsetPosition = elementPosition - headerOffset;
+        window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+        });
+    }
+
+</script><meta property="og:title" content="Java并发编程" />
+<meta property="og:description" content="Java并发编程" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://blog.oxide.ink/posts/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" />
+<meta property="og:image" content="http://blog.oxide.ink/%3Cimage%20path/url%3E" /><meta property="article:section" content="posts" />
+
+<meta property="og:site_name" content="Oxide" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="http://blog.oxide.ink/%3Cimage%20path/url%3E" />
+<meta name="twitter:title" content="Java并发编程"/>
+<meta name="twitter:description" content="Java并发编程"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "http://blog.oxide.ink/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Java并发编程",
+      "item": "http://blog.oxide.ink/posts/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Java并发编程",
+  "name": "Java并发编程",
+  "description": "Java并发编程",
+  "keywords": [
+    "Java"
+  ],
+  "articleBody": "基本概念 进程 线程 纤程(quasar)  Java线程,详见Java笔记  补充,可以有lambda表达式写法 三种启动线程方式  Thread Runnable Executors.newCachedThread(本质也是调用上两个)   sleep ,睡眠多少秒,其他线程可以运行 yield,加入等待队列,有可能立马还是自己 join , 调用另一个线程,保证顺序 interrupt , 抛出异常,处理catch   生命周期   新建：就是刚使用new方法，new出来的线程；\n  就绪：就是调用的线程的start()方法后，这时候线程处于等待CPU分配资源阶段，谁先抢的CPU资源，谁开始执行;\n  运行：当就绪的线程被调度并获得CPU资源时，便进入运行状态，run方法定义了线程的操作和功能;\n  阻塞：在运行状态的时候，可能因为某些原因导致运行状态的线程变成了阻塞状态，比如sleep()、wait()之后线程就处于了阻塞状态，这个时候需要其他机制将处于阻塞状态的线程唤醒，比如调用notify或者notifyAll()方法。唤醒的线程不会立刻执行run方法，它们要再次等待CPU分配资源进入运行状态;\n  销毁：如果线程正常执行完毕后或线程被提前强制性的终止或出现异常导致结束，那么线程就要被销毁，释放资源;\n    锁 常见锁 synchronized  可重入锁 synchronized(this) -  synchronized void m() ,static synchronized锁的是T.class -保证原子性和可见性 底层实现  锁升级  偏向锁 标记线程 自旋锁 自旋十次 消耗cpu,用户态 重量级锁 - OS,os等待队列,不占cpu,但要跟os交互,内核态   执行时间长,线程数多用系统锁 执行时间段(加锁代码),线程数少,用自旋锁     不能阻止指令重排序 异常会释放锁  Lock volatile(可变的)   保证线程可见性\n MESI 缓存一致性协议    禁止指令重排序\n DCL单例 Double Check Lock Mgr06.java loadfence原语指令 storefence原语指令    不能保证原子性\n  dirty read\n 锁写不锁读    优化,粗化,细化\n  AtomicXXX  CAS(无锁优化 自选) compare and set/swap (乐观锁)  cas(V,Expected,NewValue)  if V==E\nV=New otherwise try again or fail\n  cpu原语支持 ABA问题  基础类型无所谓 引用类型,女朋友符合,中间经历了别的…   不管 加版本号,检查版本号   Unsafe类=c c++指针  直接操作内存  allocateMemory putXXX freeMemory pageSize   直接生成实例  allocateInstance   直接操作类或者实例变量  objectFiledOffset getInt getObject   CAS相关操作  weakCompareAndSetObject int Long        LongAdder  分段锁(CAS操作) 分段式锁  各种JUC同步锁 synchronized  锁进程调用锁进程 notify() 不释放锁  ReentrantLock lock 新型锁  cas 手动上锁解锁 try lock  lock.tryLock(5,TimeUnit.SECONDS)   lock.lockInterruptibly()  通过打断来加锁   公平锁  new ReentrantLock(true) 尽可能公平 进入等待队列之前会检查队列里有没有人   可以有各种等待队列  CountDownLatch 新型锁  cas 计数,到了,放开wait await() CountDown()  CyclicBarrier  人满发车 限流  Phaser  过滤 重写onAdvance(int phase,int registeredParties) 栅栏推到自动调用  phase为阶段数 registerParties 推到栅栏需要的数量   phaser.arriveAndAwaitAdvance() 到达并执行 phaser.arriveAndDeregister() 到达不执行  ReadWriteLock -StampedLock  共享锁 排他锁 ReadLock read = new ReentrantLock().ReadLock() WriteLock Write = new ReentrantLock().WriteLock()  Semaphore  允许几个线程同时进行 类似红绿灯 new Semaphore(1) s.acquire(),获得锁,将数量减一,归零则停住 s.release() 归还 限流,最多允许多少线程在运行  Exchanger 交换器 LockSupport  LockSupport.park(),当前线程阻塞 (与锁定线程同时执行)LockSupport.unpark(线程对象名) 相当于在wait()前面调用notify()  面试题  实现一个容器,提供两个方法,add,size,写两个线程,线程1添加10个元素到容器钟,线程2实现监控元素的个数,当个数等于5个时,线程2给出提示并结束  加volatile ,有问题,得加延时,不然观察不到(即使使用Collection.SynchronizedList(new ArrayList()))  解释:在sleep的时候,有观察的动作   wait notify  synchronized: 观察线程wait,notify添加线程,添加线程到了5,notify观察线程,观察线程运行完,notify添加线程   countDownLatch: CountDownLatch(1),到了5,countDown 但是添加线程太快,可能顺序不符合预想  解决,两个门闩   LockSupport  类似countDownLatch的思路     写一个固定容量的同步容器,拥有put和get方法,以及getCount方法,能够支持2个生产者线程和10个消费者线程的的阻塞调用  synchronized,必须会写  wait() notifyALl() 为什么用while而不是if  另一个线程++之后,自己线程没有再检查一遍,所以需要while     ReentrantLock 的Condition  多个等待队列      AQS源码分析(以上除了LockSupport全是基于AQS) 源码阅读原则  跑不起来不读 解决问题就好-目的性 一条线索到底 无关细节略过 一般不读静态 一般动态读法  AQS 核心  CAS操作替代了锁整条链表的操作 CAS操作来操作tail  VarHandle  指向某个变量的引用 原子性操作 native cpu原语 比反射效率高很多 直接操纵二进制码  ThreadLocal  set  Thread.currentThread.map(ThreadLocal,person)   用途  声明式事务,保证同一个Connection    java引用  强软弱虚 强引用  普通一般用的引用 特点  不会被垃圾回收器回收     软引用  内存不够用的时候会回收 做缓存用 full gc   弱引用  只要遭遇到gc就会回收 作用  一般用在容器里 另一个强引用指向引用对象,引用断掉之后可以立即回收这个对象   ThreadLocal  ThreadLocalMap的key弱引用ThreadLocal,然后声明的变量强引用指向ThreadLocal 如果强引用,则内存泄漏 无比remove掉,不然还是会内存泄漏,(key值为null,value还存在(map还存在))     虚引用(给写jvm的人用的)  管理堆外内存 gc就被回收 回收之后可以从QUEUE中观测 值get不到 NIO中有个DirectByteBuffer,指向堆外内存,用虚引用的QUEUE来查看堆外内存哪里需要回收    容器 Collection  三大类\n List Set Queue    Vector  方法加了synchronized   Queue  ConcurrentQueue  CAS操作      Map  Hashtable  整个方法全加synchronized   HashSet  全不加   SynchronizedHashMap  效率没有比Hashtable高多少 加synchronized,但粒度比hashtable细   TreeMap  红黑树    Concurrent容器  ConcurrentHashMap  CAS操作 插入效率未必比其他的高 读取效率非常高   没有ConcurrentTreeMap  CAS操作树结构十分复杂   ConcurrentSkipListMap 跳表Map  高并发且排序   CopyOnWriteList 写时复制  加元素的时候复制出来 读的时候不加锁,写的时候加锁copy一个,然后把元素放上去,老指针指向新容器 读多写少的情况下用    Queue  相比于vector,添加了对线程友好的API  offer 添加,返回是否成功,add则是失败抛异常 peek 取,不会remove poll 取,并且remove    BlockingQueue  put 添加 ,满了的话,线程阻塞住 take 取,空了的话,线程阻塞住  LockSupport的park   生产者消费者模型 LinkedBlockingQueue  链表实现的BlockingQueue 有最大数量,Integer.MAX_VALUE    PriorityQueue 优先级队列  内部是二叉树 继承自AbstractQueue  内部进行排序  重写compareTo      DelayQueue  任务类需要继承Delay接口 按时间进行任务调度  new Task(“t”,System.currentTimeMillis()+500)  五秒后运行      SynchronusQueue  容量为0,给另外线程下达任务的,任务调度 本质上概念类似于Exchanger 只put  永远阻塞,等待消费(take)   不可以用add  会提示Queue已经满了,即使有take等待    TransferQueue  transfer(entry)  装完,阻塞,等待被取走,取走之后再取消阻塞   类似于接单,有反馈的模型  PipedStream Executor Callable  一个Task 类似于Runnable call(),有返回值 返回值存放在Future  Future  存储执行的将来才会产生的结果(所以叫Future) submit(Task) 提交任务,异步运行,非阻塞 get()方法取结果,阻塞方法  FutureTask  继承于Future和Runnable 把返回值存在自身  CompletableFuture  底层用的Fork-Join Pool 各种任务的管理类  AbstractExecutor ExecutorService  线程池大小调整  线程数过多,将浪费大量时间在上下文切换上 线程数过少,则cpu一些核则无法充分利用 N_Thread = N_CPU * U_CPU * (1+W/C)  N_CPU是处理器核的数目 U_CPU是期望CPU的利用率 W/C是等待时间预计算时间的比率     Executors   线程池工厂\n  Executors.newSingleThreadExecutor() 单例线程池\n 可以保证任务顺序执行 存在意义:  任务队列 生命周期管理      CachedPool\n 0个coreThread,Integer.MAX_VALUE个最大线程数 队列用的SynchronusQueue 来了马上使用    FixedThreadPool\n 固定线程数的线程池    Scheduled定时器线程池\n 队列是delayQueue Qutarz    面试题\n 加入提供了一个闹钟服务,订阅这个服务的人特别多,10亿,七点钟有10亿并发量  大的结构上，采用分而治之的思想，主服务器把这些任务同步到边缘服务器上，然后再每一台服务器上，通过线程池+任务队列。首先可以负载均衡分发到多台服务器去执行。然后对于每一台服务器，肯定有一个队列嘛，存着这些任务，然后一个个线程去消费。所以也是要用到线程池的。      concurrent vs parallel\n 并发是指任务提交 并行指任务执行 并行是并发的子集      ThreadPoolExecutor  维护着线程的集合和任务的集合 七个参数  corePoolSize 核心线程数 maximumPoolSize 最大线程数  算上核心线程数   keepAliveTime 生存时间  线程空闲时间过长,要回收给OS 核心线程一直都要活着   生存时间的单位(TimeUnit.Seconds) 任务队列(new ArrayBlockingQueue())  可以放各种各样的BlockingQueue 存任务用的   线程工厂(Executors.defaultThreadFactory) 拒绝策略  任务队列满,且线程也都用着,需要拒绝新来的线程 jdk默认提供四种  AbortPolicy:抛异常 DiscardPolicy:扔掉,不抛异常 DiscardOldestPolicy:扔掉排队时间最长的 CallerRunsPolicy:调用者处理任务       源码分析  Worker类(类似一个单独的线程类)  Runnable AQS 记录哪个Thread正在执行这个worker,所以需要AQS(还有加锁)   submit方法 execute  核心线程数不满,启核心 满了,加队列 两个都满了,非核心线程   addWorker  count++ addwork start      ForkJoinPool  分解汇总的任务 用很少的线程可以执行很多的任务(子任务)TPE做不到先执行子任务 CPU密集型 Work  继承RecursiveAction  不带返回值   继承RecursiveTask  带返回值      workStealingPool  每一个线程都有自己单独的队列 某一个线程执行完自己任务后,去别的线程上拿未完成的任务 底层是ForkJoinPool  ParallelStreamAPI 并行流  任务并行处理 底层实ForkJoinPool  JMH  Java Microbenchmark harness  java 微基准测试   量化性能 注解  Benchmark 测试哪一段代码 Warmup 预热  iterations 迭代,运行几次 time 等待几秒   Fork  用多少个线程来执行   BenchmarkMode 模式  Mode.Throughtput 吞吐量 每秒执行多少次   Measurement  iteration调用多少次 time 时间      Disruptor  分裂,瓦解 一个线程每秒处理600万个订单 速度最快的MQ 性能极高,无锁cas,单机支持高并发 环形buffer 实现了ConcurrentArrayQueue 维护sequence 写到的位置  position = num\u0026(size-1) – 取余 12%8 = 12\u0026(8-1)   队列满–等待策略  开发步骤  定义Event,队列中需要处理的元素 定义Event工厂,用于填充队列  牵扯到效率问题:disruptor初始化的时候,会调用Event工厂,对ringBuffer进行内存的提前分配 gc产生频率会降低,只有最开始分配的时候new   定义EventHandler(消费者) ,处理容器中的元素  ProducerType生产者线程模式  Producer.MULTI Producer.SINGLE 默认是MULTI,表示在多线程下生产sequence 如果确认是单线程生产者,那么可以指定SINGLE,效率会提升  等待策略  (常用)BlockingWaitStrategy:通过线程阻塞的方式,等待生产者唤醒,被唤醒后,再循环检查以来的sequence是否已经消费 BusySpinWaitStrategy:线程一直自选等待,可能比较耗cpu LiteBlockingWaitStrategy:线程阻塞等待生产者唤醒,与BlockingWaitStrategy相比,区别在SignalNeeded.getAndSet,如果两个线程同时访问一个 waitfor,一个访问signalAll时,可以减少lock加锁次数 LiteTimeoutBlockingWaitStrategy PhasedBackoffWaitStrategy TimeoutBlockingWaitStrategy (常用)YieldingWaitStrategy:尝试100次,然后Thread.yield()让出cpu (常用)SleepingWaitStrategy:Sleep  消费者异常处理  disruptor.handleException  1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16  disruptor.handleExceptionsFor(longEventHandler).with(new ExceptionHandlerLongEvent() { @Override public void handleEventException(Throwable ex, long sequence, LongEvent event) { } @Override public void handleOnStartException(Throwable ex) { } @Override public void handleOnShutdownException(Throwable ex) { } });   ",
+  "wordCount" : "567",
+  "inLanguage": "zh",
+  "image":"http://blog.oxide.ink/%3Cimage%20path/url%3E","datePublished": "0001-01-01T00:00:00Z",
+  "dateModified": "0001-01-01T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "Anhlaidh"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://blog.oxide.ink/posts/java/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Oxide",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://blog.oxide.ink/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+<noscript>
+    <style type="text/css">
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: #1d1e20;
+                --entry: #2e2e33;
+                --primary: rgba(255, 255, 255, 0.84);
+                --secondary: rgba(255, 255, 255, 0.56);
+                --tertiary: rgba(255, 255, 255, 0.16);
+                --content: rgba(255, 255, 255, 0.74);
+                --hljs-bg: #2e2e33;
+                --code-bg: #37383e;
+                --border: #333;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://blog.oxide.ink/" accesskey="h" title="Oxide (Alt + H)">Oxide</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+                <ul class="lang-switch"><li>|</li>
+                    <li>
+                        <a href="http://blog.oxide.ink/en/" title="English"
+                            aria-label="English">English</a>
+                    </li>
+                </ul>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://blog.oxide.ink/archives" title="文章归档">
+                    <span>文章归档</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://blog.oxide.ink/categories/" title="分类">
+                    <span>分类</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://blog.oxide.ink/search/" title="搜索">
+                    <span>搜索</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://blog.oxide.ink/tags/" title="标签">
+                    <span>标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://blog.oxide.ink/links/" title="友情链接">
+                    <span>友情链接</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="http://blog.oxide.ink/">Home</a>&nbsp;»&nbsp;<a href="http://blog.oxide.ink/posts/">Posts</a></div>
+    <h1 class="post-title">
+      Java并发编程
+    </h1>
+    <div class="post-description">
+      Java并发编程
+    </div>
+    <div class="post-meta">3 分钟&nbsp;·&nbsp;Anhlaidh&nbsp;|&nbsp;<a href="https://github.com/%3cpath_to_repo%3e/content/posts/Java/Java%e5%b9%b6%e5%8f%91%e7%bc%96%e7%a8%8b/index.md" rel="noopener noreferrer" target="_blank">Suggest Changes</a>
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <div class="details">目录</div>
+        </summary>
+        <div class="inner"><ul>
+                <li>
+                    <a href="#%e5%9f%ba%e6%9c%ac%e6%a6%82%e5%bf%b5" aria-label="基本概念">基本概念</a><ul>
+                        
+                <li>
+                    <a href="#%e8%bf%9b%e7%a8%8b-%e7%ba%bf%e7%a8%8b-%e7%ba%a4%e7%a8%8bquasar" aria-label="进程 线程 纤程(quasar)">进程 线程 纤程(quasar)</a></li></ul>
+                </li>
+                <li>
+                    <a href="#%e9%94%81" aria-label="锁">锁</a><ul>
+                        
+                <li>
+                    <a href="#%e5%b8%b8%e8%a7%81%e9%94%81" aria-label="常见锁">常见锁</a><ul>
+                        
+                <li>
+                    <a href="#synchronized" aria-label="synchronized">synchronized</a></li>
+                <li>
+                    <a href="#lock" aria-label="Lock">Lock</a></li>
+                <li>
+                    <a href="#volatile%e5%8f%af%e5%8f%98%e7%9a%84" aria-label="volatile(可变的)">volatile(可变的)</a></li>
+                <li>
+                    <a href="#atomicxxx" aria-label="AtomicXXX">AtomicXXX</a></li>
+                <li>
+                    <a href="#longadder" aria-label="LongAdder">LongAdder</a></li></ul>
+                </li></ul>
+                </li>
+                <li>
+                    <a href="#%e5%90%84%e7%a7%8djuc%e5%90%8c%e6%ad%a5%e9%94%81" aria-label="各种JUC同步锁">各种JUC同步锁</a><ul>
+                        
+                <li>
+                    <a href="#synchronized-1" aria-label="synchronized">synchronized</a></li>
+                <li>
+                    <a href="#reentrantlock-lock-%e6%96%b0%e5%9e%8b%e9%94%81" aria-label="ReentrantLock lock 新型锁">ReentrantLock lock 新型锁</a></li>
+                <li>
+                    <a href="#countdownlatch-%e6%96%b0%e5%9e%8b%e9%94%81" aria-label="CountDownLatch 新型锁">CountDownLatch 新型锁</a></li>
+                <li>
+                    <a href="#cyclicbarrier" aria-label="CyclicBarrier">CyclicBarrier</a></li>
+                <li>
+                    <a href="#phaser" aria-label="Phaser">Phaser</a></li>
+                <li>
+                    <a href="#readwritelock--stampedlock" aria-label="ReadWriteLock -StampedLock">ReadWriteLock -StampedLock</a></li>
+                <li>
+                    <a href="#semaphore" aria-label="Semaphore">Semaphore</a></li>
+                <li>
+                    <a href="#exchanger-%e4%ba%a4%e6%8d%a2%e5%99%a8" aria-label="Exchanger 交换器">Exchanger 交换器</a></li>
+                <li>
+                    <a href="#locksupport" aria-label="LockSupport">LockSupport</a></li></ul>
+                </li>
+                <li>
+                    <a href="#%e9%9d%a2%e8%af%95%e9%a2%98" aria-label="面试题">面试题</a></li>
+                <li>
+                    <a href="#aqs%e6%ba%90%e7%a0%81%e5%88%86%e6%9e%90%e4%bb%a5%e4%b8%8a%e9%99%a4%e4%ba%86locksupport%e5%85%a8%e6%98%af%e5%9f%ba%e4%ba%8eaqs" aria-label="AQS源码分析(以上除了LockSupport全是基于AQS)">AQS源码分析(以上除了LockSupport全是基于AQS)</a><ul>
+                        
+                <li>
+                    <a href="#%e6%ba%90%e7%a0%81%e9%98%85%e8%af%bb%e5%8e%9f%e5%88%99" aria-label="源码阅读原则">源码阅读原则</a></li>
+                <li>
+                    <a href="#aqs-%e6%a0%b8%e5%bf%83" aria-label="AQS 核心">AQS 核心</a></li>
+                <li>
+                    <a href="#varhandle" aria-label="VarHandle">VarHandle</a></li></ul>
+                </li>
+                <li>
+                    <a href="#threadlocal" aria-label="ThreadLocal">ThreadLocal</a><ul>
+                        
+                <li>
+                    <a href="#java%e5%bc%95%e7%94%a8" aria-label="java引用">java引用</a></li></ul>
+                </li>
+                <li>
+                    <a href="#%e5%ae%b9%e5%99%a8" aria-label="容器">容器</a><ul>
+                        
+                <li>
+                    <a href="#collection" aria-label="Collection">Collection</a></li>
+                <li>
+                    <a href="#map" aria-label="Map">Map</a><ul>
+                        
+                <li>
+                    <a href="#concurrent%e5%ae%b9%e5%99%a8" aria-label="Concurrent容器">Concurrent容器</a></li>
+                <li>
+                    <a href="#queue" aria-label="Queue">Queue</a><ul>
+                        
+                <li>
+                    <a href="#blockingqueue" aria-label="BlockingQueue">BlockingQueue</a><ul>
+                        
+                <li>
+                    <a href="#priorityqueue-%e4%bc%98%e5%85%88%e7%ba%a7%e9%98%9f%e5%88%97" aria-label="PriorityQueue 优先级队列">PriorityQueue 优先级队列</a></li>
+                <li>
+                    <a href="#delayqueue" aria-label="DelayQueue">DelayQueue</a></li>
+                <li>
+                    <a href="#synchronusqueue" aria-label="SynchronusQueue">SynchronusQueue</a></li>
+                <li>
+                    <a href="#transferqueue" aria-label="TransferQueue">TransferQueue</a></li></ul>
+                </li>
+                <li>
+                    <a href="#pipedstream" aria-label="PipedStream">PipedStream</a></li></ul>
+                </li></ul>
+                </li></ul>
+                </li>
+                <li>
+                    <a href="#executor" aria-label="Executor">Executor</a><ul>
+                        
+                <li>
+                    <a href="#callable" aria-label="Callable">Callable</a></li>
+                <li>
+                    <a href="#future" aria-label="Future">Future</a></li>
+                <li>
+                    <a href="#futuretask" aria-label="FutureTask">FutureTask</a></li>
+                <li>
+                    <a href="#completablefuture" aria-label="CompletableFuture">CompletableFuture</a></li>
+                <li>
+                    <a href="#abstractexecutor" aria-label="AbstractExecutor">AbstractExecutor</a></li>
+                <li>
+                    <a href="#executorservice" aria-label="ExecutorService">ExecutorService</a><ul>
+                        
+                <li>
+                    <a href="#threadpoolexecutor" aria-label="ThreadPoolExecutor">ThreadPoolExecutor</a></li></ul>
+                </li>
+                <li>
+                    <a href="#forkjoinpool" aria-label="ForkJoinPool">ForkJoinPool</a><ul>
+                        
+                <li>
+                    <a href="#workstealingpool" aria-label="workStealingPool">workStealingPool</a></li>
+                <li>
+                    <a href="#parallelstreamapi-%e5%b9%b6%e8%a1%8c%e6%b5%81" aria-label="ParallelStreamAPI 并行流">ParallelStreamAPI 并行流</a></li></ul>
+                </li></ul>
+                </li>
+                <li>
+                    <a href="#jmh" aria-label="JMH">JMH</a></li>
+                <li>
+                    <a href="#disruptor" aria-label="Disruptor">Disruptor</a><ul>
+                        
+                <li>
+                    <a href="#%e5%bc%80%e5%8f%91%e6%ad%a5%e9%aa%a4" aria-label="开发步骤">开发步骤</a><ul>
+                        
+                <li>
+                    <a href="#producertype%e7%94%9f%e4%ba%a7%e8%80%85%e7%ba%bf%e7%a8%8b%e6%a8%a1%e5%bc%8f" aria-label="ProducerType生产者线程模式">ProducerType生产者线程模式</a></li>
+                <li>
+                    <a href="#%e7%ad%89%e5%be%85%e7%ad%96%e7%95%a5" aria-label="等待策略">等待策略</a></li>
+                <li>
+                    <a href="#%e6%b6%88%e8%b4%b9%e8%80%85%e5%bc%82%e5%b8%b8%e5%a4%84%e7%90%86" aria-label="消费者异常处理">消费者异常处理</a>
+                </li>
+            </ul>
+            </li>
+            </ul>
+            </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><h2 id="基本概念">基本概念<a hidden class="anchor" aria-hidden="true" href="#基本概念">#</a></h2>
+<h3 id="进程-线程-纤程quasar">进程 线程 纤程(quasar)<a hidden class="anchor" aria-hidden="true" href="#进程-线程-纤程quasar">#</a></h3>
+<ul>
+<li><a href="https://github.com/Anhlaidh/Notes/blob/master/src/main/java/notes//Java/Java-2.md#%E5%A4%9A%E7%BA%BF%E7%A8%8B%E7%AE%A1%E7%90%86">Java线程,详见Java笔记</a>
+<ul>
+<li>补充,可以有lambda表达式写法</li>
+<li>三种启动线程方式
+<ol>
+<li>Thread</li>
+<li>Runnable</li>
+<li>Executors.newCachedThread(本质也是调用上两个)</li>
+</ol>
+</li>
+<li>sleep ,睡眠多少秒,其他线程可以运行</li>
+<li>yield,加入等待队列,有可能立马还是自己</li>
+<li>join , 调用另一个线程,保证顺序</li>
+<li>interrupt , 抛出异常,处理catch</li>
+</ul>
+</li>
+<li>生命周期
+<ul>
+<li>
+<p>新建：就是刚使用new方法，new出来的线程；</p>
+</li>
+<li>
+<p>就绪：就是调用的线程的start()方法后，这时候线程处于等待CPU分配资源阶段，谁先抢的CPU资源，谁开始执行;</p>
+</li>
+<li>
+<p>运行：当就绪的线程被调度并获得CPU资源时，便进入运行状态，run方法定义了线程的操作和功能;</p>
+</li>
+<li>
+<p>阻塞：在运行状态的时候，可能因为某些原因导致运行状态的线程变成了阻塞状态，比如sleep()、wait()之后线程就处于了阻塞状态，这个时候需要其他机制将处于阻塞状态的线程唤醒，比如调用notify或者notifyAll()方法。唤醒的线程不会立刻执行run方法，它们要再次等待CPU分配资源进入运行状态;</p>
+</li>
+<li>
+<p>销毁：如果线程正常执行完毕后或线程被提前强制性的终止或出现异常导致结束，那么线程就要被销毁，释放资源;</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="锁">锁<a hidden class="anchor" aria-hidden="true" href="#锁">#</a></h2>
+<h3 id="常见锁">常见锁<a hidden class="anchor" aria-hidden="true" href="#常见锁">#</a></h3>
+<h4 id="synchronized">synchronized<a hidden class="anchor" aria-hidden="true" href="#synchronized">#</a></h4>
+<ul>
+<li>可重入锁</li>
+<li>synchronized(this) - &gt; synchronized void m() ,static synchronized锁的是T.class
+-保证原子性和可见性</li>
+<li>底层实现
+<ul>
+<li>锁升级
+<ol>
+<li>偏向锁 标记线程</li>
+<li>自旋锁 自旋十次 消耗cpu,用户态</li>
+<li>重量级锁 - OS,os等待队列,不占cpu,但要跟os交互,内核态</li>
+</ol>
+<ul>
+<li>执行时间长,线程数多用系统锁</li>
+<li>执行时间段(加锁代码),线程数少,用自旋锁</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>不能阻止指令重排序</li>
+<li>异常会释放锁</li>
+</ul>
+<h4 id="lock">Lock<a hidden class="anchor" aria-hidden="true" href="#lock">#</a></h4>
+<h4 id="volatile可变的">volatile(可变的)<a hidden class="anchor" aria-hidden="true" href="#volatile可变的">#</a></h4>
+<ul>
+<li>
+<p>保证线程可见性</p>
+<ul>
+<li>MESI</li>
+<li>缓存一致性协议</li>
+</ul>
+</li>
+<li>
+<p>禁止指令重排序</p>
+<ul>
+<li>DCL单例</li>
+<li>Double Check Lock</li>
+<li>Mgr06.java</li>
+<li>loadfence原语指令</li>
+<li>storefence原语指令</li>
+</ul>
+</li>
+<li>
+<p>不能保证原子性</p>
+</li>
+<li>
+<p>dirty read</p>
+<ul>
+<li>锁写不锁读</li>
+</ul>
+</li>
+<li>
+<p>优化,粗化,细化</p>
+</li>
+</ul>
+<h4 id="atomicxxx">AtomicXXX<a hidden class="anchor" aria-hidden="true" href="#atomicxxx">#</a></h4>
+<ul>
+<li>CAS(无锁优化 自选) compare and set/swap (乐观锁)
+<ul>
+<li>cas(V,Expected,NewValue)
+<blockquote>
+<p>if V==E<br>
+V=New otherwise try again or fail</p>
+</blockquote>
+</li>
+<li>cpu原语支持</li>
+<li>ABA问题
+<ul>
+<li>基础类型无所谓</li>
+<li>引用类型,女朋友符合,中间经历了别的&hellip;</li>
+</ul>
+<ol>
+<li>不管</li>
+<li>加版本号,检查版本号</li>
+</ol>
+</li>
+<li>Unsafe类=c c++指针
+<ul>
+<li>直接操作内存
+<ul>
+<li>allocateMemory putXXX freeMemory pageSize</li>
+</ul>
+</li>
+<li>直接生成实例
+<ul>
+<li>allocateInstance</li>
+</ul>
+</li>
+<li>直接操作类或者实例变量
+<ul>
+<li>objectFiledOffset</li>
+<li>getInt</li>
+<li>getObject</li>
+</ul>
+</li>
+<li>CAS相关操作
+<ul>
+<li>weakCompareAndSetObject int Long</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="longadder">LongAdder<a hidden class="anchor" aria-hidden="true" href="#longadder">#</a></h4>
+<ul>
+<li>分段锁(CAS操作)</li>
+<li>分段式锁</li>
+</ul>
+<h2 id="各种juc同步锁">各种JUC同步锁<a hidden class="anchor" aria-hidden="true" href="#各种juc同步锁">#</a></h2>
+<h3 id="synchronized-1">synchronized<a hidden class="anchor" aria-hidden="true" href="#synchronized-1">#</a></h3>
+<ul>
+<li>锁进程调用锁进程</li>
+<li>notify() 不释放锁</li>
+</ul>
+<h3 id="reentrantlock-lock-新型锁">ReentrantLock lock 新型锁<a hidden class="anchor" aria-hidden="true" href="#reentrantlock-lock-新型锁">#</a></h3>
+<ul>
+<li>cas</li>
+<li>手动上锁解锁</li>
+<li>try lock
+<ul>
+<li><code>lock.tryLock(5,TimeUnit.SECONDS)</code></li>
+</ul>
+</li>
+<li>lock.lockInterruptibly()
+<ul>
+<li>通过打断来加锁</li>
+</ul>
+</li>
+<li>公平锁
+<ul>
+<li><code>new ReentrantLock(true)</code></li>
+<li>尽可能公平</li>
+<li>进入等待队列之前会检查队列里有没有人</li>
+</ul>
+</li>
+<li>可以有各种等待队列</li>
+</ul>
+<h3 id="countdownlatch-新型锁">CountDownLatch 新型锁<a hidden class="anchor" aria-hidden="true" href="#countdownlatch-新型锁">#</a></h3>
+<ul>
+<li>cas</li>
+<li>计数,到了,放开wait</li>
+<li>await()</li>
+<li>CountDown()</li>
+</ul>
+<h3 id="cyclicbarrier">CyclicBarrier<a hidden class="anchor" aria-hidden="true" href="#cyclicbarrier">#</a></h3>
+<ul>
+<li>人满发车</li>
+<li>限流</li>
+</ul>
+<h3 id="phaser">Phaser<a hidden class="anchor" aria-hidden="true" href="#phaser">#</a></h3>
+<ul>
+<li>过滤</li>
+<li>重写onAdvance(int phase,int registeredParties) 栅栏推到自动调用
+<ul>
+<li>phase为阶段数</li>
+<li>registerParties 推到栅栏需要的数量</li>
+</ul>
+</li>
+<li>phaser.arriveAndAwaitAdvance() 到达并执行</li>
+<li>phaser.arriveAndDeregister() 到达不执行</li>
+</ul>
+<h3 id="readwritelock--stampedlock">ReadWriteLock -StampedLock<a hidden class="anchor" aria-hidden="true" href="#readwritelock--stampedlock">#</a></h3>
+<ul>
+<li>共享锁</li>
+<li>排他锁</li>
+<li>ReadLock read = new ReentrantLock().ReadLock()</li>
+<li>WriteLock Write = new ReentrantLock().WriteLock()</li>
+</ul>
+<h3 id="semaphore">Semaphore<a hidden class="anchor" aria-hidden="true" href="#semaphore">#</a></h3>
+<ul>
+<li>允许几个线程同时进行</li>
+<li>类似红绿灯</li>
+<li>new Semaphore(1)</li>
+<li>s.acquire(),获得锁,将数量减一,归零则停住</li>
+<li>s.release() 归还</li>
+<li>限流,最多允许多少线程在运行</li>
+</ul>
+<h3 id="exchanger-交换器">Exchanger 交换器<a hidden class="anchor" aria-hidden="true" href="#exchanger-交换器">#</a></h3>
+<h3 id="locksupport">LockSupport<a hidden class="anchor" aria-hidden="true" href="#locksupport">#</a></h3>
+<ul>
+<li>LockSupport.park(),当前线程阻塞</li>
+<li>(与锁定线程同时执行)LockSupport.unpark(线程对象名) 相当于在wait()前面调用notify()</li>
+</ul>
+<h2 id="面试题">面试题<a hidden class="anchor" aria-hidden="true" href="#面试题">#</a></h2>
+<ul>
+<li>实现一个容器,提供两个方法,add,size,写两个线程,线程1添加10个元素到容器钟,线程2实现监控元素的个数,当个数等于5个时,线程2给出提示并结束
+<ul>
+<li>加volatile ,有问题,得加延时,不然观察不到(即使使用Collection.SynchronizedList(new ArrayList()))
+<ul>
+<li>解释:在sleep的时候,有观察的动作</li>
+</ul>
+</li>
+<li>wait notify
+<ul>
+<li>synchronized: 观察线程wait,notify添加线程,添加线程到了5,notify观察线程,观察线程运行完,notify添加线程</li>
+</ul>
+</li>
+<li>countDownLatch: CountDownLatch(1),到了5,countDown 但是添加线程太快,可能顺序不符合预想
+<ul>
+<li>解决,两个门闩</li>
+</ul>
+</li>
+<li>LockSupport
+<ul>
+<li>类似countDownLatch的思路</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>写一个固定容量的同步容器,拥有put和get方法,以及getCount方法,能够支持2个生产者线程和10个消费者线程的的阻塞调用
+<ul>
+<li>synchronized,必须会写
+<ul>
+<li>wait()</li>
+<li>notifyALl()</li>
+<li>为什么用while而不是if
+<ul>
+<li>另一个线程++之后,自己线程没有再检查一遍,所以需要while</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>ReentrantLock 的Condition
+<ul>
+<li>多个等待队列</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="aqs源码分析以上除了locksupport全是基于aqs">AQS源码分析(以上除了LockSupport全是基于AQS)<a hidden class="anchor" aria-hidden="true" href="#aqs源码分析以上除了locksupport全是基于aqs">#</a></h2>
+<h3 id="源码阅读原则">源码阅读原则<a hidden class="anchor" aria-hidden="true" href="#源码阅读原则">#</a></h3>
+<ul>
+<li>跑不起来不读</li>
+<li>解决问题就好-目的性</li>
+<li>一条线索到底</li>
+<li>无关细节略过</li>
+<li>一般不读静态</li>
+<li>一般动态读法</li>
+</ul>
+<h3 id="aqs-核心">AQS 核心<a hidden class="anchor" aria-hidden="true" href="#aqs-核心">#</a></h3>
+<ul>
+<li>CAS操作替代了锁整条链表的操作</li>
+<li>CAS操作来操作tail</li>
+</ul>
+<h3 id="varhandle">VarHandle<a hidden class="anchor" aria-hidden="true" href="#varhandle">#</a></h3>
+<ul>
+<li>指向某个变量的引用</li>
+<li>原子性操作</li>
+<li>native cpu原语</li>
+<li>比反射效率高很多</li>
+<li>直接操纵二进制码</li>
+</ul>
+<h2 id="threadlocal">ThreadLocal<a hidden class="anchor" aria-hidden="true" href="#threadlocal">#</a></h2>
+<ul>
+<li>set
+<ul>
+<li>Thread.currentThread.map(ThreadLocal,person)</li>
+</ul>
+</li>
+<li>用途
+<ul>
+<li>声明式事务,保证同一个Connection</li>
+</ul>
+</li>
+</ul>
+<h3 id="java引用">java引用<a hidden class="anchor" aria-hidden="true" href="#java引用">#</a></h3>
+<ul>
+<li>强软弱虚</li>
+<li>强引用
+<ul>
+<li>普通一般用的引用</li>
+<li>特点
+<ul>
+<li>不会被垃圾回收器回收</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>软引用
+<ul>
+<li>内存不够用的时候会回收</li>
+<li>做缓存用</li>
+<li>full gc</li>
+</ul>
+</li>
+<li>弱引用
+<ul>
+<li>只要遭遇到gc就会回收</li>
+<li>作用
+<ul>
+<li>一般用在容器里</li>
+<li>另一个强引用指向引用对象,引用断掉之后可以立即回收这个对象</li>
+</ul>
+</li>
+<li>ThreadLocal
+<ul>
+<li>ThreadLocalMap的key弱引用ThreadLocal,然后声明的变量强引用指向ThreadLocal</li>
+<li>如果强引用,则内存泄漏</li>
+<li>无比remove掉,不然还是会内存泄漏,(key值为null,value还存在(map还存在))</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>虚引用(给写jvm的人用的)
+<ul>
+<li>管理堆外内存</li>
+<li>gc就被回收</li>
+<li>回收之后可以从QUEUE中观测</li>
+<li>值get不到</li>
+<li>NIO中有个DirectByteBuffer,指向堆外内存,用虚引用的QUEUE来查看堆外内存哪里需要回收</li>
+</ul>
+</li>
+</ul>
+<h2 id="容器">容器<a hidden class="anchor" aria-hidden="true" href="#容器">#</a></h2>
+<h3 id="collection">Collection<a hidden class="anchor" aria-hidden="true" href="#collection">#</a></h3>
+<blockquote>
+<p>三大类</p>
+<ul>
+<li>List</li>
+<li>Set</li>
+<li>Queue</li>
+</ul>
+</blockquote>
+<ul>
+<li>Vector
+<ul>
+<li>方法加了synchronized</li>
+</ul>
+</li>
+<li>Queue
+<ul>
+<li>ConcurrentQueue
+<ul>
+<li>CAS操作</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="map">Map<a hidden class="anchor" aria-hidden="true" href="#map">#</a></h3>
+<ul>
+<li>Hashtable
+<ul>
+<li>整个方法全加synchronized</li>
+</ul>
+</li>
+<li>HashSet
+<ul>
+<li>全不加</li>
+</ul>
+</li>
+<li>SynchronizedHashMap
+<ul>
+<li>效率没有比Hashtable高多少</li>
+<li>加synchronized,但粒度比hashtable细</li>
+</ul>
+</li>
+<li>TreeMap
+<ul>
+<li>红黑树</li>
+</ul>
+</li>
+</ul>
+<h4 id="concurrent容器">Concurrent容器<a hidden class="anchor" aria-hidden="true" href="#concurrent容器">#</a></h4>
+<ul>
+<li>ConcurrentHashMap
+<ul>
+<li>CAS操作</li>
+<li>插入效率未必比其他的高</li>
+<li>读取效率非常高</li>
+</ul>
+</li>
+<li>没有ConcurrentTreeMap
+<ul>
+<li>CAS操作树结构十分复杂</li>
+</ul>
+</li>
+<li>ConcurrentSkipListMap 跳表Map
+<ul>
+<li>高并发且排序</li>
+</ul>
+</li>
+<li>CopyOnWriteList 写时复制
+<ul>
+<li>加元素的时候复制出来</li>
+<li>读的时候不加锁,写的时候加锁copy一个,然后把元素放上去,老指针指向新容器</li>
+<li>读多写少的情况下用</li>
+</ul>
+</li>
+</ul>
+<h4 id="queue">Queue<a hidden class="anchor" aria-hidden="true" href="#queue">#</a></h4>
+<ul>
+<li>相比于vector,添加了对线程友好的API
+<ul>
+<li>offer 添加,返回是否成功,add则是失败抛异常</li>
+<li>peek 取,不会remove</li>
+<li>poll 取,并且remove</li>
+</ul>
+</li>
+</ul>
+<h5 id="blockingqueue">BlockingQueue<a hidden class="anchor" aria-hidden="true" href="#blockingqueue">#</a></h5>
+<ul>
+<li>put 添加 ,满了的话,线程阻塞住</li>
+<li>take 取,空了的话,线程阻塞住
+<ul>
+<li>LockSupport的park</li>
+</ul>
+</li>
+<li>生产者消费者模型</li>
+<li>LinkedBlockingQueue
+<ul>
+<li>链表实现的BlockingQueue</li>
+<li>有最大数量,Integer.MAX_VALUE</li>
+</ul>
+</li>
+</ul>
+<h6 id="priorityqueue-优先级队列">PriorityQueue 优先级队列<a hidden class="anchor" aria-hidden="true" href="#priorityqueue-优先级队列">#</a></h6>
+<ul>
+<li>内部是二叉树</li>
+<li>继承自AbstractQueue
+<ul>
+<li>内部进行排序
+<ul>
+<li>重写compareTo</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h6 id="delayqueue">DelayQueue<a hidden class="anchor" aria-hidden="true" href="#delayqueue">#</a></h6>
+<ul>
+<li>任务类需要继承Delay接口</li>
+<li>按时间进行任务调度
+<ul>
+<li>new Task(&ldquo;t&rdquo;,System.currentTimeMillis()+500)
+<ul>
+<li>五秒后运行</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h6 id="synchronusqueue">SynchronusQueue<a hidden class="anchor" aria-hidden="true" href="#synchronusqueue">#</a></h6>
+<ul>
+<li>容量为0,给另外线程下达任务的,任务调度</li>
+<li>本质上概念类似于Exchanger</li>
+<li>只put
+<ul>
+<li>永远阻塞,等待消费(take)</li>
+</ul>
+</li>
+<li>不可以用add
+<ul>
+<li>会提示Queue已经满了,即使有take等待</li>
+</ul>
+</li>
+</ul>
+<h6 id="transferqueue">TransferQueue<a hidden class="anchor" aria-hidden="true" href="#transferqueue">#</a></h6>
+<ul>
+<li>transfer(entry)
+<ul>
+<li>装完,阻塞,等待被取走,取走之后再取消阻塞</li>
+</ul>
+</li>
+<li>类似于接单,有反馈的模型</li>
+</ul>
+<h5 id="pipedstream">PipedStream<a hidden class="anchor" aria-hidden="true" href="#pipedstream">#</a></h5>
+<h2 id="executor">Executor<a hidden class="anchor" aria-hidden="true" href="#executor">#</a></h2>
+<h3 id="callable">Callable<a hidden class="anchor" aria-hidden="true" href="#callable">#</a></h3>
+<ul>
+<li>一个Task</li>
+<li>类似于Runnable</li>
+<li>call(),有返回值</li>
+<li>返回值存放在Future</li>
+</ul>
+<h3 id="future">Future<a hidden class="anchor" aria-hidden="true" href="#future">#</a></h3>
+<ul>
+<li>存储执行的将来才会产生的结果(所以叫Future)</li>
+<li>submit(Task) 提交任务,异步运行,非阻塞</li>
+<li>get()方法取结果,阻塞方法</li>
+</ul>
+<h3 id="futuretask">FutureTask<a hidden class="anchor" aria-hidden="true" href="#futuretask">#</a></h3>
+<ul>
+<li>继承于Future和Runnable</li>
+<li>把返回值存在自身</li>
+</ul>
+<h3 id="completablefuture">CompletableFuture<a hidden class="anchor" aria-hidden="true" href="#completablefuture">#</a></h3>
+<ul>
+<li>底层用的Fork-Join Pool</li>
+<li>各种任务的管理类</li>
+</ul>
+<h3 id="abstractexecutor">AbstractExecutor<a hidden class="anchor" aria-hidden="true" href="#abstractexecutor">#</a></h3>
+<h3 id="executorservice">ExecutorService<a hidden class="anchor" aria-hidden="true" href="#executorservice">#</a></h3>
+<ul>
+<li>线程池大小调整
+<ul>
+<li>线程数过多,将浪费大量时间在上下文切换上</li>
+<li>线程数过少,则cpu一些核则无法充分利用</li>
+<li>N_Thread = N_CPU * U_CPU * (1+W/C)
+<ul>
+<li>N_CPU是处理器核的数目</li>
+<li>U_CPU是期望CPU的利用率</li>
+<li>W/C是等待时间预计算时间的比率</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Executors
+<ul>
+<li>
+<p>线程池工厂</p>
+</li>
+<li>
+<p>Executors.newSingleThreadExecutor() 单例线程池</p>
+<ul>
+<li>可以保证任务顺序执行</li>
+<li>存在意义:
+<ul>
+<li>任务队列</li>
+<li>生命周期管理</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>CachedPool</p>
+<ul>
+<li>0个coreThread,Integer.MAX_VALUE个最大线程数</li>
+<li>队列用的SynchronusQueue</li>
+<li>来了马上使用</li>
+</ul>
+</li>
+<li>
+<p>FixedThreadPool</p>
+<ul>
+<li>固定线程数的线程池</li>
+</ul>
+</li>
+<li>
+<p>Scheduled定时器线程池</p>
+<ul>
+<li>队列是delayQueue</li>
+<li>Qutarz</li>
+</ul>
+</li>
+<li>
+<p>面试题</p>
+<ul>
+<li>加入提供了一个闹钟服务,订阅这个服务的人特别多,10亿,七点钟有10亿并发量
+<ul>
+<li>大的结构上，采用分而治之的思想，主服务器把这些任务同步到边缘服务器上，然后再每一台服务器上，通过线程池+任务队列。首先可以负载均衡分发到多台服务器去执行。然后对于每一台服务器，肯定有一个队列嘛，存着这些任务，然后一个个线程去消费。所以也是要用到线程池的。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>concurrent vs parallel</p>
+<ul>
+<li>并发是指任务提交</li>
+<li>并行指任务执行</li>
+<li>并行是并发的子集</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="threadpoolexecutor">ThreadPoolExecutor<a hidden class="anchor" aria-hidden="true" href="#threadpoolexecutor">#</a></h4>
+<ul>
+<li>维护着线程的集合和任务的集合</li>
+<li>七个参数
+<ol>
+<li>corePoolSize 核心线程数</li>
+<li>maximumPoolSize 最大线程数
+<ul>
+<li>算上核心线程数</li>
+</ul>
+</li>
+<li>keepAliveTime 生存时间
+<ul>
+<li>线程空闲时间过长,要回收给OS</li>
+<li>核心线程一直都要活着</li>
+</ul>
+</li>
+<li>生存时间的单位(TimeUnit.Seconds)</li>
+<li>任务队列(new ArrayBlockingQueue())
+<ul>
+<li>可以放各种各样的BlockingQueue</li>
+<li>存任务用的</li>
+</ul>
+</li>
+<li>线程工厂(Executors.defaultThreadFactory)</li>
+<li>拒绝策略
+<ul>
+<li>任务队列满,且线程也都用着,需要拒绝新来的线程</li>
+<li>jdk默认提供四种
+<ol>
+<li>AbortPolicy:抛异常</li>
+<li>DiscardPolicy:扔掉,不抛异常</li>
+<li>DiscardOldestPolicy:扔掉排队时间最长的</li>
+<li>CallerRunsPolicy:调用者处理任务</li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>源码分析
+<ul>
+<li>Worker类(类似一个单独的线程类)
+<ul>
+<li>Runnable AQS</li>
+<li>记录哪个Thread正在执行这个worker,所以需要AQS(还有加锁)</li>
+</ul>
+</li>
+<li>submit方法</li>
+<li>execute
+<ol>
+<li>核心线程数不满,启核心</li>
+<li>满了,加队列</li>
+<li>两个都满了,非核心线程</li>
+</ol>
+</li>
+<li>addWorker
+<ol>
+<li>count++</li>
+<li>addwork start</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="forkjoinpool">ForkJoinPool<a hidden class="anchor" aria-hidden="true" href="#forkjoinpool">#</a></h3>
+<ul>
+<li>分解汇总的任务</li>
+<li>用很少的线程可以执行很多的任务(子任务)TPE做不到先执行子任务</li>
+<li>CPU密集型</li>
+<li>Work
+<ul>
+<li>继承RecursiveAction
+<ul>
+<li>不带返回值</li>
+</ul>
+</li>
+<li>继承RecursiveTask
+<ul>
+<li>带返回值</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="workstealingpool">workStealingPool<a hidden class="anchor" aria-hidden="true" href="#workstealingpool">#</a></h4>
+<ul>
+<li>每一个线程都有自己单独的队列</li>
+<li>某一个线程执行完自己任务后,去别的线程上拿未完成的任务</li>
+<li>底层是ForkJoinPool</li>
+</ul>
+<h4 id="parallelstreamapi-并行流">ParallelStreamAPI 并行流<a hidden class="anchor" aria-hidden="true" href="#parallelstreamapi-并行流">#</a></h4>
+<ul>
+<li>任务并行处理</li>
+<li>底层实ForkJoinPool</li>
+</ul>
+<h2 id="jmh">JMH<a hidden class="anchor" aria-hidden="true" href="#jmh">#</a></h2>
+<ul>
+<li>Java Microbenchmark harness
+<ul>
+<li>java 微基准测试</li>
+</ul>
+</li>
+<li>量化性能</li>
+<li>注解
+<ul>
+<li>Benchmark 测试哪一段代码</li>
+<li>Warmup 预热
+<ul>
+<li>iterations 迭代,运行几次</li>
+<li>time 等待几秒</li>
+</ul>
+</li>
+<li>Fork
+<ul>
+<li>用多少个线程来执行</li>
+</ul>
+</li>
+<li>BenchmarkMode 模式
+<ul>
+<li>Mode.Throughtput 吞吐量 每秒执行多少次</li>
+</ul>
+</li>
+<li>Measurement
+<ul>
+<li>iteration调用多少次</li>
+<li>time 时间</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="disruptor">Disruptor<a hidden class="anchor" aria-hidden="true" href="#disruptor">#</a></h2>
+<ul>
+<li>分裂,瓦解</li>
+<li>一个线程每秒处理600万个订单</li>
+<li>速度最快的MQ</li>
+<li>性能极高,无锁cas,单机支持高并发</li>
+<li>环形buffer</li>
+<li>实现了ConcurrentArrayQueue</li>
+<li>维护sequence 写到的位置
+<ul>
+<li>position = num&amp;(size-1)  &ndash;&gt; 取余  12%8 = 12&amp;(8-1)</li>
+</ul>
+</li>
+<li>队列满&ndash;&gt;等待策略</li>
+</ul>
+<h3 id="开发步骤">开发步骤<a hidden class="anchor" aria-hidden="true" href="#开发步骤">#</a></h3>
+<ol>
+<li>定义Event,队列中需要处理的元素</li>
+<li>定义Event工厂,用于填充队列
+<ul>
+<li>牵扯到效率问题:disruptor初始化的时候,会调用Event工厂,对ringBuffer进行内存的提前分配</li>
+<li>gc产生频率会降低,只有最开始分配的时候new</li>
+</ul>
+</li>
+<li>定义EventHandler(消费者) ,处理容器中的元素</li>
+</ol>
+<h4 id="producertype生产者线程模式">ProducerType生产者线程模式<a hidden class="anchor" aria-hidden="true" href="#producertype生产者线程模式">#</a></h4>
+<ol>
+<li>Producer.MULTI</li>
+<li>Producer.SINGLE
+默认是MULTI,表示在多线程下生产sequence
+如果确认是单线程生产者,那么可以指定SINGLE,效率会提升</li>
+</ol>
+<h4 id="等待策略">等待策略<a hidden class="anchor" aria-hidden="true" href="#等待策略">#</a></h4>
+<ol>
+<li>(常用)BlockingWaitStrategy:通过线程阻塞的方式,等待生产者唤醒,被唤醒后,再循环检查以来的sequence是否已经消费</li>
+<li>BusySpinWaitStrategy:线程一直自选等待,可能比较耗cpu</li>
+<li>LiteBlockingWaitStrategy:线程阻塞等待生产者唤醒,与BlockingWaitStrategy相比,区别在SignalNeeded.getAndSet,如果两个线程同时访问一个
+waitfor,一个访问signalAll时,可以减少lock加锁次数</li>
+<li>LiteTimeoutBlockingWaitStrategy</li>
+<li>PhasedBackoffWaitStrategy</li>
+<li>TimeoutBlockingWaitStrategy</li>
+<li>(常用)YieldingWaitStrategy:尝试100次,然后Thread.yield()让出cpu</li>
+<li>(常用)SleepingWaitStrategy:Sleep</li>
+</ol>
+<h4 id="消费者异常处理">消费者异常处理<a hidden class="anchor" aria-hidden="true" href="#消费者异常处理">#</a></h4>
+<ul>
+<li>disruptor.handleException</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"> <span class="n">disruptor</span><span class="o">.</span><span class="na">handleExceptionsFor</span><span class="o">(</span><span class="n">longEventHandler</span><span class="o">).</span><span class="na">with</span><span class="o">(</span><span class="k">new</span> <span class="n">ExceptionHandler</span><span class="o">&lt;</span><span class="n">LongEvent</span><span class="o">&gt;()</span> <span class="o">{</span>
+            <span class="nd">@Override</span>
+            <span class="kd">public</span> <span class="kt">void</span> <span class="nf">handleEventException</span><span class="o">(</span><span class="n">Throwable</span> <span class="n">ex</span><span class="o">,</span> <span class="kt">long</span> <span class="n">sequence</span><span class="o">,</span> <span class="n">LongEvent</span> <span class="n">event</span><span class="o">)</span> <span class="o">{</span>
+
+            <span class="o">}</span>
+
+            <span class="nd">@Override</span>
+            <span class="kd">public</span> <span class="kt">void</span> <span class="nf">handleOnStartException</span><span class="o">(</span><span class="n">Throwable</span> <span class="n">ex</span><span class="o">)</span> <span class="o">{</span>
+
+            <span class="o">}</span>
+
+            <span class="nd">@Override</span>
+            <span class="kd">public</span> <span class="kt">void</span> <span class="nf">handleOnShutdownException</span><span class="o">(</span><span class="n">Throwable</span> <span class="n">ex</span><span class="o">)</span> <span class="o">{</span>
+
+            <span class="o">}</span>
+        <span class="o">});</span>
+</code></pre></td></tr></table>
+</div>
+</div>
+</div>
+
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://blog.oxide.ink/tags/java/">Java</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="http://blog.oxide.ink/posts/db/elasticsearch/">
+    <span class="title">« 上一页</span>
+    <br>
+    <span>ElasticSearch</span>
+  </a>
+  <a class="next" href="http://blog.oxide.ink/posts/jvm/jvm-1/">
+    <span class="title">下一页 »</span>
+    <br>
+    <span>JVM-01</span>
+  </a>
+</nav>
+
+
+  </footer><section class="comments">
+
+    <script src="https://utteranc.es/client.js"
+            repo="Anhlaidh/Oxside"
+            issue-term="pathname"
+            theme="preferred-color-scheme"
+            crossorigin="anonymous"
+            async>
+    </script>
+
+</section>
+
+</article>
+    </main>
+    <footer class="footer">
+    <span>&copy; 2021 <a href="http://blog.oxide.ink/">Oxide</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+    <br>
+    <span>Anhlaidh
+        <a href="#">chinahantianzhao@foxmail.com</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)">
+    <button class="top-link" id="top-link" type="button" accesskey="g">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+            <path d="M12 6H0l6-6z" />
+        </svg>
+    </button>
+</a><script src="https://cdn.bootcss.com/mermaid/8.0.0-rc.8/mermaid.min.js"></script>
+<script>
+    let parm1 = ''
+    if (document.cookie.indexOf("uv=false") == -1) {
+        parm1 = "&uv=true"
+        var t = new Date(new Date().getTime() + 1000 * 60 * 60 * 24);
+        document.cookie = "uv=false; expires=" + t.toGMTString() + ";path=/";
+    }
+    fetch("https://analytics.radishkin.workers.dev/api?url=" + window.btoa(location.href) + parm1).then(res => {
+        return res.json()
+    }).then(res => {
+        try {
+            document.getElementById("busuanzi_value_page_pv").innerText = res.pv
+        } catch(err) {}
+        try{
+            document.getElementById("busuanzi_container_site_uv").innerText = res.uv
+        }catch(err){}
+        try{
+            document.getElementById("busuanzi_container_site_pv").innerText = res.total
+        }catch(err){}
+    })
+
+</script>
+
+<script>
+    let menu = document.getElementById('menu')
+    menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+    menu.onscroll = function () {
+        localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+        var isHide = true;
+
+        const copybutton = document.createElement('button');
+        const showbutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        showbutton.classList.add('show-code-button');
+        copybutton.innerText = 'copy';
+        showbutton.innerText = 'show';
+
+        function copyingDone() {
+            copybutton.innerText = 'copied!';
+            setTimeout(() => {
+                copybutton.innerText = 'copy';
+            }, 2000);
+        }
+        showbutton.addEventListener('click',()=>{
+            if (isHide === true) {
+                
+                showbutton.parentElement.classList.add("code-showing")
+                showbutton.innerText = 'hide';
+                isHide = false;
+            } else {
+                
+                showbutton.parentElement.classList.remove("code-showing")
+                showbutton.innerText = 'show';
+                isHide = true;
+            }
+
+        })
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+            container.appendChild(showbutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(showbutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+            codeblock.parentNode.appendChild(showbutton);
+        }
+    });
+</script>
+</body>
+
+</html>

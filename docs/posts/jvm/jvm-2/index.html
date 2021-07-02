@@ -1,0 +1,1569 @@
+<!DOCTYPE html>
+<html lang="zh" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>JVM-2 | Oxide</title>
+<meta name="keywords" content="JVM" />
+<meta name="description" content="JVM">
+<meta name="author" content="Anhlaidh">
+<link rel="canonical" href="http://blog.oxide.ink/posts/jvm/jvm-2/" />
+<link crossorigin="anonymous" href="/assets/css/stylesheet.min.a7912db0dae3e62d0906024f5a11712a8f2023b34fe824cbb253e4731ec0117f.css" integrity="sha256-p5EtsNrj5i0JBgJPWhFxKo8gI7NP6CTLslPkcx7AEX8=" rel="preload stylesheet" as="style">
+<script defer crossorigin="anonymous" src="/assets/js/highlight.min.7680afc38aa6b15ddf158a4f3780b7b1f7dde7e91d26f073e6229bb7a0793c92.js" integrity="sha256-doCvw4qmsV3fFYpPN4C3sffd5&#43;kdJvBz5iKbt6B5PJI="
+    onload="hljs.initHighlightingOnLoad();"></script>
+<link rel="icon" href="http://blog.oxide.ink/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://blog.oxide.ink/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://blog.oxide.ink/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://blog.oxide.ink/apple-touch-icon.png">
+<link rel="mask-icon" href="http://blog.oxide.ink/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<meta name="generator" content="Hugo 0.83.1" />
+<link rel="alternate" hreflang="zh" href="http://blog.oxide.ink/posts/jvm/jvm-2/" />
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+      renderMathInElement(document.body, {
+              delimiters: [
+                  {left: "$$", right: "$$", display: true},
+                  {left: "$", right: "$", display: false}
+              ]
+          });
+    });
+</script>
+
+
+
+<script src="https://cdn.bootcss.com/mermaid/8.0.0-rc.8/mermaid.min.js"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0-rc.1/katex.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0-rc.1/katex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0-rc.1/contrib/auto-render.min.js"></script>
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
+<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+<script>
+    window.onload = function (){
+        console.log("aaa");
+    }
+    const height = 300;
+    makeCollapsible();
+    function makeCollapsible() {
+        const divs = document.querySelectorAll('.highlight');
+        divs.forEach((e) => {
+            if (e.offsetHeight > height) {
+                e.style.maxHeight = height + 'px';
+                e.style.overflow = 'hidden';
+                const linkWrapper = document.createElement('div');
+                const link = document.createElement('a');
+                link.href = '';
+                link.textContent = 'more';
+                link.addEventListener('click', codeToggle);
+                linkWrapper.className = 'highlight-link';
+                linkWrapper.appendChild(link);
+                e.appendChild(linkWrapper);
+            }
+        });
+    }
+    function codeToggle(e) {
+        e.preventDefault();
+        const link = e.target;
+        const linkWrapper = link.parentElement.parentElement;
+        if (link.innerHTML === 'more') {
+            link.innerHTML = 'less';
+            linkWrapper.style.maxHeight = '';
+            linkWrapper.style.overflow = 'none';
+            link.parentElement.style.right = '0';
+        } else {
+            link.innerHTML = 'more';
+            linkWrapper.style.maxHeight = height + 'px';
+            linkWrapper.style.overflow = 'hidden';
+            link.parentElement.style.right = '0.5em';
+            scrollToTargetAdjusted(linkWrapper);
+        }
+    }
+    function scrollToTargetAdjusted(e) {
+        const header = document.querySelector('header');
+        const headerHeight = window.getComputedStyle(header, null).getPropertyValue('height');
+        const headerOffset = Number(headerHeight.replace('px', ''));
+        const bodyRect = document.body.getBoundingClientRect().top;
+        const elementRect = e.getBoundingClientRect().top;
+        const elementPosition = elementRect - bodyRect;
+        const offsetPosition = elementPosition - headerOffset;
+        window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+        });
+    }
+
+</script><meta property="og:title" content="JVM-2" />
+<meta property="og:description" content="JVM" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://blog.oxide.ink/posts/jvm/jvm-2/" />
+<meta property="og:image" content="http://blog.oxide.ink/%3Cimage%20path/url%3E" /><meta property="article:section" content="posts" />
+
+<meta property="og:site_name" content="Oxide" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="http://blog.oxide.ink/%3Cimage%20path/url%3E" />
+<meta name="twitter:title" content="JVM-2"/>
+<meta name="twitter:description" content="JVM"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "http://blog.oxide.ink/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "JVM-2",
+      "item": "http://blog.oxide.ink/posts/jvm/jvm-2/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "JVM-2",
+  "name": "JVM-2",
+  "description": "JVM",
+  "keywords": [
+    "JVM"
+  ],
+  "articleBody": "概念  jvm跟java无关  任何语言-class-JVM   jvm是一种规范 虚构出来的计算机  字节码指令集(汇编语言) 内存管理:栈 堆 方法区等   常见的JVM实现  Hotspot  Oracle官方,做实验用的jvm   Jrockit  BEA,最快jvm 被Oracle收购,合并于hotspot   TaoBaoVM  hotspot深度定制版   LiquidVM  直接针对硬件   azul zing  垃圾回收的业界标杆   J9 -IBM Microsoft VM   JDK JRE JVM  JDK = jre + development kit JRE = jvm + core lib JVM    Class File Format   二进制字节流\n  数据类型 u1 u2 u4 u8 和_info\n  前八个16进制-magic version\n  然后八个16进制-minor version\n  然后四个16进制(2个字节)- constant_pool_count\n 常量池    紧接constant_pool *\n 长度为constant_pool_count-1的表,从1开始,保留0    access_flags 定义类的那一排所代表的,例如public,final,implement,annotation\n  this_class\n 当前class文件    super_class\n  interfaces_count\n  interfaces\n  fields_count\n  fields\n  methods_count\n  methods\n access_flags name_index u2 descriptor_index u2 attributes_count attributes    attributes_count -u2\n  attributes\n code    Class Loading Linking Initializing loading  加载过程   Loading Linking  verification preparation  静态变量设初值,不是赋值   resolution   initializing   class在内存中的位置  根据虚拟机来不同考虑  应该是metaspace     类加载器  JVM是按需动态加载,采用双亲委派机制 为了安全  java.lang.String被自定义loader,打包后发给客户,用户输密码,密码发回来   父加载器  父加载器不是\"类加载器的加载器\"类加载器都是bootstrap加载器加载的   双亲委派是一个孩子向父亲方向,然后父亲向孩子方向的双亲委派过程 层次  bootStrap  加载lib/rt.jar charset.jar核心类,c++实现   Extension  加载扩展jar包,jre/lib/ext/*.jar,或由-Djava.ext.dirs指定   App  加载classpath指定内容   CustomClassLoader  自定义ClassLoader     自底向上检查该类是否已经加载parent方向 如何打破双亲委派  如何打破:重写loadClass()  tomcat是重写loadClass为先自己加载,没有则找父加载器 -热加载 每次都重新new   何时打破过  jdk1.2之前,自定义ClassLoader都必须重写loadClass ThreadContextClassLoader可以实现基础类调用实现类代码,通过thread.setContextClassLoader指定 热启动,热部署  tomcat都有自己的模块指定classloader         class加载生成两部分  二进制存入内存(在meta space中,指的是method area,1.8之前叫PermanentGeneration) 生成一个class,指向二进制内存,来读取解析二进制,反射   ClassLoader源码  findClass 自己找 loadClass 方法过程  cache里面找 parent.loadClass 父类找,递归找 findClass 自己的findclass   如果是AppClassLoader首先会执行URLClassLoader的findClass方法 模板模式,留钩子函数,findClass    lazy loading   严格来说应该叫lazyInitializing\n  JVM规范并没有规定何时加载\n  但是严格规定了什么时候必须初始化\n new getstatic putstatic invokestatic指令,访问final变量除外 java.lan.reflect对类进行反射调用时 初始化子类的时候,父类首先初始化 虚拟机启动时,被执行的主类必须初始化 动态语言支持java.lang.invoke.MethodHandle解析的结果为REF_getstatic REF_putstatic REF_invokestatic的方法句柄时 该类必须初始化    读取final 值不加载类\n  编译  混合模式 -Xmixed  解释器 JIT(Just in Time compiler) 混合使用解释器+热点代码编译 起始阶段采用解释执行 热点代码检测  多次调用的方法(方法计数器:检测方法执行频率) 多次调用的循环(循环计数器:检测循环执行频率) 进行编译     -Xmixed 默认混合模式开始解释执行,启动速度较快,对热点代码实行检测和编译 -Xint Xint 使用解释模式,启动很快执行稍慢 -Xcomp Xcomp使用纯编译模式,执行很快,启动很慢  exe,elf    Linking  Verification  验证文件是否符合jvm规定   Preparation  静态成员变量赋默认值   Resolution  将类,方法,属性等引用解析为直接引用 常量池中的各种符号引用解析为指针,偏移量等内存地址的直接引用     总结  load-默认值-初始值 new-申请内存-默认值-初始值    initializing JMM java memory model  内存一致性  硬件层一致性   busLock 总线锁 -老cpu\n  MESI 等各种各样的一致性协议(MSI,MESI,MOSI,Synapse,Firefly Dragon)\n 缓存锁 有些无法被缓存的数据或者跨越多个缓存行的数据依然必须使用总线锁 缓存行(cache line) 缓存的单位,一般为64字节 512位  伪共享  位于同一缓存行的两个不同数据,被两个cpu锁定,产生互相影响的伪共享问题 -JUC/falseSharing   缓存行对齐 - 能够提高效率  甚至disruptor中就有相关操作  在cursor前后各填充了七个long来对其缓存行来提高效率          MESI -缓存锁\n Modified 修改加标记,m Exclusive 独享标记,e shared 同时在读 ,s Invalid 被别人改过了 i    目前数据一致性是缓存锁+总线锁\n     指令排序  cpu类似内部多线程,查看没有依赖关系会乱序执行 乱序读合并写 JUC/029_WriteCombining -四个超快缓存 ,四个字节 乱序执行JUC/jmm/Disorder   保证不乱序  cpu级别内存屏障  intel 硬件内存屏障,实实在在存在的  sfence : 在sfence指令前的写操作当必须在sfence指令后的写操作前完成 lfence : 在lfence指令前的读操作当必须在lfence指令后的读操作前完成 mfence : 在mfence指令前的读写操作必须在mfence指令后的读写操作前完成 原子指令:例如x86上的\"lock\",指令是一个Full Barrier,执行时会锁住内存子系统来确保执行顺序,甚至跨越 多个CPU,Software Locks通常使用了内存屏障或原子指令来实现变量可见性和保存程序顺序   JVM级别(JSR133),依赖于硬件内存屏障 规范  LoadLoad屏障 StoreStore屏障 LoadStore屏障 StoreLoad屏障       volatile  java-class  标记ACCESS_FLAG volatile   jvm  写操作  StoreStoreBarrier volatile StoreLoadBarrier   读操作  LoadLoadBarrier volatile LoadStoreBarrier     os  hsdis -hotspot dis assembler Windows lock指令实现     synchronized  java-class  ACC_SYNCHRONIZED -代码块  monitor enter 代码块 monitor exit monitor exit   可能出异常,所以一个enter对应两个exit     jvm  c和c++调用了系统提供的同步机制   os  lock cmpchg/xx      面试题  关于对象    解释一下对象的创建过程\n class loading:类加载 class linking(verification preparation resolution)  verification:校验文件是否为class preparation: 静态变量设默认值 resolution :解析   class initialization: 初始化,执行静态语句块 申请对象内存 成员变量赋默认值 调用构造方法 成员变量顺序赋初始值 执行构造方法语句  super        对象在内存中的存储布局\n 观察虚拟机配置  java -XX:+PrintCommandLineFlags -version   普通对象  对象头: markword 8 ClassPointer指针: -XX:+UseCompressedClassPointers为四个字节,不开启为8字节 实例数据  引用类型: -XX:+UseCompressOops为四字节,不开启为8字节 Oops Ordinary Object Pointers 成员变量的指针   padding对齐,8的倍数   数组对象  对象头:markword 8 ClassPointer 指针同上 数组长度:4字节 数组数据 对齐8的倍数   ObjectSizeAgent HotSpot开启内存压缩的规则(64位)  4g以下直接砍掉高32位 4g-32g,默认开启内存压缩ClassPointer Oops 32G,压缩无效,使用64位,内存不是越大越好      对象头具体包括什么\n 偏向锁 锁 HashCode  31位hashcode-System.identityHashCode(…) –64位机子,32位的25位 按原始内容机选hashcode,重写过的hashcode方法计算的结果不会存在这里   分代年龄-4bit,最大15       对象怎么定位\n 句柄池 - gc算法方便(三色算法)  两个指针  数据类型指针 T.class 实例数据指针     直接指针 -hotspot  一个指针  指向实例数据 实例数据指向数据类型        对象怎么分配\n GC相关内容    Object o = new Object 在内存中占用多少字节\n  JVM Runtime Data Area \u0026\u0026 JVM Instructions JVM Runtime Data Area  PC program count 线程私有  存放指令位置 虚拟机的运行,类似于这样的循环 1 2 3 4 5 6  while(not end) { 取PC中的位置,找到对应位置指令 执行指令 PC++ }      Heap Stack  JVM stack *** 线程私有  Frame - 每个方法对应一个栈帧  Local Variables 局部变量表 Operand Stack 操作数栈  对于long的处理(store and load),多数虚拟机的实现都是原子的jls17.7,没必要volatile   dynamic linking 动态链接  jvms 2.6.3 a()调用了b(),去constant_pool找b()的链接-动态链接   return address  a()调用b(),返回值放的位置以及继续的地址       native method stack 线程私有   method area *** 逻辑概念  具体实现  perm Space (   字符串常量位于PermSpace FGC不会清理  1  for(;;) I i =C::n //Method Area -OOM,1.8之后不会OOM    大小启动时指定,不能变  meta space(=1.8)   字符串常量位于堆 会触发FGC清理 不设定的话最大就是物理内存     Direct Memory  JVM直接访问内存空间的内存,不用再复制到jvm nio,提高效率,实现zero copy    JVM Instructions  store load pop add mul … invoke  invokeStatic  调用静态方法   invokeVirtual  自带多态 final方法   invokeInterface invokeSpecial  可以直接定位的  private 方法,init     invokeDynamic  JVM最难指令 lambda表达式 反射 其他动态语言,scala,kotlin,CGLib ASM动态产生的class会用到的指令      Garbage Collector \u0026\u0026 GC tuning  垃圾 - 孤儿  how to find a garbage  reference count 引用计数 python  循环引用不能解决   root Searching 根可达算法 java  根对象  线程栈变量 静态变量 常量池 JNI指针 -native      GC Algorithms  Mark-Sweep(标记清除)  算法相对简单 存活对象比较多的情况下效率较高 两遍扫描,效率偏低 容易产生碎片   Copying(拷贝)  适用于存活对象较少的情况,只扫描一次,效率高,没有碎片 空间浪费 移动复制对象,需要调整对象引用   Mark-Compact(标记压缩) ![](.JVM-2_images/ Mark-Compact.png)  不会产生碎片,方便对象分配 不会产生内存减半 扫描两次 需要移动对象,效率偏低    堆内存逻辑分区(不适用部分带垃圾收集器)  部分垃圾回收器使用的模型  除了Epsilon ZGC Shenandoah之外的GC都是使用逻辑分代模型 G1是逻辑分代,物理不分代 除此之外,不仅逻辑分代,而且物理分代    内存分配  方法区,永久区,元空间… 30:00   栈上分配  线程私有对象 无逃逸 支持标量替换 无需调整   线程本地分配TLAB(Thread Local Allocation Buffer)  占用eden,默认1% 多线程的时候不用竞争eden就可以申请空间,提高效率 小对象 无需调整   老年代  大对象   eden   对象何时进入老年代  超过 XX:MaxTenuringThreshold 指定次数(YGC)  Parallel Scavenge 15 CMS 6 G1 15 git config –global http.proxy ‘socks5://127.0.0.1:1080’ git config –global https.proxy ‘socks5://127.0.0.1:1080’   动态年龄  s1 -s2超过50% 把年龄最大的放入O      分配担保  YGC期间 survivor区空间不够了 空间担保直接进入老年代    垃圾回收器  Serial  stw mark-sweep-compact ? safe point 完成必要的事情 老gc,处理空间小,大了则stw时间特别长   SerialOld 老年代  stw mark-sweep-compact 标记压缩 single GC thread   Parallel Scavenge  stw copying multiple GC   Parallel old  stw compacting multiple GC   Parallel new  stw copying multiple gc 加强版PS,配合CMS用的变种  PN:响应时间优先 PS:吞吐量优先     G1(10ms)  算法:三色标记+SATB   ZGC(1ms) PK C++  算法:ColoredPointers+写屏障   Shenandoah  算法:ColoredPointer+读屏障   Epsilon 默认回收器,PS+Parallel Old  CMS  concurrent mark sweep 老年代垃圾回收器 phases  initial mark concurrent mark remark concurrent sweep    问题  MemoryFragmentation 内存碎片化  搬出Serial Old来慢慢压缩空间 -XX:CMSFUllGCsBeforeCompaction   Floating Garbage  PromotionFailed Concurrent Mode Failure -XX:CMSInitiatingOccupancyFraction 92%  降低这个值,让cms保持老年代足够空间   SeriaOld     垃圾收集器跟内存大小的关系  Serial 几十m PS 上百m到几个g CMS 几个g到十几个g g1 上百g ZGC 4T    三色扫描算法 GC 调优  吞吐量: 用户代码时间/(用户代码执行时间+垃圾回收时间) 干正事的比例 响应时间 : STW越短,响应时间越好 所谓调优: 首先确定追求什么,吞吐量优先还是响应时间优先还是在满足一定响应时间的情况下,要求达到多少吞吐量  命令 Log   java -X ms5M -Xmx5M -XX:+PrintCommandLineFlags -XX:+PrintGCDetails com.mashibing.jvm.c5_gc.T01_HelloGC\n           total= eden+1个survivor\n  ",
+  "wordCount" : "716",
+  "inLanguage": "zh",
+  "image":"http://blog.oxide.ink/%3Cimage%20path/url%3E","datePublished": "0001-01-01T00:00:00Z",
+  "dateModified": "0001-01-01T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "Anhlaidh"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://blog.oxide.ink/posts/jvm/jvm-2/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Oxide",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://blog.oxide.ink/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+<noscript>
+    <style type="text/css">
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: #1d1e20;
+                --entry: #2e2e33;
+                --primary: rgba(255, 255, 255, 0.84);
+                --secondary: rgba(255, 255, 255, 0.56);
+                --tertiary: rgba(255, 255, 255, 0.16);
+                --content: rgba(255, 255, 255, 0.74);
+                --hljs-bg: #2e2e33;
+                --code-bg: #37383e;
+                --border: #333;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://blog.oxide.ink/" accesskey="h" title="Oxide (Alt + H)">Oxide</a>
+            <span class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+                <ul class="lang-switch"><li>|</li>
+                    <li>
+                        <a href="http://blog.oxide.ink/en/" title="English"
+                            aria-label="English">English</a>
+                    </li>
+                </ul>
+            </span>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://blog.oxide.ink/archives" title="文章归档">
+                    <span>文章归档</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://blog.oxide.ink/categories/" title="分类">
+                    <span>分类</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://blog.oxide.ink/search/" title="搜索">
+                    <span>搜索</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://blog.oxide.ink/tags/" title="标签">
+                    <span>标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://blog.oxide.ink/links/" title="友情链接">
+                    <span>友情链接</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="http://blog.oxide.ink/">Home</a>&nbsp;»&nbsp;<a href="http://blog.oxide.ink/posts/">Posts</a></div>
+    <h1 class="post-title">
+      JVM-2
+    </h1>
+    <div class="post-description">
+      JVM
+    </div>
+    <div class="post-meta">4 分钟&nbsp;·&nbsp;Anhlaidh&nbsp;|&nbsp;<a href="https://github.com/%3cpath_to_repo%3e/content/posts/JVM/JVM-2/index.md" rel="noopener noreferrer" target="_blank">Suggest Changes</a>
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <div class="details">目录</div>
+        </summary>
+        <div class="inner"><ul>
+                <li>
+                    <a href="#%e6%a6%82%e5%bf%b5" aria-label="概念">概念</a></li>
+                <li>
+                    <a href="#class-file-format" aria-label="Class File Format">Class File Format</a></li>
+                <li>
+                    <a href="#class-loading-linking-initializing" aria-label="Class Loading Linking Initializing">Class Loading Linking Initializing</a><ul>
+                        
+                <li>
+                    <a href="#loading" aria-label="loading">loading</a><ul>
+                        
+                <li>
+                    <a href="#lazy-loading" aria-label="lazy loading">lazy loading</a></li>
+                <li>
+                    <a href="#%e7%bc%96%e8%af%91" aria-label="编译">编译</a></li></ul>
+                </li>
+                <li>
+                    <a href="#linking" aria-label="Linking">Linking</a></li>
+                <li>
+                    <a href="#initializing" aria-label="initializing">initializing</a></li></ul>
+                </li>
+                <li>
+                    <a href="#jmm-java-memory-model" aria-label="JMM java memory model">JMM java memory model</a><ul>
+                        
+                <li>
+                    <a href="#%e9%9d%a2%e8%af%95%e9%a2%98" aria-label="面试题">面试题</a></li></ul>
+                </li>
+                <li>
+                    <a href="#jvm-runtime-data-area--jvm-instructions" aria-label="JVM Runtime Data Area &amp;amp;&amp;amp; JVM Instructions">JVM Runtime Data Area &amp;&amp; JVM Instructions</a><ul>
+                        
+                <li>
+                    <a href="#jvm-runtime-data-area" aria-label="JVM Runtime Data Area">JVM Runtime Data Area</a></li>
+                <li>
+                    <a href="#jvm-instructions" aria-label="JVM Instructions">JVM Instructions</a></li></ul>
+                </li>
+                <li>
+                    <a href="#garbage-collector--gc-tuning" aria-label="Garbage Collector &amp;amp;&amp;amp; GC tuning">Garbage Collector &amp;&amp; GC tuning</a><ul>
+                        
+                <li>
+                    <a href="#how-to-find-a-garbage" aria-label="how to find a garbage">how to find a garbage</a></li>
+                <li>
+                    <a href="#gc-algorithms" aria-label="GC Algorithms">GC Algorithms</a></li>
+                <li>
+                    <a href="#%e5%a0%86%e5%86%85%e5%ad%98%e9%80%bb%e8%be%91%e5%88%86%e5%8c%ba%e4%b8%8d%e9%80%82%e7%94%a8%e9%83%a8%e5%88%86%e5%b8%a6%e5%9e%83%e5%9c%be%e6%94%b6%e9%9b%86%e5%99%a8" aria-label="堆内存逻辑分区(不适用部分带垃圾收集器)">堆内存逻辑分区(不适用部分带垃圾收集器)</a></li>
+                <li>
+                    <a href="#%e5%9e%83%e5%9c%be%e5%9b%9e%e6%94%b6%e5%99%a8" aria-label="垃圾回收器">垃圾回收器</a><ul>
+                        
+                <li>
+                    <a href="#cms" aria-label="CMS">CMS</a><ul>
+                        
+                <li>
+                    <a href="#%e4%b8%89%e8%89%b2%e6%89%ab%e6%8f%8f%e7%ae%97%e6%b3%95" aria-label="三色扫描算法">三色扫描算法</a></li></ul>
+                </li></ul>
+                </li></ul>
+                </li>
+                <li>
+                    <a href="#gc-%e8%b0%83%e4%bc%98" aria-label="GC 调优">GC 调优</a><ul>
+                        
+                <li>
+                    <a href="#%e5%91%bd%e4%bb%a4" aria-label="命令">命令</a></li>
+                <li>
+                    <a href="#log" aria-label="Log">Log</a>
+                </li>
+            </ul>
+            </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><h2 id="概念">概念<a hidden class="anchor" aria-hidden="true" href="#概念">#</a></h2>
+<ul>
+<li>jvm跟java无关
+<ul>
+<li>任何语言-&gt;class-&gt;JVM</li>
+</ul>
+</li>
+<li>jvm是一种规范</li>
+<li>虚构出来的计算机
+<ul>
+<li>字节码指令集(汇编语言)</li>
+<li>内存管理:栈 堆 方法区等</li>
+</ul>
+</li>
+<li>常见的JVM实现
+<ul>
+<li>Hotspot
+<ul>
+<li>Oracle官方,做实验用的jvm</li>
+</ul>
+</li>
+<li>Jrockit
+<ul>
+<li>BEA,最快jvm</li>
+<li>被Oracle收购,合并于hotspot</li>
+</ul>
+</li>
+<li>TaoBaoVM
+<ul>
+<li>hotspot深度定制版</li>
+</ul>
+</li>
+<li>LiquidVM
+<ul>
+<li>直接针对硬件</li>
+</ul>
+</li>
+<li>azul zing
+<ul>
+<li>垃圾回收的业界标杆</li>
+</ul>
+</li>
+<li>J9 -IBM</li>
+<li>Microsoft VM</li>
+</ul>
+</li>
+<li>JDK JRE JVM
+<ul>
+<li>JDK = jre + development kit</li>
+<li>JRE = jvm + core lib</li>
+<li>JVM</li>
+</ul>
+</li>
+</ul>
+<h2 id="class-file-format">Class File Format<a hidden class="anchor" aria-hidden="true" href="#class-file-format">#</a></h2>
+<ul>
+<li>
+<p>二进制字节流</p>
+</li>
+<li>
+<p>数据类型 u1 u2 u4 u8 和_info</p>
+</li>
+<li>
+<p>前八个16进制-&gt;magic version</p>
+</li>
+<li>
+<p>然后八个16进制-&gt;minor version</p>
+</li>
+<li>
+<p>然后四个16进制(2个字节)-&gt; constant_pool_count</p>
+<ul>
+<li>常量池</li>
+</ul>
+</li>
+<li>
+<p>紧接constant_pool *</p>
+<ul>
+<li>长度为constant_pool_count-1的表,从1开始,保留0</li>
+</ul>
+</li>
+<li>
+<p>access_flags 定义类的那一排所代表的,例如public,final,implement,annotation</p>
+</li>
+<li>
+<p>this_class</p>
+<ul>
+<li>当前class文件</li>
+</ul>
+</li>
+<li>
+<p>super_class</p>
+</li>
+<li>
+<p>interfaces_count</p>
+</li>
+<li>
+<p>interfaces</p>
+</li>
+<li>
+<p>fields_count</p>
+</li>
+<li>
+<p>fields</p>
+</li>
+<li>
+<p>methods_count</p>
+</li>
+<li>
+<p>methods</p>
+<ul>
+<li>access_flags</li>
+<li>name_index u2</li>
+<li>descriptor_index u2</li>
+<li>attributes_count</li>
+<li>attributes</li>
+</ul>
+</li>
+<li>
+<p>attributes_count -u2</p>
+</li>
+<li>
+<p>attributes</p>
+<ul>
+<li>code</li>
+</ul>
+</li>
+</ul>
+<p><img loading="lazy" src=".JVM-2_images/class_file.png" alt=""  />
+</p>
+<h2 id="class-loading-linking-initializing">Class Loading Linking Initializing<a hidden class="anchor" aria-hidden="true" href="#class-loading-linking-initializing">#</a></h2>
+<h3 id="loading">loading<a hidden class="anchor" aria-hidden="true" href="#loading">#</a></h3>
+<ul>
+<li>加载过程</li>
+</ul>
+<ol>
+<li>Loading</li>
+<li>Linking
+<ol>
+<li>verification</li>
+<li>preparation
+<ul>
+<li>静态变量设初值,不是赋值</li>
+</ul>
+</li>
+<li>resolution</li>
+</ol>
+</li>
+<li>initializing</li>
+</ol>
+<ul>
+<li>class在内存中的位置
+<ul>
+<li>根据虚拟机来不同考虑
+<ul>
+<li>应该是metaspace</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>类加载器
+<ul>
+<li>JVM是按需动态加载,采用双亲委派机制 为了安全
+<ul>
+<li>java.lang.String被自定义loader,打包后发给客户,用户输密码,密码发回来</li>
+</ul>
+</li>
+<li>父加载器
+<ul>
+<li>父加载器不是&quot;类加载器的加载器&quot;类加载器都是bootstrap加载器加载的</li>
+</ul>
+</li>
+<li>双亲委派是一个孩子向父亲方向,然后父亲向孩子方向的双亲委派过程</li>
+<li>层次
+<ul>
+<li>bootStrap
+<ul>
+<li>加载lib/rt.jar charset.jar核心类,c++实现</li>
+</ul>
+</li>
+<li>Extension
+<ul>
+<li>加载扩展jar包,jre/lib/ext/*.jar,或由-Djava.ext.dirs指定</li>
+</ul>
+</li>
+<li>App
+<ul>
+<li>加载classpath指定内容</li>
+</ul>
+</li>
+<li>CustomClassLoader
+<ul>
+<li>自定义ClassLoader</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>自底向上检查该类是否已经加载parent方向</li>
+<li>如何打破双亲委派
+<ol>
+<li>如何打破:重写loadClass()
+<ul>
+<li>tomcat是重写loadClass为先自己加载,没有则找父加载器 -&gt;热加载
+每次都重新new</li>
+</ul>
+</li>
+<li>何时打破过
+<ul>
+<li>jdk1.2之前,自定义ClassLoader都必须重写loadClass</li>
+<li>ThreadContextClassLoader可以实现基础类调用实现类代码,通过thread.setContextClassLoader指定</li>
+<li>热启动,热部署
+<ul>
+<li>tomcat都有自己的模块指定classloader</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>class加载生成两部分
+<ol>
+<li>二进制存入内存(在meta space中,指的是method area,1.8之前叫PermanentGeneration)</li>
+<li>生成一个class,指向二进制内存,来读取解析二进制,反射</li>
+</ol>
+</li>
+<li>ClassLoader源码
+<ul>
+<li>findClass 自己找</li>
+<li>loadClass 方法过程
+<ol>
+<li>cache里面找</li>
+<li>parent.loadClass 父类找,递归找</li>
+<li>findClass 自己的findclass</li>
+</ol>
+</li>
+<li>如果是AppClassLoader首先会执行URLClassLoader的findClass方法</li>
+<li>模板模式,留钩子函数,findClass</li>
+</ul>
+</li>
+</ul>
+<h4 id="lazy-loading">lazy loading<a hidden class="anchor" aria-hidden="true" href="#lazy-loading">#</a></h4>
+<ul>
+<li>
+<p>严格来说应该叫lazyInitializing</p>
+</li>
+<li>
+<p>JVM规范并没有规定何时加载</p>
+</li>
+<li>
+<p>但是严格规定了什么时候必须初始化</p>
+<ul>
+<li>new getstatic putstatic invokestatic指令,访问final变量除外</li>
+<li>java.lan.reflect对类进行反射调用时</li>
+<li>初始化子类的时候,父类首先初始化</li>
+<li>虚拟机启动时,被执行的主类必须初始化</li>
+<li>动态语言支持java.lang.invoke.MethodHandle解析的结果为REF_getstatic REF_putstatic REF_invokestatic的方法句柄时
+该类必须初始化</li>
+</ul>
+</li>
+<li>
+<p>读取final 值不加载类</p>
+</li>
+</ul>
+<h4 id="编译">编译<a hidden class="anchor" aria-hidden="true" href="#编译">#</a></h4>
+<ul>
+<li>混合模式  -Xmixed
+<ul>
+<li>解释器</li>
+<li>JIT(Just in Time compiler)</li>
+<li>混合使用解释器+热点代码编译</li>
+<li>起始阶段采用解释执行</li>
+<li>热点代码检测
+<ul>
+<li>多次调用的方法(方法计数器:检测方法执行频率)</li>
+<li>多次调用的循环(循环计数器:检测循环执行频率)</li>
+<li>进行编译</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>-Xmixed 默认混合模式开始解释执行,启动速度较快,对热点代码实行检测和编译</li>
+<li>-Xint Xint 使用解释模式,启动很快执行稍慢</li>
+<li>-Xcomp Xcomp使用纯编译模式,执行很快,启动很慢
+<ul>
+<li>exe,elf</li>
+</ul>
+</li>
+</ul>
+<h3 id="linking">Linking<a hidden class="anchor" aria-hidden="true" href="#linking">#</a></h3>
+<ol>
+<li>Verification
+<ul>
+<li>验证文件是否符合jvm规定</li>
+</ul>
+</li>
+<li>Preparation
+<ul>
+<li>静态成员变量赋默认值</li>
+</ul>
+</li>
+<li>Resolution
+<ul>
+<li>将类,方法,属性等引用解析为直接引用
+常量池中的各种符号引用解析为指针,偏移量等内存地址的直接引用</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>总结
+<ol>
+<li>load-默认值-初始值</li>
+<li>new-申请内存-默认值-初始值</li>
+</ol>
+</li>
+</ul>
+<h3 id="initializing">initializing<a hidden class="anchor" aria-hidden="true" href="#initializing">#</a></h3>
+<h2 id="jmm-java-memory-model">JMM java memory model<a hidden class="anchor" aria-hidden="true" href="#jmm-java-memory-model">#</a></h2>
+<ul>
+<li>内存一致性
+<ul>
+<li>硬件层一致性
+<ul>
+<li>
+<p>busLock 总线锁 -&gt;老cpu</p>
+</li>
+<li>
+<p>MESI 等各种各样的一致性协议(MSI,MESI,MOSI,Synapse,Firefly Dragon)</p>
+<ul>
+<li>缓存锁</li>
+<li>有些无法被缓存的数据或者跨越多个缓存行的数据依然必须使用总线锁</li>
+<li>缓存行(cache line) 缓存的单位,一般为64字节 512位
+<ul>
+<li>伪共享
+<ul>
+<li>位于同一缓存行的两个不同数据,被两个cpu锁定,产生互相影响的伪共享问题 -&gt;<code>JUC/falseSharing</code></li>
+</ul>
+</li>
+<li>缓存行对齐 -&gt; 能够提高效率
+<ul>
+<li>甚至disruptor中就有相关操作
+<ul>
+<li>在cursor前后各填充了七个long来对其缓存行来提高效率</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>MESI -&gt;缓存锁</p>
+<ul>
+<li>Modified 修改加标记,m</li>
+<li>Exclusive 独享标记,e</li>
+<li>shared 同时在读 ,s</li>
+<li>Invalid 被别人改过了 i</li>
+</ul>
+</li>
+<li>
+<p>目前数据一致性是缓存锁+总线锁</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>指令排序
+<img loading="lazy" src=".JVM-2_images/jmm.png" alt=""  />
+
+<ul>
+<li>cpu类似内部多线程,查看没有依赖关系会乱序执行</li>
+<li>乱序读合并写 <code>JUC/029_WriteCombining</code> -&gt;四个超快缓存 ,四个字节</li>
+<li>乱序执行JUC/jmm/Disorder</li>
+</ul>
+</li>
+<li>保证不乱序
+<ul>
+<li>cpu级别内存屏障
+<ul>
+<li>intel 硬件内存屏障,实实在在存在的
+<ul>
+<li>sfence : 在sfence指令前的写操作当必须在sfence指令后的写操作前完成</li>
+<li>lfence : 在lfence指令前的读操作当必须在lfence指令后的读操作前完成</li>
+<li>mfence : 在mfence指令前的读写操作必须在mfence指令后的读写操作前完成</li>
+<li>原子指令:例如x86上的&quot;lock&quot;,指令是一个Full Barrier,执行时会锁住内存子系统来确保执行顺序,甚至跨越
+多个CPU,Software Locks通常使用了内存屏障或原子指令来实现变量可见性和保存程序顺序</li>
+</ul>
+</li>
+<li>JVM级别(JSR133),依赖于硬件内存屏障 规范
+<ul>
+<li>LoadLoad屏障</li>
+<li>StoreStore屏障</li>
+<li>LoadStore屏障</li>
+<li>StoreLoad屏障</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>volatile
+<ul>
+<li>java-&gt;class
+<ul>
+<li>标记ACCESS_FLAG volatile</li>
+</ul>
+</li>
+<li>jvm
+<ul>
+<li>写操作
+<ol>
+<li>StoreStoreBarrier</li>
+<li>volatile</li>
+<li>StoreLoadBarrier</li>
+</ol>
+</li>
+<li>读操作
+<ol>
+<li>LoadLoadBarrier</li>
+<li>volatile</li>
+<li>LoadStoreBarrier</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>os
+<ul>
+<li>hsdis -hotspot dis assembler</li>
+<li>Windows lock指令实现</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>synchronized
+<ul>
+<li>java-&gt;class
+<ul>
+<li>ACC_SYNCHRONIZED
+-代码块
+<ol>
+<li>monitor enter</li>
+<li>代码块</li>
+<li>monitor exit</li>
+<li>monitor exit</li>
+</ol>
+<ul>
+<li>可能出异常,所以一个enter对应两个exit</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>jvm
+<ul>
+<li>c和c++调用了系统提供的同步机制</li>
+</ul>
+</li>
+<li>os
+<ul>
+<li>lock cmpchg/xx</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="面试题">面试题<a hidden class="anchor" aria-hidden="true" href="#面试题">#</a></h3>
+<ul>
+<li>关于对象</li>
+</ul>
+<ol>
+<li>
+<p>解释一下对象的创建过程</p>
+<ol>
+<li>class loading:类加载</li>
+<li>class linking(verification preparation resolution)
+<ol>
+<li>verification:校验文件是否为class</li>
+<li>preparation: 静态变量设默认值</li>
+<li>resolution :解析</li>
+</ol>
+</li>
+<li>class initialization: 初始化,执行静态语句块</li>
+<li>申请对象内存</li>
+<li>成员变量赋默认值</li>
+<li>调用构造方法<!-- raw HTML omitted -->
+<ol>
+<li>成员变量顺序赋初始值</li>
+<li>执行构造方法语句
+<ol>
+<li>super</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>
+<p>对象在内存中的存储布局</p>
+<ul>
+<li>观察虚拟机配置
+<ul>
+<li>java -XX:+PrintCommandLineFlags -version</li>
+</ul>
+</li>
+<li>普通对象
+<ol>
+<li>对象头: markword 8</li>
+<li>ClassPointer指针: -XX:+UseCompressedClassPointers为四个字节,不开启为8字节</li>
+<li>实例数据
+<ol>
+<li>引用类型: -XX:+UseCompressOops为四字节,不开启为8字节
+Oops Ordinary Object Pointers 成员变量的指针</li>
+</ol>
+</li>
+<li>padding对齐,8的倍数</li>
+</ol>
+</li>
+<li>数组对象
+<ol>
+<li>对象头:markword 8</li>
+<li>ClassPointer 指针同上</li>
+<li>数组长度:4字节</li>
+<li>数组数据</li>
+<li>对齐8的倍数</li>
+</ol>
+</li>
+<li>ObjectSizeAgent</li>
+<li>HotSpot开启内存压缩的规则(64位)
+<ol>
+<li>4g以下直接砍掉高32位</li>
+<li>4g-32g,默认开启内存压缩ClassPointer Oops</li>
+<li>32G,压缩无效,使用64位,内存不是越大越好</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>
+<p>对象头具体包括什么</p>
+<ol>
+<li>偏向锁</li>
+<li>锁</li>
+<li>HashCode
+<ul>
+<li>31位hashcode-&gt;System.identityHashCode(&hellip;)  &ndash;&gt;64位机子,32位的25位</li>
+<li>按原始内容机选hashcode,重写过的hashcode方法计算的结果不会存在这里</li>
+</ul>
+</li>
+<li>分代年龄-&gt;4bit,最大15</li>
+</ol>
+<ul>
+<li><img loading="lazy" src=".JVM-2_images/ObjectHead.png" alt=""  />
+</li>
+</ul>
+</li>
+<li>
+<p>对象怎么定位</p>
+<ul>
+<li>句柄池 -&gt; gc算法方便(三色算法)
+<ul>
+<li>两个指针
+<ol>
+<li>数据类型指针 T.class</li>
+<li>实例数据指针</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>直接指针 -&gt;hotspot
+<ul>
+<li>一个指针
+<ul>
+<li>指向实例数据</li>
+<li>实例数据指向数据类型</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>对象怎么分配</p>
+<ul>
+<li>GC相关内容</li>
+</ul>
+</li>
+<li>
+<p>Object o = new Object 在内存中占用多少字节</p>
+</li>
+</ol>
+<h2 id="jvm-runtime-data-area--jvm-instructions">JVM Runtime Data Area &amp;&amp; JVM Instructions<a hidden class="anchor" aria-hidden="true" href="#jvm-runtime-data-area--jvm-instructions">#</a></h2>
+<h3 id="jvm-runtime-data-area">JVM Runtime Data Area<a hidden class="anchor" aria-hidden="true" href="#jvm-runtime-data-area">#</a></h3>
+<ul>
+<li>PC program count 线程私有
+<ul>
+<li>存放指令位置</li>
+<li>虚拟机的运行,类似于这样的循环
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">while(not end)
+{
+取PC中的位置,找到对应位置指令
+执行指令
+PC++
+}
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+</li>
+<li>Heap</li>
+<li>Stack
+<ul>
+<li>JVM stack *** 线程私有
+<ul>
+<li>Frame - 每个方法对应一个栈帧
+<ol>
+<li>Local Variables 局部变量表</li>
+<li>Operand Stack 操作数栈
+<ul>
+<li>对于long的处理(store and load),多数虚拟机的实现都是原子的jls17.7,没必要volatile</li>
+</ul>
+</li>
+<li>dynamic linking 动态链接
+<ul>
+<li>jvms 2.6.3</li>
+<li>a()调用了b(),去constant_pool找b()的链接-&gt;动态链接</li>
+</ul>
+</li>
+<li>return address
+<ul>
+<li>a()调用b(),返回值放的位置以及继续的地址</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>native method stack 线程私有</li>
+</ul>
+</li>
+<li>method area *** 逻辑概念
+<ul>
+<li>具体实现
+<ol>
+<li>perm Space (&lt;1.8)</li>
+</ol>
+<ul>
+<li>字符串常量位于PermSpace</li>
+<li>FGC不会清理</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">for(;;) I i =C::n //Method Area  -&gt;OOM,1.8之后不会OOM
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>大小启动时指定,不能变</li>
+</ul>
+<ol start="2">
+<li>meta space(&gt;=1.8)</li>
+</ol>
+<ul>
+<li>字符串常量位于堆</li>
+<li>会触发FGC清理</li>
+<li>不设定的话最大就是物理内存</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Direct Memory
+<ul>
+<li>JVM直接访问内存空间的内存,不用再复制到jvm</li>
+<li>nio,提高效率,实现zero copy</li>
+</ul>
+</li>
+</ul>
+<h3 id="jvm-instructions">JVM Instructions<a hidden class="anchor" aria-hidden="true" href="#jvm-instructions">#</a></h3>
+<ul>
+<li>store</li>
+<li>load</li>
+<li>pop</li>
+<li>add</li>
+<li>mul
+&hellip;</li>
+<li>invoke
+<ol>
+<li>invokeStatic
+<ul>
+<li>调用静态方法</li>
+</ul>
+</li>
+<li>invokeVirtual
+<ul>
+<li>自带多态</li>
+<li>final方法</li>
+</ul>
+</li>
+<li>invokeInterface</li>
+<li>invokeSpecial
+<ul>
+<li>可以直接定位的
+<ul>
+<li>private 方法,init</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>invokeDynamic
+<ul>
+<li>JVM最难指令</li>
+<li>lambda表达式</li>
+<li>反射</li>
+<li>其他动态语言,scala,kotlin,CGLib ASM动态产生的class会用到的指令</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+<h2 id="garbage-collector--gc-tuning">Garbage Collector &amp;&amp; GC tuning<a hidden class="anchor" aria-hidden="true" href="#garbage-collector--gc-tuning">#</a></h2>
+<ul>
+<li>垃圾 -&gt; 孤儿</li>
+</ul>
+<h3 id="how-to-find-a-garbage">how to find a garbage<a hidden class="anchor" aria-hidden="true" href="#how-to-find-a-garbage">#</a></h3>
+<ul>
+<li>reference count 引用计数 python
+<ul>
+<li>循环引用不能解决</li>
+</ul>
+</li>
+<li>root Searching 根可达算法 java
+<ul>
+<li>根对象
+<ol>
+<li>线程栈变量</li>
+<li>静态变量</li>
+<li>常量池</li>
+<li>JNI指针 -&gt;native</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="gc-algorithms">GC Algorithms<a hidden class="anchor" aria-hidden="true" href="#gc-algorithms">#</a></h3>
+<ul>
+<li>Mark-Sweep(标记清除)
+<img loading="lazy" src=".JVM-2_images/Mark-Sweep.png" alt=""  />
+
+<ul>
+<li>算法相对简单</li>
+<li>存活对象比较多的情况下效率较高</li>
+<li>两遍扫描,效率偏低</li>
+<li>容易产生碎片</li>
+</ul>
+</li>
+<li>Copying(拷贝)
+<img loading="lazy" src=".JVM-2_images/Copying.png" alt=""  />
+
+<ul>
+<li>适用于存活对象较少的情况,只扫描一次,效率高,没有碎片</li>
+<li>空间浪费</li>
+<li>移动复制对象,需要调整对象引用</li>
+</ul>
+</li>
+<li>Mark-Compact(标记压缩)
+![](.JVM-2_images/ Mark-Compact.png)
+<ul>
+<li>不会产生碎片,方便对象分配</li>
+<li>不会产生内存减半</li>
+<li>扫描两次</li>
+<li>需要移动对象,效率偏低</li>
+</ul>
+</li>
+</ul>
+<h3 id="堆内存逻辑分区不适用部分带垃圾收集器">堆内存逻辑分区(不适用部分带垃圾收集器)<a hidden class="anchor" aria-hidden="true" href="#堆内存逻辑分区不适用部分带垃圾收集器">#</a></h3>
+<ul>
+<li>部分垃圾回收器使用的模型
+<ul>
+<li>除了Epsilon ZGC Shenandoah之外的GC都是使用逻辑分代模型</li>
+<li>G1是逻辑分代,物理不分代</li>
+<li>除此之外,不仅逻辑分代,而且物理分代
+<img loading="lazy" src=".JVM-2_images/heapMemery.png" alt=""  />
+</li>
+</ul>
+</li>
+<li>内存分配
+<ul>
+<li><a href="https://ke.qq.com/webcourse/index.html#cid=398381&amp;term_id=100475149&amp;taid=4067286785070125&amp;type=1024&amp;vid=5285890796770442292">方法区,永久区,元空间&hellip;</a> 30:00</li>
+</ul>
+<ol>
+<li>栈上分配
+<ul>
+<li>线程私有对象</li>
+<li>无逃逸</li>
+<li>支持标量替换</li>
+<li>无需调整</li>
+</ul>
+</li>
+<li>线程本地分配TLAB(Thread Local Allocation Buffer)
+<ul>
+<li>占用eden,默认1%</li>
+<li>多线程的时候不用竞争eden就可以申请空间,提高效率</li>
+<li>小对象</li>
+<li>无需调整</li>
+</ul>
+</li>
+<li>老年代
+<ul>
+<li>大对象</li>
+</ul>
+</li>
+<li>eden</li>
+</ol>
+</li>
+<li>对象何时进入老年代
+<ol>
+<li>超过 <code>XX:MaxTenuringThreshold</code> 指定次数(YGC)
+<ul>
+<li>Parallel Scavenge 15</li>
+<li>CMS 6</li>
+<li>G1 15
+git config &ndash;global http.proxy &lsquo;socks5://127.0.0.1:1080&rsquo;
+git config &ndash;global https.proxy &lsquo;socks5://127.0.0.1:1080&rsquo;</li>
+</ul>
+</li>
+<li>动态年龄
+<ul>
+<li>s1 -&gt;s2超过50%</li>
+<li>把年龄最大的放入O
+<img loading="lazy" src=".JVM-2_images/ObjectBirth.png" alt=""  />
+</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>分配担保
+<ul>
+<li>YGC期间 survivor区空间不够了 空间担保直接进入老年代</li>
+</ul>
+</li>
+</ul>
+<h3 id="垃圾回收器">垃圾回收器<a hidden class="anchor" aria-hidden="true" href="#垃圾回收器">#</a></h3>
+<p><img loading="lazy" src=".JVM-2_images/garbageCollectors.png" alt=""  />
+</p>
+<ul>
+<li>Serial
+<ul>
+<li>stw</li>
+<li>mark-sweep-compact ?</li>
+<li>safe point 完成必要的事情</li>
+<li>老gc,处理空间小,大了则stw时间特别长</li>
+</ul>
+</li>
+<li>SerialOld 老年代
+<ul>
+<li>stw</li>
+<li>mark-sweep-compact 标记压缩</li>
+<li>single GC thread</li>
+</ul>
+</li>
+<li>Parallel Scavenge
+<ul>
+<li>stw</li>
+<li>copying</li>
+<li>multiple GC</li>
+</ul>
+</li>
+<li>Parallel old
+<ul>
+<li>stw</li>
+<li>compacting</li>
+<li>multiple GC</li>
+</ul>
+</li>
+<li>Parallel new
+<ul>
+<li>stw</li>
+<li>copying</li>
+<li>multiple gc</li>
+<li>加强版PS,配合CMS用的变种
+<ul>
+<li>PN:响应时间优先</li>
+<li>PS:吞吐量优先</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>G1(10ms)
+<ul>
+<li>算法:三色标记+SATB</li>
+</ul>
+</li>
+<li>ZGC(1ms) PK C++
+<ul>
+<li>算法:ColoredPointers+写屏障</li>
+</ul>
+</li>
+<li>Shenandoah
+<ul>
+<li>算法:ColoredPointer+读屏障</li>
+</ul>
+</li>
+<li>Epsilon</li>
+<li>默认回收器,PS+Parallel Old</li>
+</ul>
+<h4 id="cms">CMS<a hidden class="anchor" aria-hidden="true" href="#cms">#</a></h4>
+<ul>
+<li>concurrent mark sweep</li>
+<li>老年代垃圾回收器</li>
+<li>phases
+<ol>
+<li>initial mark</li>
+<li>concurrent mark</li>
+<li>remark</li>
+<li>concurrent sweep
+<img loading="lazy" src=".JVM-2_images/phases.png" alt=""  />
+</li>
+</ol>
+</li>
+<li>问题
+<ol>
+<li>MemoryFragmentation 内存碎片化
+<ul>
+<li>搬出Serial Old来慢慢压缩空间</li>
+<li>-XX:CMSFUllGCsBeforeCompaction</li>
+</ul>
+</li>
+<li>Floating Garbage
+<ul>
+<li>PromotionFailed</li>
+<li>Concurrent Mode Failure -XX:CMSInitiatingOccupancyFraction 92%
+<ul>
+<li>降低这个值,让cms保持老年代足够空间</li>
+</ul>
+</li>
+<li>SeriaOld</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>垃圾收集器跟内存大小的关系
+<ol>
+<li>Serial 几十m</li>
+<li>PS 上百m到几个g</li>
+<li>CMS 几个g到十几个g</li>
+<li>g1 上百g</li>
+<li>ZGC 4T</li>
+</ol>
+</li>
+</ul>
+<h5 id="三色扫描算法">三色扫描算法<a hidden class="anchor" aria-hidden="true" href="#三色扫描算法">#</a></h5>
+<h2 id="gc-调优">GC 调优<a hidden class="anchor" aria-hidden="true" href="#gc-调优">#</a></h2>
+<ul>
+<li>吞吐量: 用户代码时间/(用户代码执行时间+垃圾回收时间)  干正事的比例</li>
+<li>响应时间 : STW越短,响应时间越好</li>
+<li>所谓调优: 首先确定追求什么,吞吐量优先还是响应时间优先还是在满足一定响应时间的情况下,要求达到多少吞吐量</li>
+</ul>
+<h3 id="命令">命令<a hidden class="anchor" aria-hidden="true" href="#命令">#</a></h3>
+<h3 id="log">Log<a hidden class="anchor" aria-hidden="true" href="#log">#</a></h3>
+<ul>
+<li>
+<p><code>java -X ms5M -Xmx5M -XX:+PrintCommandLineFlags -XX:+PrintGCDetails com.mashibing.jvm.c5_gc.T01_HelloGC</code></p>
+<ul>
+<li><img loading="lazy" src=".JVM-2_images/ddc71b77.png" alt=""  />
+</li>
+</ul>
+</li>
+<li>
+<p><img loading="lazy" src=".JVM-2_images/yfGC.png" alt=""  />
+</p>
+</li>
+<li>
+<p><img loading="lazy" src=".JVM-2_images/msbygc.png" alt=""  />
+</p>
+</li>
+<li>
+<p><img loading="lazy" src=".JVM-2_images/heapDump.png" alt=""  />
+</p>
+</li>
+<li>
+<p>total= eden+1个survivor</p>
+</li>
+</ul>
+
+</div>
+
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://blog.oxide.ink/tags/jvm/">JVM</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="prev" href="http://blog.oxide.ink/posts/jvm/jvm-1/">
+    <span class="title">« 上一页</span>
+    <br>
+    <span>JVM-01</span>
+  </a>
+  <a class="next" href="http://blog.oxide.ink/posts/db/mysql/">
+    <span class="title">下一页 »</span>
+    <br>
+    <span>MySQL</span>
+  </a>
+</nav>
+
+
+  </footer><section class="comments">
+
+    <script src="https://utteranc.es/client.js"
+            repo="Anhlaidh/Oxside"
+            issue-term="pathname"
+            theme="preferred-color-scheme"
+            crossorigin="anonymous"
+            async>
+    </script>
+
+</section>
+
+</article>
+    </main>
+    <footer class="footer">
+    <span>&copy; 2021 <a href="http://blog.oxide.ink/">Oxide</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://git.io/hugopapermod" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+    <br>
+    <span>Anhlaidh
+        <a href="#">chinahantianzhao@foxmail.com</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)">
+    <button class="top-link" id="top-link" type="button" accesskey="g">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+            <path d="M12 6H0l6-6z" />
+        </svg>
+    </button>
+</a><script src="https://cdn.bootcss.com/mermaid/8.0.0-rc.8/mermaid.min.js"></script>
+<script>
+    let parm1 = ''
+    if (document.cookie.indexOf("uv=false") == -1) {
+        parm1 = "&uv=true"
+        var t = new Date(new Date().getTime() + 1000 * 60 * 60 * 24);
+        document.cookie = "uv=false; expires=" + t.toGMTString() + ";path=/";
+    }
+    fetch("https://analytics.radishkin.workers.dev/api?url=" + window.btoa(location.href) + parm1).then(res => {
+        return res.json()
+    }).then(res => {
+        try {
+            document.getElementById("busuanzi_value_page_pv").innerText = res.pv
+        } catch(err) {}
+        try{
+            document.getElementById("busuanzi_container_site_uv").innerText = res.uv
+        }catch(err){}
+        try{
+            document.getElementById("busuanzi_container_site_pv").innerText = res.total
+        }catch(err){}
+    })
+
+</script>
+
+<script>
+    let menu = document.getElementById('menu')
+    menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+    menu.onscroll = function () {
+        localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+        var isHide = true;
+
+        const copybutton = document.createElement('button');
+        const showbutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        showbutton.classList.add('show-code-button');
+        copybutton.innerText = 'copy';
+        showbutton.innerText = 'show';
+
+        function copyingDone() {
+            copybutton.innerText = 'copied!';
+            setTimeout(() => {
+                copybutton.innerText = 'copy';
+            }, 2000);
+        }
+        showbutton.addEventListener('click',()=>{
+            if (isHide === true) {
+                
+                showbutton.parentElement.classList.add("code-showing")
+                showbutton.innerText = 'hide';
+                isHide = false;
+            } else {
+                
+                showbutton.parentElement.classList.remove("code-showing")
+                showbutton.innerText = 'show';
+                isHide = true;
+            }
+
+        })
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+            container.appendChild(showbutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(showbutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+            codeblock.parentNode.appendChild(showbutton);
+        }
+    });
+</script>
+</body>
+
+</html>
