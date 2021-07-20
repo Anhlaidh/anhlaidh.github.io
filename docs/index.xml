@@ -9,7 +9,16 @@
       <link>http://blog.oxide.ink/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
     </image>
     <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Thu, 01 Jul 2021 20:58:36 +0000</lastBuildDate><atom:link href="http://blog.oxide.ink/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 02 Jul 2021 19:50:31 +0000</lastBuildDate><atom:link href="http://blog.oxide.ink/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Scala</title>
+      <link>http://blog.oxide.ink/posts/bigdata/scala/</link>
+      <pubDate>Fri, 02 Jul 2021 19:50:31 +0000</pubDate>
+      
+      <guid>http://blog.oxide.ink/posts/bigdata/scala/</guid>
+      <description>BigData</description>
+    </item>
+    
     <item>
       <title>ElasticSearch</title>
       <link>http://blog.oxide.ink/posts/db/elasticsearch/</link>
