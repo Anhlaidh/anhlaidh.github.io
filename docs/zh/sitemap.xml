@@ -2,11 +2,21 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://blog.oxide.ink/tags/bigdata/</loc>
-    <lastmod>2021-07-02T19:50:31+00:00</lastmod>
+    <loc>http://blog.oxide.ink/categories/</loc>
+    <lastmod>2022-08-28T18:03:53+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="http://blog.oxide.ink/en/categories/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh"
+                href="http://blog.oxide.ink/categories/"
+                />
   </url><url>
     <loc>http://blog.oxide.ink/</loc>
-    <lastmod>2021-07-02T19:50:31+00:00</lastmod>
+    <lastmod>2022-08-28T18:03:53+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -19,7 +29,7 @@
                 />
   </url><url>
     <loc>http://blog.oxide.ink/posts/</loc>
-    <lastmod>2021-07-02T19:50:31+00:00</lastmod>
+    <lastmod>2022-08-28T18:03:53+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -31,11 +41,11 @@
                 href="http://blog.oxide.ink/posts/"
                 />
   </url><url>
-    <loc>http://blog.oxide.ink/posts/bigdata/scala/</loc>
-    <lastmod>2021-07-02T19:50:31+00:00</lastmod>
+    <loc>http://blog.oxide.ink/posts/t/</loc>
+    <lastmod>2022-08-28T18:03:53+08:00</lastmod>
   </url><url>
     <loc>http://blog.oxide.ink/tags/</loc>
-    <lastmod>2021-07-02T19:50:31+00:00</lastmod>
+    <lastmod>2022-08-28T18:03:53+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -46,6 +56,18 @@
                 hreflang="zh"
                 href="http://blog.oxide.ink/tags/"
                 />
+  </url><url>
+    <loc>http://blog.oxide.ink/tags/%E6%9C%AA%E5%88%86%E7%B1%BB/</loc>
+    <lastmod>2022-08-28T18:03:53+08:00</lastmod>
+  </url><url>
+    <loc>http://blog.oxide.ink/categories/%E5%AD%A6%E4%B9%A0/</loc>
+    <lastmod>2022-08-28T18:03:53+08:00</lastmod>
+  </url><url>
+    <loc>http://blog.oxide.ink/tags/bigdata/</loc>
+    <lastmod>2021-07-02T19:50:31+00:00</lastmod>
+  </url><url>
+    <loc>http://blog.oxide.ink/posts/bigdata/scala/</loc>
+    <lastmod>2021-07-02T19:50:31+00:00</lastmod>
   </url><url>
     <loc>http://blog.oxide.ink/tags/db/</loc>
     <lastmod>2021-07-01T20:58:36+00:00</lastmod>
@@ -80,22 +102,6 @@
     <loc>http://blog.oxide.ink/posts/%E7%AE%97%E6%B3%95/%E7%AE%97%E6%B3%95/</loc>
     <lastmod>2021-07-01T20:58:36+00:00</lastmod>
   </url><url>
-    <loc>http://blog.oxide.ink/tags/first/</loc>
-    <lastmod>2021-06-08T20:58:36+08:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="http://blog.oxide.ink/en/tags/first/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh"
-                href="http://blog.oxide.ink/tags/first/"
-                />
-  </url><url>
-    <loc>http://blog.oxide.ink/posts/hugo-extend/</loc>
-    <lastmod>2021-06-08T20:58:36+08:00</lastmod>
-  </url><url>
     <loc>http://blog.oxide.ink/posts/java/java%E7%AC%94%E8%AE%B001/</loc>
     <lastmod>2021-06-08T20:58:36+08:00</lastmod>
   </url><url>
@@ -107,6 +113,8 @@
   </url><url>
     <loc>http://blog.oxide.ink/links/</loc>
   </url><url>
+    <loc>http://blog.oxide.ink/posts/hugo-extend/</loc>
+  </url><url>
     <loc>http://blog.oxide.ink/archives/</loc>
     <xhtml:link
                 rel="alternate"
@@ -117,18 +125,6 @@
                 rel="alternate"
                 hreflang="zh"
                 href="http://blog.oxide.ink/archives/"
-                />
-  </url><url>
-    <loc>http://blog.oxide.ink/categories/</loc>
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="http://blog.oxide.ink/en/categories/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh"
-                href="http://blog.oxide.ink/categories/"
                 />
   </url><url>
     <loc>http://blog.oxide.ink/search/</loc>

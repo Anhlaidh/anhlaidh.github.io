@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>JVM on Oxide</title>
     <link>http://blog.oxide.ink/tags/jvm/</link>
     <description>Recent content in JVM on Oxide</description>
-    <image>
-      <url>http://blog.oxide.ink/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</url>
-      <link>http://blog.oxide.ink/%3Clink%20or%20path%20of%20image%20for%20opengraph,%20twitter-cards%3E</link>
-    </image>
     <generator>Hugo -- gohugo.io</generator>
     <lastBuildDate>Thu, 01 Jul 2021 20:58:36 +0000</lastBuildDate><atom:link href="http://blog.oxide.ink/tags/jvm/index.xml" rel="self" type="application/rss+xml" />
     <item>
@@ -16,7 +12,7 @@
       <pubDate>Thu, 01 Jul 2021 20:58:36 +0000</pubDate>
       
       <guid>http://blog.oxide.ink/posts/jvm/jvm-1/</guid>
-      <description>JVM</description>
+      <description>学术名词 TLAB (Thread Local Allocation Buffer) 垃圾回收器 分代 CMS +ParNew Serial+Serial Old Parallel Scavenge+Parallel Old 分区 G1 ZGC Shenandoah 调优 什么是调优 根据需求进行JVM规划和调优 优化运行JVM环境(慢,卡顿) 解决JVM运行过程中出现的各种问题(OOM) out of memery Java参数 标准参数 非标准参数 -X 调优 -XX 参数 -Xms200M 最小内存200M -Xmx200M 最大内存200M 设置成一样,防止内存抖动 -XX:+PrintGC 打印出来 -XX:+HeapDumpOnOutOfMemoryError 命令 java -Xms2M -Xmx2M -XX:+PrintGC problem jps 查看正在运行的编号 jinfo 编号查看进程信息 jstack jmap jstatus *arthas dashboard 仪表盘 jvm 类似jinfo thread 类似jstack thread -b 找死锁 heapdump 导出stack jad 即时反编译 redifine 重新替换class </description>
     </item>
     
     <item>
@@ -25,7 +21,18 @@
       <pubDate>Thu, 01 Jul 2021 20:58:36 +0000</pubDate>
       
       <guid>http://blog.oxide.ink/posts/jvm/jvm-2/</guid>
-      <description>JVM</description>
+      <description>概念 jvm跟java无关 任何语言-&amp;gt;class-&amp;gt;JVM jvm是一种规范 虚构出来的计算机 字节码指令集(汇编语言) 内存管理:栈 堆 方法区等 常见的JVM实现 Hotspot Oracle官方,做实验用的jvm Jrockit BEA,最快jvm 被Oracle收购,合并于hotspot TaoBaoVM hotspot深度定制版 LiquidVM 直接针对硬件 azul zing 垃圾回收的业界标杆 J9 -IBM Microsoft VM JDK JRE JVM JDK = jre + development kit JRE = jvm + core lib JVM Class File Format 二进制字节流
+数据类型 u1 u2 u4 u8 和_info
+前八个16进制-&amp;gt;magic version
+然后八个16进制-&amp;gt;minor version
+然后四个16进制(2个字节)-&amp;gt; constant_pool_count
+常量池 紧接constant_pool *
+长度为constant_pool_count-1的表,从1开始,保留0 access_flags 定义类的那一排所代表的,例如public,final,implement,annotation
+this_class
+当前class文件 super_class
+interfaces_count
+interfaces
+fields_count</description>
     </item>
     
   </channel>
